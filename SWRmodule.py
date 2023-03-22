@@ -1136,13 +1136,13 @@ def detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic):
     std_detection_thresh = np.std(eeg_rip)
     
     # now, find candidate events (>mean+3SD) 
-    orig_eeg_rip = orig_eeg_rip**2
+    orig_eeg_rip = orig_eeg_rip**2 # Why are we squaring here, I thought the Hilbert transform was supposed to find the envelope? EF1208
     candidate_thresh = mean_detection_thresh+candidate_SD*std_detection_thresh
     expansion_thresh = mean_detection_thresh+2*std_detection_thresh
-    ripplelogic = orig_eeg_rip >= candidate_thresh
+    ripplelogic = orig_eeg_rip >= candidate_thresh # EF1208, will evaluate to squared signal is above threshold
     # remove IEDs detected from Norman 25-60 algo...maybe should do this after expansion to 2SD??
     iedlogic = convolve2d(iedlogic,np.ones((1,artifact_buffer)),'same')>0 # expand to +/- 50 ms from each ied point
-    ripplelogic[iedlogic==1] = 0 
+    ripplelogic[iedlogic==1] = 0 # EF1208, convert above threshold events to 0 if they are an IED
     
     # expand out to 2SD around surviving events
     num_trials = ripplelogic.shape[0]
@@ -1468,7 +1468,7 @@ def getMixedEffectCIs(binned_start_array,subject_name_array,session_name_array):
         ripple_rates = binned_start_array[:,time_bin]
         CI_df = pd.DataFrame(data={'session':session_name_array,'subject':subject_name_array,'ripple_rates':ripple_rates})
         # now get the CIs JUST for this time bin
-        vc = {'session':'0+session'}
+        vc = {'session':'0+session'} # EF1208, adding 0+ excludes random intercept 
         get_bin_CI_model = smf.mixedlm("ripple_rates ~ 1", CI_df, groups="subject", vc_formula=vc)
         bin_model = get_bin_CI_model.fit(reml=False, method='nm',maxiter=2000)
         mean_values.append(bin_model.params.Intercept)

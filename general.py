@@ -213,6 +213,7 @@ def getLogicalChunks(array):
                 foundstart = True
                 startindex = i
         else:
+            # EF1208, array[endindex] will equal 0, is that desired?
             if foundstart:
                 foundend = True
                 endindex = i - 1
@@ -220,6 +221,7 @@ def getLogicalChunks(array):
         if i==(len(array)-1):
             if foundstart:
                 starts.append(startindex)
+                # I don't understand this, EF1208
                 if array[i] == 1:
                     ends.append(i)
                 else:
