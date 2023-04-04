@@ -1108,6 +1108,9 @@ def getStartEndArrays(ripple_array):
     return start_array,end_array
 
 def detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic):
+    '''
+    :param array eeg_rip: hilbert transformed ieeg data 
+    '''
     # detect ripples similar to with Butterworth, but using Norman et al 2019 algo (based on Stark 2014 algo). Description:
 #      Then Hilbert, clip extreme to 4 SD, square this clipped, smooth w/ Kaiser FIR low-pass filter with 40 Hz cutoff,
 #      mean and SD computed across entire experimental duration to define the threshold for event detection
@@ -1136,7 +1139,7 @@ def detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic):
     std_detection_thresh = np.std(eeg_rip)
     
     # now, find candidate events (>mean+3SD) 
-    orig_eeg_rip = orig_eeg_rip**2 # Why are we squaring here, I thought the Hilbert transform was supposed to find the envelope? EF1208
+    orig_eeg_rip = orig_eeg_rip**2
     candidate_thresh = mean_detection_thresh+candidate_SD*std_detection_thresh
     expansion_thresh = mean_detection_thresh+2*std_detection_thresh
     ripplelogic = orig_eeg_rip >= candidate_thresh # EF1208, will evaluate to squared signal is above threshold
