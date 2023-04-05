@@ -8247,3 +8247,526 @@
 2023-04-03_21-54-59: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-201-76ed893e38c3>, line no: 134
 2023-04-03_21-55-02: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-201-76ed893e38c3>, line no: 134
 2023-04-03_21-55-03: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-201-76ed893e38c3>, line no: 134
+2023-04-03_22-03-31: DF Exception: Sub: R1035M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-31: DF Exception: Sub: R1065J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-31: DF Exception: Sub: R1065J, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1065J, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1065J, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1092J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1138T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1138T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-32: DF Exception: Sub: R1171M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1171M_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-32: DF Exception: Sub: R1174T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1180C, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1180C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1180C, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1217T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1230J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1243T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1243T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1243T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1243T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1264P, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1264P, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-32: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-32: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1293P, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1303E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1320D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1320D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1320D, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1330D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1330D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1334T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1354E, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1354E, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1354E, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1361C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1366J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1366J_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-33: DF Exception: Sub: R1377M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1386T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1393T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1393T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1449T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1449T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1461T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1461T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1463E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1465D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-33: DF Exception: Sub: R1465D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_1_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-33: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-33: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1484T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1484T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1487T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1487T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1487T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1493T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1493T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1493T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1493T, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1497T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1497T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1497T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1497T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1497T, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-03-34: DF Exception: Sub: R1498D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_1_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-34: DF Exception: Sub: R1498D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_2_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-34: DF Exception: Sub: R1498D, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_4_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-34: DF Exception: Sub: R1498D, Sess: 5, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_5_AMY_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-52: DF Exception: Sub: R1015J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1015J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-52: DF Exception: Sub: R1035M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1035M_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-52: DF Exception: Sub: R1065J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1065J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-52: DF Exception: Sub: R1065J, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1065J_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-52: DF Exception: Sub: R1065J, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1065J_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1065J, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1065J_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1092J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1092J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1138T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1138T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1138T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1138T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1171M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1171M_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1174T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1174T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1180C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1180C_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1180C, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1180C_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1180C, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1180C_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1192C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1192C_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1192C, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1192C_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1192C, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1192C_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1217T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1217T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1221P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1221P_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1221P, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1221P_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1221P, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1221P_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1230J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1230J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1239E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1239E_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1243T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1243T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1243T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1243T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1243T, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1243T_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1243T, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1243T_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1264P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1264P_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1264P, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1264P_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1269E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1269E, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1278E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1278E_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1278E, Sess: 10, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1278E_10_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1293P, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1293P_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1303E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1303E_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1320D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1320D_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1320D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1320D_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1320D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1320D_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1330D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1330D_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1330D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1330D_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1332M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1332M_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1332M, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1332M_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1334T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1334T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1354E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1354E, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1354E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1361C, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1361C, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1366J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1366J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1377M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1377M_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1377M, Sess: 6, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1377M_6_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1386T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1386T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1393T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1393T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1393T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1393T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1393T, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1393T_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1426N, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1448T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1448T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1449T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1449T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1449T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1449T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1456D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1456D_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1456D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1456D_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1456D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1456D_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1456D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1456D_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1459M, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1459M_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1461T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1461T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1463E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1465D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1465D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1465D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_4_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1477J, Sess: 5, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1477J_5_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1482J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1482J_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1482J, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1482J_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1482J, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1482J_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1484T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1484T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1484T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1484T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1487T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1487T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1487T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1487T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1487T, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1487T_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-53: DF Exception: Sub: R1493T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1493T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1493T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1493T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1493T, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1493T_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1493T, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1493T_4_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1496T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1496T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1496T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1496T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1497T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1497T_0_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1497T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1497T_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1497T, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1497T_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1497T, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1497T_3_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1497T, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1497T_4_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1498D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_1_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1498D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_2_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1498D, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_4_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1498D, Sess: 5, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_5_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1501J, Sess: 6, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1501J_6_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-03-54: DF Exception: Sub: R1501J, Sess: 8, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1501J_8_ACC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-04-03: DF Exception: Sub: R1035M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-03: DF Exception: Sub: R1065J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1065J, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1065J, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1065J, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1092J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1138T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1138T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-04: DF Exception: Sub: R1171M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1174T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1180C, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1180C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1180C, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1217T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1221P, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1221P, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1221P, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1230J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1239E, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1243T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1243T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1243T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1243T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1264P, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1264P, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1269E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-04: DF Exception: Sub: R1269E, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-04: DF Exception: Sub: R1278E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1293P, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1303E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1320D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1320D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1320D, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-04: DF Exception: Sub: R1330D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1330D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1332M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1332M, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1334T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-05: DF Exception: Sub: R1354E, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1354E, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1354E, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-05: DF Exception: Sub: R1361C, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1361C, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1366J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1377M, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1393T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1393T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1426N, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-05: DF Exception: Sub: R1448T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1449T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1449T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1456D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1456D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1456D, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1461T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_0_OCC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-04-05: DF Exception: Sub: R1461T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_1_OCC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 137
+2023-04-03_22-04-05: DF Exception: Sub: R1463E, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-05: DF Exception: Sub: R1465D, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1465D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1465D, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-3-426eb4fa9b61>, line no: 125
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1482J, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1482J, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1482J, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1484T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1484T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1487T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1487T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1487T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1493T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1493T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1493T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1493T, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1496T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1496T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1497T, Sess: 0, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1497T, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1497T, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1497T, Sess: 3, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1497T, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1498D, Sess: 1, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1498D, Sess: 2, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1498D, Sess: 4, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1498D, Sess: 5, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1501J, Sess: 6, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-04-05: DF Exception: Sub: R1501J, Sess: 8, IndexError, list index out of range, file: <ipython-input-3-426eb4fa9b61>, line no: 145
+2023-04-03_22-05-41: DF Exception: Sub: R1035M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1065J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1065J, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1065J, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1065J, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1092J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1138T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1138T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-41: DF Exception: Sub: R1171M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1174T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1180C, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1180C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1180C, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1217T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1221P, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1221P, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1221P, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-41: DF Exception: Sub: R1230J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1239E, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1243T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1243T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1243T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1243T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1264P, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1264P, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1269E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1269E, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1278E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1293P, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1303E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1320D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1320D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1320D, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1330D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1330D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1332M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1332M, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1334T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1354E, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1354E, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1354E, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1361C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1361C, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1366J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1377M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1393T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1393T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1426N, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1448T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1449T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1449T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1456D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1456D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1456D, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1461T, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_0_OCC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-05-42: DF Exception: Sub: R1461T, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1461T_1_OCC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-05-42: DF Exception: Sub: R1463E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-42: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-42: DF Exception: Sub: R1465D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1465D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1465D, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1482J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1482J, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1482J, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1484T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1484T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1487T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1487T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1487T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1493T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1493T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1493T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1493T, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1496T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1496T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1497T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1497T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1497T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1497T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1497T, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1498D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1498D, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1498D, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1498D, Sess: 5, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1501J, Sess: 6, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-05-43: DF Exception: Sub: R1501J, Sess: 8, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1035M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1065J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1065J, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1065J, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1065J, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1092J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1138T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1138T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-14: DF Exception: Sub: R1171M, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1171M_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-14: DF Exception: Sub: R1174T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1180C, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1180C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1180C, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1217T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1230J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-14: DF Exception: Sub: R1243T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1243T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1243T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1243T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1264P, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1264P, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1293P, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1303E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1320D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1320D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1320D, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1330D, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1330D, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1334T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1354E, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1354E, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1354E, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1361C, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1366J, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1366J_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-15: DF Exception: Sub: R1377M, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1386T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1393T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1393T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1449T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1449T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1461T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1461T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1463E, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-15: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-15: DF Exception: Sub: R1465D, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_0_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-15: DF Exception: Sub: R1465D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_1_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-16: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 125
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1484T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1484T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1487T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1487T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1487T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1493T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1493T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1493T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1493T, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1497T, Sess: 0, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1497T, Sess: 1, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1497T, Sess: 2, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1497T, Sess: 3, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1497T, Sess: 4, IndexError, list index out of range, file: <ipython-input-11-8f0d136be49f>, line no: 146
+2023-04-03_22-06-16: DF Exception: Sub: R1498D, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_1_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-16: DF Exception: Sub: R1498D, Sess: 2, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_2_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-16: DF Exception: Sub: R1498D, Sess: 4, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_4_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-03_22-06-16: DF Exception: Sub: R1498D, Sess: 5, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1498D_5_AMY_encoding_soz_in_hamming.p', file: <ipython-input-11-8f0d136be49f>, line no: 137
+2023-04-05_17-57-46: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-47: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-47: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-47: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-49: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-49: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-52: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-53: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-53: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-54: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-54: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-56: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-57: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-58: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_17-57-58: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-58: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-58: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-58: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_17-57-58: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-11: DF Exception: Sub: R1147P, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1147P_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-11: DF Exception: Sub: R1192C, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-11: DF Exception: Sub: R1192C, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-11: DF Exception: Sub: R1192C, Sess: 2, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-13: DF Exception: Sub: R1269E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-13: DF Exception: Sub: R1269E, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1269E_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-16: DF Exception: Sub: R1354E, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1354E_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-16: DF Exception: Sub: R1361C, Sess: 0, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1361C_0_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-17: DF Exception: Sub: R1377M, Sess: 6, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-17: DF Exception: Sub: R1393T, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-18: DF Exception: Sub: R1426N, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1426N_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-20: DF Exception: Sub: R1459M, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-21: DF Exception: Sub: R1463E, Sess: 1, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1463E_1_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-22: DF Exception: Sub: R1465D, Sess: 3, FileNotFoundError, [Errno 2] No such file or directory: '/scratch/john/SWR_scratch/ENCODING/SWR_catFR1_R1465D_3_HPC_encoding_soz_in_hamming.p', file: <ipython-input-5-1133a090c742>, line no: 122
+2023-04-05_18-02-22: DF Exception: Sub: R1477J, Sess: 0, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-22: DF Exception: Sub: R1477J, Sess: 1, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-22: DF Exception: Sub: R1477J, Sess: 3, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-22: DF Exception: Sub: R1477J, Sess: 4, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
+2023-04-05_18-02-22: DF Exception: Sub: R1477J, Sess: 5, IndexError, list index out of range, file: <ipython-input-5-1133a090c742>, line no: 142
