@@ -1,0 +1,5 @@
+name,coef,stderr,pval,tval
+Intercept,-0.029402071823620365,,,
+ripple_exists,0.000532457514452616,,,
+word_recalled,0.07994072103068117,,,
+ripple_exists:word_recalled,-0.07624456625669494,,,

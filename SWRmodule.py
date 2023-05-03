@@ -155,6 +155,9 @@ def getSplitDF(exp_df,sub_selection,exp,selected_period='surrounding_recall'):
     #     print(seed); ripple_array = []; sub_names = []
 
     first_half_sub_names = []
+    
+    print(exp)
+    
     if exp == 'FR1':
         np.random.seed(44462) # seed 44462 gives 25,845 of 60,417 recall trials (42.8%). Or 57/167 (34.1% of subs)
         # subject numbers via len(np.unique(subject_name_array)) after loading half_df or exp_df
@@ -171,9 +174,9 @@ def getSplitDF(exp_df,sub_selection,exp,selected_period='surrounding_recall'):
             else:
                 half_sub_idxs = [i for i,sb in enumerate(exp_df.subject) if sb not in first_half_sub_names]
             analysis_df = exp_df.iloc[half_sub_idxs]
+            
     elif exp == 'catFR1':
         np.random.seed(44455) # seed 44455 gives 20,393 of 50,053 recall trials (40.7%). Or 46/138 (33.3% of subs)
-        
         if sub_selection == 'whole':
             if selected_period == 'encoding':
                 from SWRmodule import updated_sub_names_catFR1_encoding
@@ -196,10 +199,6 @@ def getSplitDF(exp_df,sub_selection,exp,selected_period='surrounding_recall'):
     
     elif exp == 'RepFR1':
         analysis_df = exp_df
-        
-    # visually check to make sure you're selecting right patients
-    print(first_half_sub_names[:10]) # catFR1 first 10 starts with R1393T
-    print(first_half_sub_names[-10:]) # catFR1 last 10 starts with R1386T
             
     return analysis_df
 
@@ -1423,7 +1422,6 @@ def getSubSessPredictors(sub_names,sub_sess_names,trial_nums,electrode_labels,ch
     session_name_array = []
     electrode_array = []
     channel_coords_array = []
-
     trial_ct = 0
     for ct,subject in enumerate(sub_names):    
         trials_this_loop = int(trial_nums[ct])
@@ -1436,9 +1434,11 @@ def getSubSessPredictors(sub_names,sub_sess_names,trial_nums,electrode_labels,ch
         
     return subject_name_array,session_name_array,electrode_array,channel_coords_array
 
-def getSubSessPredictorsWithChannelNums(sub_names,sub_sess_names,trial_nums,electrode_labels,channel_coords,channel_nums):
+def getSubSessPredictorsWithChannelNums(sub_names,sub_sess_names,trial_nums,electrode_labels,channel_coords,
+                                        channel_nums=[]):
     # get arrays of predictors for each trial so can set up ME model
     # 2020-08-31 get electrode labels too
+    # EF1208, I'm modifying this function so we don't need the non channel nums version 
     
     subject_name_array = []
     session_name_array = []
@@ -1455,7 +1455,8 @@ def getSubSessPredictorsWithChannelNums(sub_names,sub_sess_names,trial_nums,elec
         session_name_array.extend(np.tile(sub_sess_names[ct],trials_this_loop))
         electrode_array.extend(np.tile(electrode_labels[ct],trials_this_loop))
         channel_coords_array.extend(np.tile(channel_coords[ct],(trials_this_loop,1))) # have to tile trials X 1 or it extends into a vector
-        channel_nums_array.extend(np.tile(channel_nums[ct],trials_this_loop))
+        if len(channel_nums) > 0: 
+            channel_nums_array.extend(np.tile(channel_nums[ct],trials_this_loop))
         
     return subject_name_array,session_name_array,electrode_array,channel_coords_array,channel_nums_array
 
