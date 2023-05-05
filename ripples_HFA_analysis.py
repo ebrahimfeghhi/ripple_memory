@@ -287,14 +287,18 @@ class ripple_HFA_analysis():
         word_correct_array = np.array(word_correct_array)
         word_correct_array[word_correct_array>0] = 1 # 1s and 2s are corrects
         
-        sp_array = []
-        for sp in serialpos_array:
-            sp_array.extend(sp)
-        serialpos_array = sp_array
+        if self.semantic_data:
+            sp_array = []
+            for sp in serialpos_array:
+                sp_array.extend(sp)
+            serialpos_array = sp_array
         
         temp = []
         for enc in encoded_word_key_array:
-            temp.extend(enc)
+            if self.semantic_data:
+                temp.extend(enc)
+            else: 
+                temp.append(enc)
         encoded_word_key_array = copy(temp)
 
         if not self.semantic_data:
@@ -399,8 +403,9 @@ class ripple_HFA_analysis():
             if self.exp == 'catFR1':
                 self.semantic_array_np = np.array(self.semantic_clustering_key)[selected_recalls]
                 self.cat_array_np = np.array(self.category_array)[selected_recalls]
+                
+        self.compute_HFA_mean()
             
-        
     def check_hpc_ripples(self, area2_names, hpc_names):
         
         # check to make sure there are electrodes on the same hemisphere for HPC and area 2
@@ -515,6 +520,13 @@ class ripple_HFA_analysis():
         # select ripples only in time range of interest
         self.ripple_array = self.ripple_array[:, self.ripple_start_marker:-self.ripple_end_marker]
         self.analysis_information['ripple_timesteps'] = self.ripple_array.shape[0]
+        
+    def compute_HFA_mean(self):
+        
+        HFA_bins = [(self.HFA_bins[0]-self.pre_encoding_time)/self.bin_size, (self.HFA_bins[1]-self.pre_encoding_time)/self.bin_size]
+        HFA_time_range = np.arange(HFA_bins[0], HFA_bins[1]+1) # 11 to 18, corresponding to 400-1100 ms post word onset
+        HFA_time_restricted = self.HFA_array_np[:, int(HFA_time_range[0]):int(HFA_time_range[-1])]
+        self.HFA_mean = np.mean(HFA_time_restricted,axis=1)
 
     def getStartArray(self):
         
@@ -559,3 +571,23 @@ class ripple_HFA_analysis():
         session_name_array = self.session_name_array_np[selected_idxs]
 
         return HFA_array, word_correct_array, subject_name_array, session_name_array
+    
+    def save_model_info(self, model, savePath, params=['Intercept', 'ripple_exists', 'word_recalled', 
+                                    'ripple_exists:word_recalled']):
+        
+        param_dict = {}
+        param_dict['name'] = []
+        param_dict['coef'] = []
+        param_dict['stderr'] = []
+        param_dict['pval'] = []
+        param_dict['tval'] = []
+        
+        for param in params:
+
+            param_dict['name'].append(param)
+            param_dict['coef'].append(model.params[param])
+            param_dict['stderr'].append(model.bse[param])
+            param_dict['pval'].append(model.pvalues[param])
+            param_dict['tval'].append(model.tvalues[param])
+
+        pd.DataFrame(param_dict).to_csv(savePath, index=False)  

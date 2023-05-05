@@ -20,12 +20,12 @@ from ripples_HFA_analysis import ripple_HFA_analysis
 
 class ripple_analysis_SCE(ripple_HFA_analysis):
     
-    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, select_subfield, 
-                 ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], regions_selected=['ca1', 'dg']):
+    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, select_subfield, hpc_regions,
+                 ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], regions_selected=['ca1']):
 
         super().__init__(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder, hpc_ripple_type=hpc_ripple_type, 
-                        select_subfield=select_subfield, ripple_bin_start_end=ripple_bin_start_end, HFA_bins=HFA_bins, 
-                        regions_selected = regions_selected)
+                        select_subfield=select_subfield, hpc_regions=hpc_regions, ripple_bin_start_end=ripple_bin_start_end, 
+                        HFA_bins=HFA_bins, regions_selected = regions_selected)
         
         self.psth_start = self.pre_encoding_time
         
@@ -40,7 +40,6 @@ class ripple_analysis_SCE(ripple_HFA_analysis):
     def getStartArray(self):
         
         super().getStartArray()
-        
         
     def semantic_clustering(self, ripple_delta, HFA_delta):
         
@@ -250,7 +249,12 @@ class ripple_analysis_SCE(ripple_HFA_analysis):
         
         self.clustered_array_np = np.zeros((self.number_of_lists, self.list_length))
         
-        for t, recalled_idx, cluster, in enumerate(zip(self.recall_position_np, self.semantic_array_np)):
+        counter = 0
+        
+        for list_idx in range(0, self.num_selected_trials, self.list_length):
+            
+            recalled_idx = self.recall_position_np[list_idx]
+            cluster = self.semantic_array_np[list_idx]
             
             cluster_trial_np = np.zeros(self.list_length)
             
@@ -258,28 +262,54 @@ class ripple_analysis_SCE(ripple_HFA_analysis):
                
                 if r > 0 and r < self.list_length:
                     if c=='A' or c=='C':
-                        cluster_trial_np[r] = 1 # change to 1 for clustered word
+                        cluster_trial_np[r-1] = 1 # change to 1 for clustered word
                     
+            self.clustered_array_np[counter] = cluster_trial_np
             
-            self.clustered_array_np[t] = cluster_trial_np
+            counter += 1
             
         self.clustered_array_np = np.ravel(self.clustered_array_np)
             
-    def mixed_effects_modeling(self):
+    def mixed_effects_modeling(self, savebool):
         
         '''
         Predictors
         - ripple_exists: boolean array, where 1 indicates a ripple occurred on that trial
         - recalled: boolean array, where 1 indicates word was correctly recalled
-        - clustering: boolean array, where 1 indicates clustered, and 0 indicates unclustered 
-        
+        - clustered: boolean array, where 1 indicates clustered, and 0 indicates unclustered 
         '''
+        
+        # create ripple exists array 
         ripple_idxs, _ = super().ripple_idxs_func()
-        self.ripple_exists = np.zeros(self.num_selected_trials)
-        self.ripple_exists[ripple_idxs] = 1
+        ripple_exists = np.zeros(self.num_selected_trials)
+        ripple_exists[ripple_idxs] = 1
+    
+        # define variables for mixed effect model (MEM)
+        MEM_variables = pd.DataFrame(data={'clustered':self.clustered_array_np, 'recalled':self.word_correct_array_np, 
+                                        'ripple_exists':ripple_exists, 'HFA_mean':self.HFA_mean, 'subject':self.subject_name_array_np, 
+                                        'session':self.session_name_array_np})
         
-        recall = self.word_correct_array_np
+        vc = {'session':'0+session'}
         
+        model = smf.mixedlm("HFA_mean ~ (clustered + recalled)*ripple_exists", MEM_variables, groups="subject", vc_formula=vc, 
+                                        re_formula='~(clustered+recalled)*ripple_exists')
+        model_fit = model.fit(method=["lbfgs"])
+        
+        print(model_fit.summary())
+        
+        if savebool:
+
+            self.save_model_info(model_fit, 
+            savePath=f'updates/stats_results/mem_HFA~cluster_recall_re_{self.region_name}_{self.hpc_regions}_{self.regions_selected}', 
+            params=['Intercept', 'ripple_exists', 'recalled', 'clustered', 'recalled:ripple_exists', 
+                    'clustered:ripple_exists'])
+            
+            
+       # John feedback: 
+       # 1) modify re_formula to ~(clustered+recalled):ripple_exists will give only two random factors 
+       # or can write clustered:ripple_exists + ripple_exists:recalled
+       # 2) Combine CA1 + DG 
+       # 3) 
         
         
         

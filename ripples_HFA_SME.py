@@ -23,11 +23,12 @@ from ripples_HFA_analysis import ripple_HFA_analysis
 
 class ripple_analysis_SME(ripple_HFA_analysis):
     
-    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, 
-                 ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], regions_selected=['ca1', 'dg']):
+    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, select_subfield, hpc_regions,
+                 ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], regions_selected=['ca1']):
         
-        super().__init__(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder, hpc_ripple_type=hpc_ripple_type,
-                         ripple_bin_start_end=ripple_bin_start_end, HFA_bins=HFA_bins, regions_selected=regions_selected)
+        super().__init__(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder, hpc_ripple_type=hpc_ripple_type, 
+                        select_subfield=select_subfield, hpc_regions=hpc_regions, ripple_bin_start_end=ripple_bin_start_end, 
+                        HFA_bins=HFA_bins, regions_selected = regions_selected)
         
     def load_data_from_cluster(self, selected_period, region_name='HPC'):
         
@@ -138,7 +139,7 @@ class ripple_analysis_SME(ripple_HFA_analysis):
             plot([1600,1600],[ax.get_ylim()[0],ax.get_ylim()[1]],linewidth=1,linestyle='--',color=(0.7,0.7,0.7))
             legend()
 
-        plt.savefig(savePath)
+        plt.savefig(savePath, dpi=300)
 
     def ripple_recall(self):
 
@@ -202,27 +203,6 @@ class ripple_analysis_SME(ripple_HFA_analysis):
         bin_model_ols = get_bin_CI_model_ols.fit()
 
         return bin_model, bin_model_ols
-
-
-    def save_model_info(self, model, savePath, params=['Intercept', 'ripple_exists', 'word_recalled', 
-                                    'ripple_exists:word_recalled']):
-        
-        param_dict = {}
-        param_dict['name'] = []
-        param_dict['coef'] = []
-        param_dict['stderr'] = []
-        param_dict['pval'] = []
-        param_dict['tval'] = []
-
-        for param in params:
-
-            param_dict['name'].append(param)
-            param_dict['coef'].append(model.params[param])
-            param_dict['stderr'].append(model.bse[param])
-            param_dict['pval'].append(model.pvalues[param])
-            param_dict['tval'].append(model.tvalues[param])
-
-        pd.DataFrame(param_dict).to_csv(savePath, index=False)  
         
     def save_ripple_information(self, savePath):
         
