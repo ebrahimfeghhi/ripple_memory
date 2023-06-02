@@ -1107,6 +1107,7 @@ def getStartEndArrays(ripple_array):
     return start_array,end_array
 
 def detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic):
+    
     '''
     :param array eeg_rip: hilbert transformed ieeg data 
     '''
