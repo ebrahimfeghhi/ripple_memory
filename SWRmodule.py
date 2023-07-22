@@ -2067,12 +2067,25 @@ def SubjectStatTable(subjects):
         table += '\\end{tabular}\n'
     except Exception as e:
         print (table)
-        raise
+        
     
     return table  
 
-def ClusterRun(function, parameter_list, max_cores=300):
-    '''function: The routine run in parallel, which must contain all necessary
+def get_power(eeg, tstart, tend, freqs=[5,8]):
+
+    eeg = eeg.resample(500)  #downsample to ___ Hz
+
+    #Use MNE to get multitaper power in theta and HFA bands
+    from mne.time_frequency import psd_multitaper
+    theta_pow, fdone = psd_multitaper(eeg, fmin=freqs[0], fmax=freqs[1], tmin=tstart, 
+                                      tmax=tend, verbose=False)  #power is (events, elecs, freqs)
+    theta_pow_avg = np.mean(theta_pow, -1)  #Average across freq_bands
+    return theta_pow_avg.squeeze(), fdone
+
+def ClusterRun(function, parameter_list, max_cores=1000):
+
+    '''
+    function: The routine run in parallel, which must contain all necessary
        imports internally.
     
        parameter_list: should be an iterable of elements, for which each element
@@ -2088,6 +2101,7 @@ def ClusterRun(function, parameter_list, max_cores=300):
        Undesired running jobs can be killed by reading the JOBID at the left
        of that qstat command, then doing:  qdel JOBID
     '''
+
     import cluster_helper.cluster
     from pathlib import Path
 
@@ -2101,7 +2115,7 @@ def ClusterRun(function, parameter_list, max_cores=300):
     # so like 2 and 50 instead of 1 and 100 etc. Went up to 5/20 for encoding at points
     # ...actually now went up to 10/10 which seems to stop memory errors 2020-08-12
     with cluster_helper.cluster.cluster_view(scheduler="sge", queue="RAM.q", \
-        num_jobs=5, cores_per_job=50, \
+        num_jobs=5, cores_per_job=10, \
         extra_params={'resources':'pename=python-round-robin'}, \
         profile=myhomedir + '/.ipython/') \
         as view:
@@ -2109,7 +2123,6 @@ def ClusterRun(function, parameter_list, max_cores=300):
         res = view.map(function, parameter_list)
         
     return res
-  
 # 20 cores_per_job is enough for catFR1 SWRclustering. 7 missed 5-10
 # AMY encoding and surrounding_recall no issues with 10 cores/job
 # 10 works for ENTPHC with encoding
@@ -2117,3 +2130,30 @@ def ClusterRun(function, parameter_list, max_cores=300):
 # 30 works for most of FR1 encoding...40 works for all
 # 25 didn't work for a few...made a list of the 15 or so in SWRanalysis 2022-03-09
 # 25 didn't work for a few catFR1 too. Made list of 20 and will try running with 50 cores/job
+
+def compute_morlet(eeg1, eeg2, freqs, sr, eeg_buffer):
+    
+    from ptsa.data.filters import MorletWaveletFilter, ResampleFilter
+    import xarray
+
+    eeg1 = MorletWaveletFilter(timeseries=eeg1, freqs=freqs, output='power', width=7, verbose=True).filter()
+    eeg2 = MorletWaveletFilter(timeseries=eeg2, freqs=freqs, output='power', width=7, verbose=True).filter()
+    morlet = eeg1.append(eeg2,'channel')
+    eeg1 = None
+    eeg2 = None
+    
+    # now can remove buffers
+    sr_factor = 1000/sr
+    morlet = morlet[:,:,:,int(eeg_buffer/sr_factor):int(np.shape(morlet)[3]-(eeg_buffer/sr_factor))]
+    morlet = xarray.ufuncs.log10(morlet, out=morlet.values)
+    # resample down to 10 Hz (100 ms bins)
+    morlet = ResampleFilter(timeseries=morlet,resamplerate=10).filter() 
+    # z-score using std of time-bin averaged instead (mean is same either way)
+    morlet = (morlet - np.mean(morlet, axis=(1,3))) / np.std(np.mean(morlet, axis=3),axis=1) 
+    return np.mean(morlet,0) # mean over the 10 frequencies (now down to events X pairs X 100 ms bins)
+    
+
+    
+    
+    
+    

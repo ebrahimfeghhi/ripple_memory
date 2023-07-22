@@ -22,11 +22,12 @@ from sklearn.metrics import r2_score
 
 class HFA_ripples_analysis(HFA_ripples_prepare_data):
     
-    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, select_subfield, hpc_regions,
+    def __init__(self, exp, df, sub_selection, data_folder, select_subfield, hpc_regions,
                  ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], ripple_regions=['ca1']):
 
-        super().__init__(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder, hpc_ripple_type=hpc_ripple_type, 
-                        select_subfield=select_subfield, hpc_regions=hpc_regions, ripple_bin_start_end=ripple_bin_start_end, 
+        super().__init__(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder,
+                        select_subfield=select_subfield, hpc_regions=hpc_regions, 
+                        ripple_bin_start_end=ripple_bin_start_end, 
                         HFA_bins=HFA_bins, ripple_regions=ripple_regions)
         
         self.psth_start = self.pre_encoding_time
@@ -35,9 +36,9 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
         
         super().remove_subject_sessions()
     
-    def load_data_from_cluster(self, selected_period, region_name='HPC'):
+    def load_data_from_cluster(self, base_path, selected_period, ripple_bool, region_name, hpc_ripple_type):
         
-        super().load_data_from_cluster(selected_period, region_name)
+        super().load_data_from_cluster(base_path, selected_period, ripple_bool = ripple_bool, hpc_ripple_type = hpc_ripple_type, region_name = region_name)
         
     def getStartArray(self):
         
@@ -245,7 +246,7 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
         trial_nums = [len(self.sub_name_array0),len(self.sub_name_array1),len(self.sub_name_array2),len(self.sub_name_array3),len(self.sess_name_array4)]
         
         
-    def create_clustered_array(self, clustered=['A,C']):
+    def create_semantic_clustered_array(self, clustered=['A','C'], unclustered=['D', 'Z']):
         
         '''
         :param list clustered: indicates what recalls count as clustered. There are four possible recalls:
@@ -253,10 +254,12 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
             2) 'C': remote semantic
             3) 'D': remote unclustered
             4) 'Z': dead end 
+        The default is to use A and C as clustered, and D and Z as unclustered. 
         '''
+        
         self.number_of_lists = int(self.num_selected_trials/self.list_length)
         
-        self.clustered_array_np = np.zeros((self.number_of_lists, self.list_length))
+        self.semantic_clustered_array_np = np.zeros((self.number_of_lists, self.list_length))
         self.dead_ends = 0
         self.remote_semantic = 0
         self.adjacent_semantic = 0
@@ -267,16 +270,22 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
         
         for list_idx in range(0, self.num_selected_trials, self.list_length):
             
-            recalled_idx = self.recall_position_np[list_idx]
+            # recall_position_np and semantic_array_np contain information 
+            # about the word that was recalled and its clustering type, respectively
+            # this information is repeated list_length times, so our for loop will 
+            # increment by list length 
+            recalled_idx = self.recall_position_np[list_idx] 
             cluster = self.semantic_array_np[list_idx]
             
-            cluster_trial_np = np.zeros(self.list_length)
+            # init values to -1 so that non recalled items are -1 
+            cluster_trial_np = np.ones(self.list_length)*-1
             
             for r, c in zip(recalled_idx, cluster):
-               
-                if r > 0 and r < self.list_length:
+                if r > 0 and r <= self.list_length:
                     if c in clustered:
-                        cluster_trial_np[r-1] = 1 # change to 1 for clustered word
+                        cluster_trial_np[r-1] = 1 # change to 1 for clustered recall
+                    elif c in unclustered:
+                        cluster_trial_np[r-1] = 0 # change to 0 for unclustered but recalled
                     if c=='A':
                         self.adjacent_semantic += 1
                     if c=='C':
@@ -286,83 +295,127 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
                     if c=='Z':
                         self.dead_ends += 1
                     
-            self.clustered_array_np[counter] = cluster_trial_np
+            self.semantic_clustered_array_np[counter] = cluster_trial_np
             
             counter += 1
             
-        self.clustered_array_np = np.ravel(self.clustered_array_np)
+        self.semantic_clustered_array_np = np.ravel(self.semantic_clustered_array_np)
         
-    def plot_SME_HFA(self, mode, title_str, savePath):
+    def create_temporal_clustered_array(self):
+        
+        self.number_of_lists = int(self.num_selected_trials/self.list_length)
+        self.temporal_clustered_array_np = np.zeros(self.num_selected_trials)
+        self.temporal_clustered_array_np[:] = np.nan
+        self.temporal_clustered_binary_array_np = np.zeros(self.num_selected_trials)
+        self.temporal_clustered_binary_array_np[:] = np.nan
+        self.temporal_clustered_binary_hp_array_np = np.zeros(self.num_selected_trials)
+        self.temporal_clustered_binary_hp_array_np[:] = np.nan
+                
+        for list_idx in range(0, self.num_selected_trials, self.list_length):
+            
+            recalled_idx = self.recall_position_np[list_idx] 
+            cluster = self.temporal_array_np[list_idx]
+            recalled_idx_correct = [r for r in recalled_idx if r > 0 if r < 13]
+            num_correct = len(recalled_idx_correct)
 
-        '''
-        :param int mode: 0 for all using all HFA activity, 1 for only ripples, and 2 for only non-ripples
-        '''
+            # init values to np.nan
+            cluster_trial_np = np.ones(self.list_length)
+            cluster_trial_np[:] = np.nan
+            
+            for r, c in zip(recalled_idx, cluster):
+                if r > 0 and r <= self.list_length: 
+                    if np.abs(c) > 0 and np.abs(c) <= self.list_length:
+                        idx = list_idx + (r-1)
+                        self.temporal_clustered_array_np[idx] = c
+                        if np.abs(c) == 1:
+                            self.temporal_clustered_binary_array_np[idx] = 1
+                            if num_correct > 6:
+                                self.temporal_clustered_binary_hp_array_np[idx] = 1
+                        if np.abs(c) > 3:
+                            self.temporal_clustered_binary_array_np[idx] = 0
+                            if num_correct > 6:
+                                self.temporal_clustered_binary_hp_array_np[idx] = 0
+                        
+    def plot_SCE(self, freq_band, mode, title_str, savePath):
         
-        pad = int(np.floor(self.smoothing_triangle/2)) 
-        
-        HFA_array, word_correct_array, subject_name_array, session_name_array = super().separate_HFA_by_ripple(mode)
-        
+        # text for plot label
+        cat_zero_text = 'Clustered'
+        cat_one_text = 'Unclustered'
+          
+        if freq_band == 'H':
+            neural_data = self.HFA_array_np
+            ylabel = 'HFA activity'
+        if freq_band == 'T':
+            neural_data = self.theta_array_np
+            ylabel = 'Theta activity'
+        if freq_band == 'R':
+            neural_data = self.ripple_freq_array_np
+            ylabel = 'Ripple band activity'
+        if freq_band == 'G':
+            neural_data = self.gamma_array_np
+            ylabel = 'Gamma activity'
+            
+        if mode == 'T':
+            partition_array = self.temporal_clustered_binary_array_np
+        if mode == 'THP':
+            partition_array = self.temporal_clustered_binary_hp_array_np
+        if mode == 'S':
+            partition_array = self.semantic_clustered_array_np
+            
         plot_ME_mean = 1 # 0 for typical PSTH, 1 for ME mean, 2 for average across sub averages
-
+        
         # set up the PVTH stats parameters here too (for encoding have 30 bins)
         psth_start = int(self.pre_encoding_time/self.bin_size)
         psth_end = int(self.encoding_time/self.bin_size)
 
         bin_centers = np.arange(psth_start+0.5,psth_end)
-        xr = bin_centers #np.arange(psth_start,psth_end,binsize)
 
-        # get vectors of encoding list identifier data for forgotten and recalled words
-        # in encoded_word_key_array, 0 for not recalled, 1 for recalled, 2 for recalled but was an IRI<2 (don't care about that for encoding)
-        start_array_enc_forgot = HFA_array[word_correct_array==0]
-        start_array_enc_recalled = HFA_array[word_correct_array==1]
+        start_array_enc_0 = neural_data[partition_array==0] # not recalled/ unclustered (depending on analysis_type)
+        start_array_enc_1 = neural_data[partition_array==1] # recalled/clustered (depending on analysis_type)
 
-        # same for sub and sess
-        sub_forgot = subject_name_array[word_correct_array==0]
-        sess_forgot = session_name_array[word_correct_array==0]
-        sub_recalled = subject_name_array[word_correct_array==1]
-        sess_recalled = session_name_array[word_correct_array==1]
+        sub_0 = self.subject_name_array_np[partition_array==0]
+        sess_0 = self.session_name_array_np[partition_array==0]
+        sub_1 = self.subject_name_array_np[partition_array==1]
+        sess_1 = self.session_name_array_np[partition_array==1]
 
-        # record min and max value before separating into recalled and not recalled in order to write text
-        PSTH_all = triangleSmooth(np.mean(HFA_array,0),self.smoothing_triangle)
+        PSTH_all = triangleSmooth(np.mean(neural_data,0),self.smoothing_triangle)
+        min_val_PSTH = np.min(PSTH_all)
+        max_val_PSTH = np.max(PSTH_all)
         
-        if mode != 0:
-            # load both ripple and no ripple HFA to make sure y axis is the same
-            HFA_array_ripple, _, _, _ = super().separate_HFA_by_ripple(1)
-            HFA_array_noripple, _, _, _ = super().separate_HFA_by_ripple(2)
-            PSTH_all_r = triangleSmooth(np.mean(HFA_array_ripple,0),self.smoothing_triangle)
-            PSTH_all_nr = triangleSmooth(np.mean(HFA_array_noripple,0),self.smoothing_triangle)
-            min_val_PSTH_r = np.min(PSTH_all_r)
-            max_val_PSTH_r = np.max(PSTH_all_r)
-            min_val_PSTH_nr = np.min(PSTH_all_nr)
-            max_val_PSTH_nr = np.max(PSTH_all_nr)
-            max_val_PSTH = max(max_val_PSTH_r, max_val_PSTH_nr)
-            min_val_PSTH = min(min_val_PSTH_r, min_val_PSTH_nr)
-        else:
-            min_val_PSTH = np.min(PSTH_all)
-            max_val_PSTH = np.max(PSTH_all)
-
-        # for recalled and then forgotten words
+        self.generate_SCE_SME_plots(start_array_enc_1, start_array_enc_0, sub_1, sess_1, 
+                                    sub_0, sess_0, cat_one_text, cat_zero_text, ylabel, plot_ME_mean, bin_centers,
+                                    title_str, min_val_PSTH, max_val_PSTH, savePath)
+        
+            
+    def generate_SCE_SME_plots(self, start_array_enc_1, start_array_enc_0, sub_1, sess_1, sub_0, sess_0, 
+                               cat_one_text, cat_zero_text, ylabel_str, plot_ME_mean, bin_centers, title_str, 
+                               min_val_PSTH, max_val_PSTH, savePath):
+        
+        pad = int(np.floor(self.smoothing_triangle/2)) 
+        
+        # loop through recalled and then forgotten words
         for category in range(2):
+            
             if category == 0:
-                temp_start_array = start_array_enc_recalled
-                sub_name_array = sub_recalled
-                sess_name_array = sess_recalled
+                temp_start_array = start_array_enc_1
+                sub_name_array = sub_1
+                sess_name_array = sess_1
 
                 # HFA 
                 PSTH = triangleSmooth(np.mean(temp_start_array,0),self.smoothing_triangle)
                 subplots(1,1,figsize=(5,4))
                 plot_color = (0,0,1)
-                num_words = f"Recalled: {temp_start_array.shape[0]}"
+                num_words = f"{cat_zero_text}: {temp_start_array.shape[0]}"
 
             else:       
-                temp_start_array = start_array_enc_forgot
-                sub_name_array = sub_forgot
-                sess_name_array = sess_forgot
+                temp_start_array = start_array_enc_0
+                sub_name_array = sub_0
+                sess_name_array = sess_0
                 
                 PSTH = triangleSmooth(np.mean(temp_start_array,0),self.smoothing_triangle)
 
                 plot_color = (0,0,0)
-                num_words = f"Not recalled: {temp_start_array.shape[0]}"
+                num_words = f"{cat_one_text}: {temp_start_array.shape[0]}"
 
             # note that output is the net ± distance from mean
             with warnings.catch_warnings():
@@ -389,7 +442,7 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
             xticks(np.arange(self.pre_encoding_time+pad*100,self.encoding_time-pad*100+1,500)/100,
                 np.arange((self.pre_encoding_time+pad*100)/1000,(self.encoding_time-pad*100)/1000+1,500/1000))
             xlabel('Time from word presentation (s)')
-            ylabel('HFA activity (z-scored)')
+            ylabel(f'{ylabel_str} activity (z-scored)')
             title(title_str)
             tight_layout()
             ax = plt.gca()
@@ -408,6 +461,7 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
             legend()
 
         plt.savefig(savePath, dpi=300)
+        plt.close()
         
     def SME_ripple_interaction(self):
         
@@ -432,11 +486,49 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
             
         return bin_model, bin_model_ols
         
-    def save_model_info(self, model, savePath):
+    def recalled_data(self):
         
-        params=['Intercept', 'ripple_exists', 'HFA_mean', 
-                                    'ripple_exists:HFA_mean']
+        recalled = self.word_correct_array_np
         
+        self.ripple_exists_re = self.ripple_exists_np[recalled==1]
+        self.no_ripple_exists_re = 1 - self.ripple_exists_re
+        self.clustered_re = self.semantic_clustered_array_np[recalled==1].squeeze()
+        self.HFA_re = self.HFA_mean[recalled==1].squeeze()
+        self.sess_re= self.session_name_array_np[recalled==1].squeeze()
+        self.subj_re = self.subject_name_array_np[recalled==1].squeeze()
+        
+    def lmm_model(self, dep_var_list, formula_list, re_formula_list, recalled_bool_list, 
+                  params_list, savePath):
+        
+        
+        data = pd.DataFrame(data={'recalled':self.word_correct_array_np, 
+                                        'ripple_exists':self.ripple_exists_np, 'HFA_mean':self.HFA_mean, 
+                                        'subject':self.subject_name_array_np, 
+                                        'session':self.session_name_array_np, 
+                                        'serial_pos':self.serialpos_array_np})
+        
+        num_models = len(dep_var_list)
+        vc = {'session':'0+session'}
+        
+        for i in range(num_models):
+            
+            formula = formula_list[i]
+            re_formula = re_formula_list[i]
+            
+            model = smf.mixedlm(formula, data, groups="subject", vc_formula=vc, 
+                                            re_formula=f'{re_formula}')
+            
+            model_fit = model.fit(method=["lbfgs"])
+            
+            print(model_fit.summary())
+            
+            self.save_model_info(model_fit, params_list[i], f'{savePath}_{formula}.csv')
+            
+        return model_fit
+    
+         
+    def save_model_info(self, model, params, savePath):
+
         param_dict = {}
         param_dict['name'] = []
         param_dict['coef'] = []
@@ -453,57 +545,110 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
             param_dict['tval'].append(model.tvalues[param])
 
         pd.DataFrame(param_dict).to_csv(savePath, index=False)  
+
+    
+    '''  
+    def plot_SME_or_SCE_HFA(self, analysis_type, mode, title_str, savePath):
+
+        :param int analysis_type: 0 for ripple/no ripple, 1 for early list/middle list, 2 for all data, 
+            3 for clustered/unclustered (only recalled), 4 for clustered/unclustered for ripple/no ripple group
+        :param int mode: 
+            if analysis type is set to 0 or 4, then mode can be 0 for only ripples, and 1 for only non-ripples
+            if analysis type is set to 1, then mode can be 0 for using early list items, and 1 for using middle list items
+            for analysis type set to 2 and 3, mode is not applicable  
+     
+        pad = int(np.floor(self.smoothing_triangle/2)) 
         
-    ''' 
-    def recalled_data(self):
+        # text for plot label
+        cat_zero_text = 'Recalled'
+        cat_one_text = 'Not recalled'
         
-        recalled = self.word_correct_array_np
-        
-        self.ripple_exists_re = self.ripple_exists_np[recalled==1]
-        self.no_ripple_exists_re = 1 - self.ripple_exists_re
-        self.clustered_re = self.clustered_array_np[recalled==1].squeeze()
-        self.HFA_re = self.HFA_mean[recalled==1].squeeze()
-        self.sess_re= self.session_name_array_np[recalled==1].squeeze()
-        self.subj_re = self.subject_name_array_np[recalled==1].squeeze()
-        
-    def lmm_model(self, dep_var_list, formula_list, re_formula_list, recalled_bool_list):
-        
-        
-        data = pd.DataFrame(data={'clustered':self.clustered_array_np, 'recalled':self.word_correct_array_np, 
-                                        'ripple_exists':self.ripple_exists_np, 'HFA_mean':self.HFA_mean, 
-                                        'high_HFA_mean': self.high_HFA_mean, 'recalled_high_HFA':self.high_HFA_recalled,
-                                        'subject':self.subject_name_array_np, 
-                                        'session':self.session_name_array_np})
-        
-        data_recalled = pd.DataFrame(data={'clustered':self.clustered_re, 'ripple_exists':self.ripple_exists_re, 
-                                           'HFA_mean':self.HFA_re, 'subject':self.subj_re, 
-                                        'session':self.sess_re})
-        
-        num_models = len(dep_var_list)
-        
-        for i in range(num_models):
-        
-        if recalled:
-            data_lmm = data_recalled
+        # ripple/no ripple
+        if analysis_type == 0:
+            HFA_array, partition_array, subject_name_array, session_name_array, _ = super().separate_HFA_by_ripple(mode)
+        # early/middle 
+        elif analysis_type == 1:
+            HFA_array, partition_array, subject_name_array, session_name_array, _ = super().separate_HFA_by_serial_pos(mode)
+        # all data
+        elif analysis_type == 2:
+            HFA_array = self.HFA_array_np
+            partition_array = self.word_correct_array_np
+            subject_name_array = self.subject_name_array_np
+            session_name_array = self.session_name_array_np
+        # clustered vs unclustered (only recalled)
+        elif analysis_type == 3:
+            cat_zero_text = 'Clustered'
+            cat_one_text = 'Unclustered'
+            HFA_array = self.HFA_array_np
+            partition_array = self.semantic_clustered_array_np
+            subject_name_array = self.subject_name_array_np
+            session_name_array = self.session_name_array_np
+        elif analysis_type == 4:
+            cat_zero_text = 'Clustered'
+            cat_one_text = 'Unclustered'
+            
+            # divide into ripple/no ripple group
+            HFA_array, word_correct_array, subject_name_array, session_name_array, selected_idxs = super().separate_HFA_by_ripple(mode)
+            clustered_array_selected = self.semantic_clustered_array_np[selected_idxs]
+            
+            # now select only recalled words for clustered/unclustered analyses
+            correct_idxs = np.argwhere(word_correct_array==1)
+            HFA_array = np.squeeze(HFA_array[correct_idxs])
+            subject_name_array = np.squeeze(subject_name_array[correct_idxs])
+            session_name_array = np.squeeze(session_name_array[correct_idxs])
+            partition_array = np.squeeze(clustered_array_selected[correct_idxs])
+            
         else:
-            data_lmm = data
+            print("Analysis type can only be 0 (ripple/noripple), 1 (early/middle), or 2 (all data), or 3 (clustered), \
+                  or 4 (clustered for ripple/noripple)")
+            return 0
             
-        y = data_lmm[dep_var]
-            
-        vc = {'session':'0+session'}
-        model = smf.mixedlm(formula, data_lmm, groups="subject", vc_formula=vc, 
-                                        re_formula=f'{re_formula}')
-        model_fit = model.fit(method=["lbfgs"])
+        plot_ME_mean = 1 # 0 for typical PSTH, 1 for ME mean, 2 for average across sub averages
+
+        # set up the PVTH stats parameters here too (for encoding have 30 bins)
+        psth_start = int(self.pre_encoding_time/self.bin_size)
+        psth_end = int(self.encoding_time/self.bin_size)
+
+        bin_centers = np.arange(psth_start+0.5,psth_end)
+        xr = bin_centers #np.arange(psth_start,psth_end,binsize)
+
+        # get vectors of encoding list identifier data for forgotten and recalled words
+        # in encoded_word_key_array, 0 for not recalled, 1 for recalled, 2 for recalled 
+        # but was an IRI<2 (don't care about that for encoding)
+        start_array_enc_0 = HFA_array[partition_array==0] # not recalled/ unclustered (depending on analysis_type)
+        start_array_enc_1 = HFA_array[partition_array==1] # recalled/clustered (depending on analysis_type)
+
+        # same for sub and sess
+        sub_0 = subject_name_array[partition_array==0]
+        sess_0 = session_name_array[partition_array==0]
+        sub_1 = subject_name_array[partition_array==1]
+        sess_1 = session_name_array[partition_array==1]
+
+        PSTH_all = triangleSmooth(np.mean(HFA_array,0),self.smoothing_triangle)
         
-        y_hat = model_fit.predict()
-        print(f"R squared: {r2_score(y, y_hat)}")
+        # for ripple/no ripple and early/middle analyses
+        # ensure that y axis is the same for both conditions
+        if analysis_type == 0 or analysis_type == 1 or analysis_type == 4:
+            if analysis_type == 0 or analysis_type == 4:
+                HFA_array_0, _, _, _, _ = super().separate_HFA_by_ripple(0)
+                HFA_array_1, _, _, _, _ = super().separate_HFA_by_ripple(1)
+            else:
+                HFA_array_0, _, _, _, _ = super().separate_HFA_by_serial_pos(0)
+                HFA_array_1, _, _, _, _ = super().separate_HFA_by_serial_pos(1)
+                
+            PSTH_all_0 = triangleSmooth(np.mean(HFA_array_0,0),self.smoothing_triangle)
+            PSTH_all_1 = triangleSmooth(np.mean(HFA_array_1,0),self.smoothing_triangle)
+            min_val_PSTH_0 = np.min(PSTH_all_0)
+            max_val_PSTH_0 = np.max(PSTH_all_0)
+            min_val_PSTH_1 = np.min(PSTH_all_1)
+            max_val_PSTH_1 = np.max(PSTH_all_1)
+            max_val_PSTH = max(max_val_PSTH_0, max_val_PSTH_1) + .3
+            min_val_PSTH = min(min_val_PSTH_0, min_val_PSTH_1) - .3 
         
-        print(model_fit.summary())
-        
-        return model_fit
+        # don't need to worry about this for all data since there's only one condition 
+        else:
+            min_val_PSTH = np.min(PSTH_all)
+            max_val_PSTH = np.max(PSTH_all)
     '''
         
         
-        
-        
-            

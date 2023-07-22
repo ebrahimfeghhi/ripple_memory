@@ -19,9 +19,9 @@ class HFA_ripples_prepare_data():
     General class for loading data + other helpful functions. 
     '''
 
-    def __init__(self, exp, df, sub_selection, data_folder, hpc_ripple_type, ripple_regions=['ca1'],
-                            select_subfield=True, hpc_regions=['ca1'], ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], sr_factor=2.0
-                            , pre_encoding_time=-700, encoding_time=2300, bin_size=100,
+    def __init__(self, exp, df, sub_selection, data_folder, ripple_regions=['ca1'],
+                            select_subfield=True, hpc_regions=['ca1'], ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], 
+                            sr_factor=2.0, pre_encoding_time=-700, encoding_time=2300, bin_size=100,
                             smoothing_triangle=5, samples=100, sr=500):
         
         '''
@@ -29,10 +29,6 @@ class HFA_ripples_prepare_data():
         :param pandas DataFrame df: subject data
         :param str sub_selection: whole, first_half, or second_half
         :param str data_folder: SWR_scratch or SWR_semantic_scratch
-        :param str hpc_ripple_type: only applies when region name from load data cluster is hpc
-            "single_elec": loads ripples from each electrode in ripple_regions individually
-            "avg_elec": ripple value for an electrode will be 1 anytime a ripple occurs in an ipsilateral electrode
-            in ripple_regions
         :param list ripple_regions: which regions in hpc to look for ripples, applies for any brain region
         :param bool selected_subfield: if true, only analyze data from hpc_regions when region name is set to hpc
         :param list hpc_regions: which regions in hpc to analyze, only applies when analyzing hpc
@@ -51,7 +47,6 @@ class HFA_ripples_prepare_data():
         self.df = df 
         self.sub_selection = sub_selection
         self.data_folder = data_folder 
-        self.hpc_ripple_type = hpc_ripple_type
         self.ripple_bin_start_end = ripple_bin_start_end
         self.HFA_bins = HFA_bins 
         self.sr_factor = sr_factor
@@ -72,15 +67,7 @@ class HFA_ripples_prepare_data():
         self.HFA_bin_duration = (HFA_bins[1] - HFA_bins[0]) / self.sr_factor
         
         # There are minor differences between loading the semantic and non semantic data 
-        if 'semantic' in self.data_folder:
-            self.semantic_data = True
-        else:
-            self.semantic_data = False
-
-        if self.exp == 'catFR1':
-            self.list_length = 12
-        elif self.exp == 'FR1':
-            self.list_length = 12
+        self.list_length = 12
 
     def remove_subject_sessions(self):
         
@@ -123,9 +110,11 @@ class HFA_ripples_prepare_data():
         self.exp_df = exp_df
 
 
-    def load_data_from_cluster(self, selected_period, region_name='HPC', filter_type='hamming', remove_soz_ictal=0, recall_type_switch=0):
+    def load_data_from_cluster(self, base_path, selected_period, ripple_bool, hpc_ripple_type, region_name='HPC', 
+                               filter_type='hamming', remove_soz_ictal=0, recall_type_switch=0):
 
         '''
+        :param str base_path: folder to look for data 
         :param str selected_period: input one of the following options
             'surrounding_recall': aligned to time of free recall 
             'whole_retrieval': aligned to beginning of retrieval period (beep_off)
@@ -134,16 +123,23 @@ class HFA_ripples_prepare_data():
                        NOTE: this analysis is in SWRanalysis-encoding.ipynb now
             'math': aligned to math problem on
             'math_retrieval': aligned to math problem key-in time
+        :param bool ripple_bool: set to True to load HPC ripples 
+        :param str hpc_ripple_type: only applies to hpc, can be single_elec or any_ipsi_elec
         :param str region_name: input can be ENT, HPC, HPC_ENT ENT, HPC, PHC, TEMPORALLOBE, IFG, MFG, ENTPHC, AMY
-        :param str remove_soz_ictal: input 0 for nothing, 1 for remove SOZ, 2 for keep ONLY SOZ ###
+        :param str remove_soz_ictal: inpu∂t 0 for nothing, 1 for remove SOZ, 2 for keep ONLY SOZ ###
         :param str filter_type: input can be butter/hamming/hamming125200/tried hamming140250 for math
-        :param bool hpc_ripples: if true, only load sessions which have both HPC data and region name data, and use ripples from HPC 
         '''
-
+        
         self.filter_type = filter_type
         self.loaded_files = 0 
+        self.loaded_files_ad = 0
         self.attempted_loads = 0 
         self.region_name = region_name
+        
+        # Ripple bool only applies when loading non HPC regions, should be False if loading HPC
+        # just setting to false to make sure
+        if region_name == 'HPC':
+            ripple_bool = False
 
         recall_minimum = 2000 # used if recall_type_switch = 3
 
@@ -154,8 +150,8 @@ class HFA_ripples_prepare_data():
         else: # these others I haven't set up indexing (see >line 100 in this cell)
             soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period, recall_minimum)
             
-        ripple_array = [];  HFA_array = []
-        trial_nums = [];  encoded_word_key_array = []
+        ripple_array = [];  HFA_array = []; theta_array = []; gamma_array = []
+        ripple_freq_array = []; trial_nums = [];  encoded_word_key_array = []
         HPC_names = []; sub_sess_names = []; 
         region_electrode_ct = []; sub_names = []
         trial_by_trial_correlation = []; elec_ripple_rate_array = []
@@ -181,138 +177,170 @@ class HFA_ripples_prepare_data():
         self.missing_data = []
         self.missing_subjects = {}
         
+        if 'efeghhi' in base_path:
+            path_name = f'{base_path}{self.exp}/{subfolder}'
+        if 'john' in base_path:
+            path_name = f'{base_path}{self.data_folder}/{subfolder}'
+        
         for p, row in enumerate(analysis_df.itertuples()): 
             
             self.attempted_loads += 1
-
+            
             try:
                 
                 sub = row.subject; session = row.session; exp = row.experiment
-                path_name = f'/scratch/john/{self.data_folder}/{subfolder}'
                 
-                fn_HPC = os.path.join(path_name,
-                'SWR_'+exp+'_'+sub+'_'+str(session)+'_HPC_'+selected_period+recall_selection_name+
-                            '_'+soz_label+'_'+filter_type+'.p')
-                
-                with open(fn_HPC, 'rb') as fh:
+                if ripple_bool: 
                     
-                    dat_HPC = pickle.load(fh)
-                    ripple_array_hpc = dat_HPC['ripple_array']
-                    trial_nums_hpc =  dat_HPC['trial_nums']
-                    HPC_names_single_file = dat_HPC['HPC_names'] 
+                    fn_HPC = os.path.join(path_name,
+                    'SWR_'+exp+'_'+sub+'_'+str(session)+'_HPC_'+selected_period+recall_selection_name+
+                                '_'+soz_label+'_'+filter_type+'.p')
                     
-                # skip rest of loop if there are no hpc ripples
-                if np.array(ripple_array_hpc).shape[0] == 0 or np.sum(ripple_array_hpc)==0:
-                    self.skipped_files_no_hpc_ripples  += 1
-                    self.missing_subjects[sub] = 'no_hpc_ripples'
-                    continue
+                    with open(fn_HPC, 'rb') as fh:
+                        
+                        dat_HPC = pickle.load(fh)
+                        ripple_array_hpc = dat_HPC['ripple_array']
+                        trial_nums_hpc =  dat_HPC['trial_nums']
+                        HPC_names_single_file = dat_HPC['HPC_names'] 
+                        
+                    # skip rest of loop if there are no hpc ripples
+                    if np.array(ripple_array_hpc).shape[0] == 0 or np.sum(ripple_array_hpc)==0:
+                        self.skipped_files_no_hpc_ripples  += 1
+                        self.missing_subjects[sub] = 'no_hpc_ripples'
+                        continue
                 
                 fn = os.path.join(path_name,
                     'SWR_'+exp+'_'+sub+'_'+str(session)+'_'+region_name+'_'+selected_period+recall_selection_name+
                                 '_'+soz_label+'_'+filter_type+'.p') 
                 
-                self.loaded_files += 1
-                    
                 with open(fn,'rb') as f:
                     
                     dat = pickle.load(f)
                     trial_nums_single_file = dat['trial_nums']
-                    area_2_region_names_single_file = dat['HPC_names']
-                
-                    if len(trial_nums_hpc) == 0 or len(trial_nums_single_file) == 0:
+                    region_names_single_file = self.add_location(dat['channel_coords'], dat['HPC_names'])
+                    
+                    if len(trial_nums_single_file) == 0:
                         self.skipped_files_no_trials += 1
-                        self.missing_subjects[sub] = 'no_hpc_trials'
+                        self.missing_subjects[sub] = 'no_region_trials'
                         continue
+                            
+                    if ripple_bool: 
+                        
+                        if trial_nums_hpc[0] != trial_nums_single_file[0]:
+                            self.skipped_files_unequal_trials  += 1
+                            self.missing_subjects[sub] = 'unequal_trials'
+                            continue
+                        
+                        if len(trial_nums_hpc) == 0:
+                            self.skipped_files_no_trials += 1
+                            self.missing_subjects[sub] = 'no_hpc_trials'
+                            continue
                     
-                    if trial_nums_hpc[0] != trial_nums_single_file[0]:
-                        self.skipped_files_unequal_trials  += 1
-                        self.missing_subjects[sub] = 'unequal_trials'
-                        continue
-                    
-                    # evalautes to True if there are hpc ripples on the same side as area 2
-                    # if area2 is hpc, automatically returns true
-                    hpc_ripples_ipsilateral = self.check_hpc_ripples(area_2_region_names_single_file, HPC_names_single_file)
-                    
-                    if hpc_ripples_ipsilateral==False:
-                        self.skipped_files_ipsilateral += 1
-                        self.missing_subjects[sub] = 'no_ispilateral_hpc_ripples'
-                        continue 
+                        # evaluates to True if there are hpc ripples on the same side as area 2
+                        # if area2 is hpc, automatically returns true
+                        hpc_ripples_ipsilateral = self.check_hpc_ripples(region_names_single_file, HPC_names_single_file)
+                        
+                        if hpc_ripples_ipsilateral==False:
+                            self.skipped_files_ipsilateral += 1
+                            self.missing_subjects[sub] = 'no_ispilateral_hpc_ripples'
+                            continue 
                     
                     trial_nums = np.append(trial_nums,dat['trial_nums'])
                     HFA_array = superVstack(HFA_array,dat['HFA_array'])
+                    theta_array = superVstack(theta_array, dat['theta_array'])
+                    gamma_array = superVstack(gamma_array, dat['gamma_array'])
+                    ripple_freq_array = superVstack(ripple_freq_array, dat['ripple_freq_array'])
+     
+                    if region_name == 'HPC':
+                        ripple_array_hpc = dat['ripple_array']
+                    
                     region_electrode_ct.append(dat['region_electrode_ct'])
                     encoded_word_key_array.extend(dat['encoded_word_key_array'])
                     sub_sess_names.extend(dat['sub_sess_names'])
                     sub_names.extend(dat['sub_names'])
                     
                     channel_coords.extend(dat['channel_coords'])
-                    region_names = self.add_location(dat['channel_coords'], dat['HPC_names'])
-                    HPC_names.extend(region_names)
-
+                    HPC_names.extend(region_names_single_file)
                     # check to see the number of trials
                     trial_by_trial_correlation.extend(dat['trial_by_trial_correlation']) # one value for each electrode for this session
                     elec_by_elec_correlation = np.append(elec_by_elec_correlation,dat['elec_by_elec_correlation'])
                     elec_ripple_rate_array.extend(dat['elec_ripple_rate_array']) # ripple rate by electrode so append
-                
                     serialpos_array.extend(dat['serialpos_array'])
                     recall_position_array.extend(dat['recall_position_array']) # 1-indexed
                     list_recall_num_array.extend(dat['list_recall_num_array'])
-                    session_events = session_events.append(dat['session_events']) # doesn't append in place 
-                        
+                    #session_events = session_events.append(dat['session_events']) # doesn't append in place
                     electrode_labels.extend(dat['electrode_labels'])
-                    
-                    if not self.semantic_data: 
-                        channel_nums.extend(dat['channel_nums'])
-                    else:
-                        if self.exp == 'catFR1':
-                            category_array.extend(dat['category_array'])
-                            semantic_clustering_key.extend(dat['semantic_clustering_key'])
-                        elif self.exp == 'FR1':
-                            temporal_clustering_key.extend(dat['temporal_clustering_key'])
-                            
+                    #if self.exp=='FR1': 
+                        #channel_nums.extend(dat['channel_nums'])
+                    if self.exp == 'catFR1':
+                        category_array.extend(dat['category_array'])
+                        semantic_clustering_key.extend(dat['semantic_clustering_key'])
+                    if self.exp == 'FR1':
+                        temporal_clustering_key.extend(dat['temporal_clustering_key'])
                     list_num_key.extend(dat['list_num_key'])
              
+             
+                    '''
+                    There are 3 options for loading ripples.
                     
-                # load ripples from HPC 
-                ripples_single_file = self.ripples_hpc(trial_nums_single_file, area_2_region_names_single_file, trial_nums_hpc, 
-                                                HPC_names_single_file, ripple_array_hpc)
-                                   
-                ripple_array = superVstack(ripple_array, ripples_single_file)
-                
+                    1) If ripple_bool is true, meaning we've loaded HPC ripples and the region_name is not HPC, 
+                    then set ripple array to 1 whenever there is an ipsilateral HPC ripple for a trial.
+                    2) if we are in HPC and hpc_ripple_type is any_ipsi_elec, then also set ripple array to 1 whenever 
+                    there is an ipsilateral HPC ripple in ANY electrode 
+                    3) use the pre-loaded ripples
+                    '''
+                    
+                    if ripple_bool:
+                        
+                        ripples_single_file = self.ripples_hpc_any_ipsi(trial_nums_single_file, 
+                                                               region_names_single_file, trial_nums_hpc, 
+                                                               HPC_names_single_file, ripple_array_hpc)  
+                        ripple_array = superVstack(ripple_array, ripples_single_file)
+        
+                    elif region_name == 'HPC' and hpc_ripple_type == 'any_ipsi_elec':
+                        
+                        ripples_single_file = self.ripples_hpc_any_ipsi(trial_nums_single_file, region_names_single_file,
+                                                               trial_nums_single_file, region_names_single_file,
+                                                               ripple_array_hpc) 
+                        
+                        ripple_array = superVstack(ripple_array, ripples_single_file)
+                        
+                    else:
+                        # remove ripples outside the HPC regions if region name is HPC 
+                        if region_name == 'HPC':
+                            ripple_array_single_file = self.remove_ripples_outside_selected_region(np.stack(dat['ripple_array']), 
+                                                                                               region_names_single_file, 
+                                                                                                trial_nums_single_file)  
+                        else:
+                            ripple_array_single_file = dat['ripple_array']
+                                         
+                        ripple_array = superVstack(ripple_array, ripple_array_single_file)
+                        
+                    self.loaded_files += 1
+                        
             except Exception as e:
-
-                LogDFExceptionLine(row, e, 'ClusterLoadSWR_log.txt')  
-
+                #LogDFExceptionLine(row, e, 'ClusterLoadSWR_log.txt') 
+                pass 
+            
         print('**Done reading data**')
-
         subject_name_array,session_name_array,electrode_array,channel_coords_array,channel_nums_array = getSubSessPredictorsWithChannelNums(
                 sub_names,sub_sess_names,trial_nums,electrode_labels,channel_coords,channel_nums)
     
         word_correct_array = []
         for sess_elec in encoded_word_key_array:
-            if self.semantic_data:
-                word_correct_array.extend(sess_elec)
-            else:
-                word_correct_array.append(sess_elec)
-        word_correct_array = np.array(word_correct_array)
-        word_correct_array[word_correct_array>0] = 1 # 1s and 2s are corrects
-        
-        if self.semantic_data:
-            sp_array = []
-            for sp in serialpos_array:
-                sp_array.extend(sp)
-            serialpos_array = sp_array
+            word_correct_array.extend(sess_elec)
+        word_correct_array = np.array(word_correct_array)        
+        word_correct_array = np.where(word_correct_array>0, 1, word_correct_array)
+
+        sp_array = []
+        for sp in serialpos_array:
+            sp_array.extend(sp)
+        serialpos_array = sp_array
         
         temp = []
         for enc in encoded_word_key_array:
-            if self.semantic_data:
-                temp.extend(enc)
-            else: 
-                temp.append(enc)
+            temp.extend(enc)
         encoded_word_key_array = copy(temp)
-
-        if not self.semantic_data:
-            self.channel_nums_array = np.array(channel_nums_array)
         
         region_electrode_ct = np.array(region_electrode_ct)
         
@@ -333,6 +361,9 @@ class HFA_ripples_prepare_data():
 
         # save data to class 
         self.HFA_array = HFA_array
+        self.theta_array = theta_array
+        self.gamma_array = gamma_array
+        self.ripple_freq_array = ripple_freq_array
         self.ripple_array = ripple_array
         self.trial_nums = trial_nums
         self.sub_sess_names = sub_sess_names
@@ -355,8 +386,7 @@ class HFA_ripples_prepare_data():
         self.list_num_key = list_num_key
         self.encoded_word_key_array = encoded_word_key_array
         self.recall_position_array = recall_position_array
-        self.session_events = session_events
-        
+        #self.session_events = session_events
         self.clean_up_ripples()
         
     def add_location(self, coords, names):
@@ -373,9 +403,9 @@ class HFA_ripples_prepare_data():
         updated_names = []
         
         for name, coord in zip(names, coords):
-            
-            # remove extraneous double quotes if they exist
-            name = name.replace('"', '')
+        
+            name = name.replace('"', '')  # remove extraneous double quotes if they exist
+            name = name.strip() # remove spaces from the beginning and end of string
             
             # if right or left is not specified, add it in 
             if 'right' not in name and 'left' not in name:
@@ -395,7 +425,32 @@ class HFA_ripples_prepare_data():
                 updated_names.append(name)
                 
         return updated_names
+    
+    def remove_lists_not_ll(self):
+        
+        list_num = 1
+        ll = 0
+        self.num_lists_wrong = 0
+        mask_idxs_all = []
+        list_num_key_np_all = np.array(self.list_num_key)
+        
+        for i in range(list_num_key_np_all.shape[0]):
+            
+            if list_num_key_np_all[i] == list_num:
+                ll += 1 
                 
+            else:
+                
+                if ll != self.list_length:
+                    mask_idxs = [x for x in range(i-ll, i)]
+                    mask_idxs_all.append(mask_idxs)
+                    self.num_lists_wrong += 1
+                    
+                list_num = list_num_key_np_all[i]
+                ll = 1  
+                
+        self.mask_idxs_np = np.hstack(mask_idxs_all)  
+
     def select_idxs_numpy(self):
             
         if self.select_subfield and self.region_name == 'HPC':
@@ -422,11 +477,15 @@ class HFA_ripples_prepare_data():
             # otherwise, select all regions 
             selected_recalls = np.ones(len(self.start_array), dtype=bool)
             
-        if self.semantic_data:
+        if self.exp=='catFR1':
             # from john 
             selected_recalls[(np.array(self.session_name_array)=='R1180C-2') & (np.array(self.list_num_key)==24)] = 0
             selected_recalls[(np.array(self.session_name_array)=='R1278E-10') & (np.array(self.list_num_key)==25)] = 0
             
+        # mask lists that are not of the correct length
+        self.remove_lists_not_ll()
+        selected_recalls[self.mask_idxs_np] = 0
+        
         self.num_selected_trials = np.sum(selected_recalls)
             
         self.session_names_np = np.array(self.session_name_array)[selected_recalls]
@@ -437,24 +496,27 @@ class HFA_ripples_prepare_data():
         self.serialpos_array_np = np.array(self.serialpos_array)[selected_recalls]
         self.list_num_key_np = np.array(self.list_num_key)[selected_recalls]
         self.word_correct_array_np = self.word_correct_array[selected_recalls]
-        self.session_events_np = self.session_events[selected_recalls]
+        #self.session_events_np = self.session_events[selected_recalls]
         self.HFA_array_np = self.HFA_array[selected_recalls]
         self.session_name_array_np = np.array(self.session_name_array)[selected_recalls]
         self.subject_name_array_np = np.array(self.subject_name_array)[selected_recalls]
         self.ripple_array_np = np.array(self.ripple_array)[selected_recalls]
+        self.theta_array_np = np.array(self.theta_array)[selected_recalls]
+        self.gamma_array_np = np.array(self.gamma_array)[selected_recalls]
+        self.ripple_freq_array_np = np.array(self.ripple_freq_array)[selected_recalls]
         
-        if self.semantic_data:
-            if self.exp == 'FR1':
-                self.temporal_array_np = np.array(self.temporal_clustering_key)[selected_recalls]
-            if self.exp == 'catFR1':
-                self.semantic_array_np = np.array(self.semantic_clustering_key)[selected_recalls]
-                self.cat_array_np = np.array(self.category_array)[selected_recalls]
-                
+        if self.exp == 'FR1':
+            print("Creating temporal clustering array")
+            self.temporal_array_np = np.array(self.temporal_clustering_key)[selected_recalls]
+        if self.exp == 'catFR1':
+            print("Creating semantic array")
+            self.semantic_array_np = np.array(self.semantic_clustering_key)[selected_recalls]
+            self.cat_array_np = np.array(self.category_array)[selected_recalls]
+            
         # create ripple exists array 
         ripple_idxs, _ = self.ripple_idxs_func()
         self.ripple_exists_np = np.zeros(self.num_selected_trials)
         self.ripple_exists_np[ripple_idxs] = 1
-        
         
         print(f"Selecting {np.sum(selected_recalls)} trials out of {selected_recalls.shape[0]} trials")
         print(f"Number of unique patients: {np.unique(self.subject_name_array_np).shape[0]}")
@@ -466,7 +528,6 @@ class HFA_ripples_prepare_data():
         
         if self.region_name == 'HPC':
             return True
-        
         
         # check to make sure there are electrodes on the same hemisphere for HPC and area 2
         elec_left_area2 = False
@@ -492,8 +553,32 @@ class HFA_ripples_prepare_data():
             
         return hpc_ripples_ipsilateral
         
+        
+    def remove_ripples_outside_selected_region(self, ripple_array, regions, trialnums):
+        
+        '''
+        Turns all ripple values outside self.ripple_regions into 0.
+        All ripple values inside self.ripple regions are left untouched. 
+        
+        :param numpy array ripple_array: N x T matrix, where each row is a trial with a value of 1 indicating a ripple
+        occurred at that time
+        :param list regions: list containing regions where electrodes are placed
+        :param list trialnums: list containing number of trials recorded from each electrode 
+        '''
+                  
+        ripple_array_selected_regions_only = np.zeros_like(ripple_array)
+        trialStart = 0 
+        for region, trials in zip(regions, trialnums):
+            trials = int(trials)
+            for rs in self.ripple_regions:
+                if f'{rs}' in region: 
+                    ripple_array_selected_regions_only[trialStart:trialStart+trials] = ripple_array[trialStart:trialStart+trials]
+            trialStart += trials 
+            
+        return ripple_array_selected_regions_only
+                    
 
-    def ripples_hpc(self, area2_trialnums, area2_regions, hpc_trialnums, hpc_regions, ripple_array_hpc):
+    def ripples_hpc_any_ipsi(self, area2_trialnums, area2_regions, hpc_trialnums, hpc_regions, ripple_array_hpc):
 
         '''
         Note: area 2 can be any brain region, including HPC 
@@ -502,7 +587,6 @@ class HFA_ripples_prepare_data():
         there will be a 1 if a ripple occurred in selected_regions on the ipsilateral side 
         as the electrode that the trial corresponds to, and a 0 otherwise. 
         
-        If region_name is hpc and hpc_ripple_type is set to 'single_elec', then simply return ripple_array_hpc
 
         :param list area2_trialnums: number of trials collected from each electrode in area 2
         :param list area2_regions: region within area2 that the electrode is placed in 
@@ -510,14 +594,12 @@ class HFA_ripples_prepare_data():
         :param list hpc_regions: regions in hpc where electrodes are placed
         :param numpy array ripple_array_hpc: contains ripples from hpc, of shape num_trials x timesteps  
         '''
-        
-        # don't do any averaging across electrodes 
-        if self.region_name == 'HPC' and self.hpc_ripple_type == 'single_elec':
-            return ripple_array_hpc
-
         timesteps = ripple_array_hpc.shape[1] # timesteps over which recording is taken 
         num_trials = np.sum(area2_trialnums) # number of trials collected from area2 
-        
+      
+        # Not sure what to do with 0.5 values right now, so going to remove them.
+        ripple_array_hpc = np.where(ripple_array_hpc==0.5, 0, ripple_array_hpc)
+                    
         # Step 1: Separate hpc right and left ripples
         # only select ripples from self.ripple_regions
         left_hemi_data = []
@@ -554,11 +636,8 @@ class HFA_ripples_prepare_data():
             lhd_np = np.clip(np.sum(np.stack(left_hemi_data),axis=0), a_min=0, a_max=1)
         else:
             lhd_np = np.zeros((trials, timesteps))
-
-        # fill an array of the same shape as the nonhpc ripples with the averaged hpc ripples
-        # from the correct hemisphere. 
+        
         ripples_hpc_area2shape = np.zeros((int(num_trials), timesteps))
-
         trialStart = 0
         for region, trials in zip(area2_regions, area2_trialnums):
             
@@ -569,14 +648,14 @@ class HFA_ripples_prepare_data():
                 ripples_hpc_area2shape[trialStart:trialStart+trials] = lhd_np
             
             trialStart += trials 
-            
+                        
         return ripples_hpc_area2shape
     
     def clean_up_ripples(self):
         
         # Not sure what to do with 0.5 values right now, so going to remove them.
-        self.ripple_array= np.where(self.ripple_array==0.5, 0, self.ripple_array)
-        
+        self.ripple_array = np.where(self.ripple_array==0.5, 0, self.ripple_array)
+                
         # select ripples only in time range of interest
         self.ripple_array = self.ripple_array[:, self.ripple_start_marker:-self.ripple_end_marker]
         self.analysis_information['ripple_timesteps'] = self.ripple_array.shape[0]
@@ -615,20 +694,51 @@ class HFA_ripples_prepare_data():
         self.analysis_information['num_trials_without_ripple'] = non_ripple_idxs.shape[0]
         
         return ripple_idxs, non_ripple_idxs
+                
+    def separate_HFA_by_serial_pos(self, mode, early_list_cutoff=4, middle_list_cutoff=8):
+        
+        '''
+        :param int mode: 0 for early, 1 for middle
+        :param int early_list_cutoff: positions 1 through early_list_cutoff are 
+        considered early list items
+        :param int middle_list_cutoff: positions middle_list_cutoff - early_list_cutoff are considered
+        middle list items
+        '''
+        
+        early_list_idxs = np.argwhere(self.serialpos_array_np <= early_list_cutoff)
+        middle_list_idxs = np.argwhere((self.serialpos_array_np > early_list_cutoff) & (self.serialpos_array_np <= middle_list_cutoff))
+        
+        if mode == 0:
+            selected_idxs = early_list_idxs
+        else: 
+            selected_idxs = middle_list_idxs
+        
+        HFA_select = np.squeeze(self.HFA_array_np[selected_idxs])
+        correct_recall_select = np.squeeze(self.word_correct_array_np[selected_idxs])
+        subjects_select = np.squeeze(self.subject_name_array_np[selected_idxs])
+        session_select = np.squeeze(self.session_name_array_np[selected_idxs])
+        
+        return HFA_select, correct_recall_select, subjects_select, session_select, selected_idxs
     
     def separate_HFA_by_ripple(self, mode):
-
-        if mode == 0:
-            selected_idxs = np.arange(self.HFA_array_np.shape[0])
-        if mode == 1: 
+        
+        '''
+        :param int mode: 0 for ripples, 1 for non ripples
+        '''
+        
+        if mode == 0: 
             selected_idxs, _ = self.ripple_idxs_func()
-        if mode == 2: 
+        if mode == 1: 
             _, selected_idxs = self.ripple_idxs_func()
+        
             
         HFA_array = self.HFA_array_np[selected_idxs]
         word_correct_array = self.word_correct_array_np[selected_idxs]
         subject_name_array = self.subject_name_array_np[selected_idxs]
         session_name_array = self.session_name_array_np[selected_idxs]
-
-        return HFA_array, word_correct_array, subject_name_array, session_name_array
+        
+  
+        return HFA_array, word_correct_array, subject_name_array, session_name_array, selected_idxs
+            
+            
       

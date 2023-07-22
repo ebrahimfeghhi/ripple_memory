@@ -1,0 +1,36 @@
+Running task number 9
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/timeseries.py:526: FutureWarning: xarray subclass TimeSeriesX should explicitly define __slots__
+  class TimeSeriesX(TimeSeries):
+/home1/efeghhi/ripple_memory/create_events.py:73: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  ((df.subject!='R1239E') | (df.session!=0)) # some correlated noise (can see in catFR1 problem sessions ppt)
+Number of sessions left:  261
+COMMAND LINE ARGUMENT:  9
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
+Accessed row
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package outdated is out of date. Your version is 0.2.0, the latest is 0.2.2.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package pingouin is out of date. Your version is 0.3.4, the latest is 0.5.3.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+/home1/efeghhi/ripple_memory/create_events.py:398: RuntimeWarning: Mean of empty slice
+  temporal_list_mean = np.nanmean(temporal_transition_scores[temporal_transition_scores > -990])
+/home1/efeghhi/cmlreaders/cmlreaders/readers/electrodes.py:238: MissingCoordinatesWarning: Could not load MNI coordinates
+  "Could not load MNI coordinates"))
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/readers/tal.py:43: FutureWarning: Lab-specific readers may be moved to the cmlreaders package (https://github.com/pennmem/cmlreaders)
+  FutureWarning)
+CPP total time wavelet loop:  5.3149027824401855
+CPP total time wavelet loop:  5.374444246292114
+CPP total time wavelet loop:  3.0519943237304688
+CPP total time wavelet loop:  3.0844879150390625
+CPP total time wavelet loop:  5.93218207359314
+CPP total time wavelet loop:  5.54716157913208
+CPP total time wavelet loop:  6.0516533851623535
+CPP total time wavelet loop:  6.224376916885376
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/pingouin/effsize.py:145: RuntimeWarning: divide by zero encountered in arctanh
+  z = np.arctanh(stat)
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/pingouin/power.py:923: RuntimeWarning: divide by zero encountered in arctanh
+  zr = np.arctanh(r) + r / (2 * (n - 1))
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/pingouin/pairwise.py:1144: RuntimeWarning: divide by zero encountered in arctanh
+  stats['z'] = np.arctanh(stats['r'].to_numpy())
