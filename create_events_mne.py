@@ -8,14 +8,27 @@ import matplotlib.pyplot as plt
 from pylab import *
 from copy import copy
 from scipy import stats
-import pickle
 plt.rcParams['pdf.fonttype'] = 42; plt.rcParams['ps.fonttype'] = 42 # fix fonts for Illustrator
-from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
-                         MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels
 from SWRmodule import *
-import mne 
-import sys
 import csv
+import os
+import dill, pickle
+import mne
+from copy import copy    
+from scipy.signal import firwin,filtfilt,kaiserord
+from ptsa.data.filters import ButterworthFilter, ResampleFilter, MorletWaveletFilter
+import xarray as xarray
+from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
+                        MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
+from SWRmodule import CMLReadDFRow,get_bp_tal_struct,get_elec_regions,ptsa_to_mne,detectRipplesHamming
+from general import superVstack,findInd,findAinB
+from SWRmodule import downsampleBinary,LogDFExceptionLine,getBadChannels,getStartEndArrays,getSecondRecalls,\
+                    removeRepeatedRecalls,getSWRpathInfo,selectRecallType,correctEEGoffset,\
+                    getSerialposOfRecalls,getElectrodeRanges,\
+                    detectRipplesHamming,detectRipplesButter,getRetrievalStartAlignmentCorrection,\
+                    removeRepeatsBySerialpos,get_recall_clustering, compute_morlet # specific to clustering
+
+import pingouin as pg
 
 ################################################################
 df = get_data_index("r1") # all RAM subjects
@@ -24,15 +37,14 @@ save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = HPC_labels 
-region_name = 'HPC'
+selected_region = AMY_labels 
+region_name = 'AMY'
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
 extra = '' #'-ZERO_IRI'
-exclude_from_rerun = 'exclude_from_rerun.csv' # csv file containing patients where program ran equals 0 or words are in spanish
 ################################################################
-
+              
 subs = ['R1488T','R1381T','R1004D']
 sub_df = df[(df.subject.isin(subs))  & (df.experiment == exp)] # all sessions for subs
 sub_df = sub_df.reset_index()
@@ -76,12 +88,15 @@ if exp == 'catFR1':
 
 exclude_sessions = []
 
-# exclude sessions that don't run to completion
-with open(exclude_from_rerun, newline="") as file:
-    reader = csv.reader(file)
-    for row in reader:
-        exclude_sessions.append(row)
-        
+exclude_from_rerun = 'exclude_participants/exclude_participants.csv'
+file_exists = os.path.exists(exclude_from_rerun)
+field_name = 'Filename'
+excluded_sessions = []
+
+if file_exists:
+    excluded_sessions_csv = pd.read_csv(exclude_from_rerun)
+    excluded_sessions = list(excluded_sessions_csv.Filename)
+
 soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period,recall_minimum)
 
 rerun_mask = []
@@ -93,8 +108,7 @@ for i,row in enumerate(exp_df.itertuples()):
     fn = os.path.join(path_name,
             'SWR_'+exp+'_'+sub+'_'+str(session)+'_'+region_name+'_'+selected_period+recall_selection_name+
                           '_'+soz_label+'_'+filter_type+extra+'.p') 
-
-    if [fn] in exclude_sessions:
+    if fn in excluded_sessions:
         continue 
     try:
         with open(fn,'rb') as f:
@@ -104,30 +118,9 @@ for i,row in enumerate(exp_df.itertuples()):
         
 rerun_df = exp_df.iloc[rerun_mask]
 
-def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_params, testing_mode=False):
+def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_params, n_jobs=4, testing_mode=False):
     
 
-    import csv
-    import pandas as pd
-    import numpy as np
-    import os
-    import dill, pickle
-    import mne
-    from copy import copy    
-    from scipy.signal import firwin,filtfilt,kaiserord
-    from ptsa.data.filters import ButterworthFilter, ResampleFilter, MorletWaveletFilter
-    import xarray as xarray
-    from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
-                         MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
-    from SWRmodule import CMLReadDFRow,get_bp_tal_struct,get_elec_regions,ptsa_to_mne,detectRipplesHamming
-    from general import superVstack,findInd,findAinB
-    from SWRmodule import downsampleBinary,LogDFExceptionLine,getBadChannels,getStartEndArrays,getSecondRecalls,\
-                        removeRepeatedRecalls,getSWRpathInfo,selectRecallType,correctEEGoffset,\
-                        getSerialposOfRecalls,getElectrodeRanges,\
-                        detectRipplesHamming,detectRipplesButter,getRetrievalStartAlignmentCorrection,\
-                        removeRepeatsBySerialpos,get_recall_clustering, compute_power_morlet # specific to clustering
-    
-    import pingouin as pg
     
     ### params that clusterRun used
     recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
@@ -185,23 +178,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
     eeg_buffer = 1000 # buffer to add to either end of IRI when processing eeg #**
     filter_type = 'hamming' # see local version below for details. 'butter' is removed from cluster version so don't change this    
     ### END PARAMS ###    
-        
     
-    def add_session_to_exclude_list(csv_file_path):
-
-         # add session to csv so it's not included in rerun_df
-         # defining this function within ClusterRunSWRs because
-         # when running using slurm, slurm doesn't have access
-         # to variables outside the scope of ClsuterRunSWRs
-        soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period,recall_minimum)
-        path_name = save_path+subfolder
-        fn = os.path.join(path_name,
-            'SWR_'+exp+'_'+sub+'_'+str(session)+'_'+region_name+'_'+selected_period+recall_selection_name+
-                        '_'+soz_label+'_'+filter_type+'.p')
-        with open(csv_file_path, mode="a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([fn])
-              
     # get region label
     if selected_region == HPC_labels:
         region_name = 'HPC'
@@ -236,10 +213,9 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
         psth_start = pre_encoding_time
         psth_end = encoding_time
 
-    ripple_array = []; fr_array = []; HFA_array = []; theta_array = []
-    gamma_array = []; ripple_freq_array = []
+    ripple_array = []; fr_array = []; 
     trial_nums = []; 
-    HPC_names = []; sub_sess_names = []; sub_names = []
+    elec_names = []; sub_sess_names = []; sub_names = []
     electrodes_per_session = []
     total_lists = 0; total_recalls = 0; kept_recalls = 0
     align_adjust = 0
@@ -270,7 +246,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
     
     try:
         
-        with open(f'/home1/efeghhi/cluster/temp_dfSWR_{exp}.p', 'rb') as f: ### change here to avoid overwrite
+        with open(f'/home1/efeghhi/cluster/temp_dfSWR.p', 'rb') as f: ### change here to avoid overwrite
             temp_df = dill.load(f)
             
         row = temp_df[param]
@@ -291,12 +267,45 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
         # need to remove free recalls that happened more than once
         word_evs = evs[evs['type']=='WORD'] # get words 
         
+        
+        def add_session_to_exclude_list(message):
+            
+            # add session to csv so it's not included in rerun_df
+            # defining this function within ClusterRunSWRs because
+            # when running using slurm, slurm doesn't have access
+            # to variables outside the scope of ClsuterRunSWRs
+            
+            soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,
+                                                                    selected_period,recall_minimum)
+            path_name = save_path+subfolder
+            
+            fn = os.path.join(path_name,
+                'SWR_'+exp+'_'+sub+'_'+str(session)+'_'+region_name+'_'+selected_period+recall_selection_name+
+                            '_'+soz_label+'_'+filter_type+'.p')
+            
+            data_dict = {'Filename': fn, 'Reason for failure': message}
+            
+            file_path = 'exclude_participants/exclude_participants.csv'
+            
+            file_exists = os.path.exists(file_path)
+
+            fieldnames = data_dict.keys()
+            
+            with open(file_path, 'a', newline='') as csvfile:
+                
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                
+                if not file_exists:
+                    writer.writeheader()
+                    
+                writer.writerow(data_dict)
+                
         session_words = word_evs.item_name.unique()
         if len(findAinB(['BARRO','CABALLO','COSTILLA','DULCE','FICHA','ESTUFA','GALLINA','FRIJOL',
                         'GUARDIA','HILO','JEFE','LABIO','MAIZ','NIEVE','ORO','PALMA','PECHO','PLATO',
                         'RANA','SAPO','SERPIENTE','TALLO','UVA','VIGA','ZAPATO'],session_words))>0:
             print("WORDS are in spanish")
-            add_session_to_exclude_list('exclude_participants/spanish.csv')
+            add_session_to_exclude_list("Words are in spanish")
             sys.exit() # skip Spanish sessions
             
         else:
@@ -334,7 +343,6 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
                     list_mask.append(ln) # update kept list mask
                     
                     # now get semantic and temporal values for this list
-                    
                     serial_pos = np.array(recalls_serial_pos)-1 # zero index the serialpos
 #                     serial_pos = [int(list_words_df[list_words_df['item_name']==w]['serialpos'])-1 for w in list_recalls_df['item_name']] # serialpos starting at 0
                     list_recalls_df = evs_free_recall[evs_free_recall.list==ln] # recalls df just for this list
@@ -348,8 +356,10 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
                     ## semantic clustering ##
         
                     if exp == 'FR1':
-                        # Decided not to use semantic for FR1 for now but if you do I think FR1_wordpool_feats.pk needs to be recompiled via SWRgetWordList.ipynb 2020-10-19
-                        # also should make sure semantic_transition_scores look kosher since made some changes to get_recall_clustering to fix temporal clustering of intrusions
+                        # Decided not to use semantic for FR1 for now but if you do I think FR1_wordpool_feats.pk 
+                        # needs to be recompiled via SWRgetWordList.ipynb 2020-10-19
+                        # also should make sure semantic_transition_scores look kosher since made some 
+                        # changes to get_recall_clustering to fix temporal clustering of intrusions
                 
                         #Project semantic features for this list to 1 dimension
                         feats = np.array([semantic_model[w] 
@@ -490,7 +500,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
 
         if len(evs_free_recall)==0:
             print("Length of evs free recall is 0")
-            add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
+            add_session_to_exclude_list("Length of evs free recall is 0")
             sys.exit()
         
         # get localizations (region info)
@@ -576,6 +586,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
         eeg = reader.load_eeg(events=eeg_events, rel_start=psth_start-eeg_buffer+align_adjust, 
                               rel_stop=psth_end+eeg_buffer+align_adjust, clean=True, scheme=pairs) 
         
+        
         # events X electrodes X time
         sr = eeg.samplerate
 
@@ -591,42 +602,53 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
                                       rel_stop=int(psth_end+eeg_buffer+time_add+align_adjust), clean=True, scheme=pairs)
                 if time_add>50: #** 
                     print("Time add is greater than 50")
-                    add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
+                    add_session_to_exclude_list("Time add is greater than 50")
                     sys.exit()
                 time_add+=1
             time_add_save.append(time_add)
             eeg.samplerate = sr # need to overwrite those that were just fixed
             
         eeg_mne = eeg.to_mne()
-        breakpoint()
         eeg = None # clear variable
+        
+        # only analyze data in the region of interest
+        selected_elec = []
+        selected_elec_regions = []
+        for idx, elec_region in enumerate(elec_regions):
+            if elec_region in selected_region:
+                selected_elec.append(idx)
+                selected_elec_regions.append(elec_region)
+                
+        # get bad channel mask
+        try:
+            elec_cats = reader.load('electrode_categories') # this is cool
+        except:
+            if remove_soz_ictal == True:
+                print("Remove soz ictal is true")
+                add_session_to_exclude_list("Remove soz ictal is true")
+                sys.exit() # don't know soz/ictal sites so skip this session
+            else: 
+                elec_cats = [] # not removing these sites anyway so keep on keeping on
+#             e = 'No electrode categories for '+sub+', session '+str(session)
+#             LogDFExceptionLine(row, e, 'SWR_get_eeg_log.txt')
+
+        bad_bp_mask = getBadChannels(tal_struct,elec_cats,remove_soz_ictal)
+        bad_electrode_idxs = np.argwhere(bad_bp_mask!=0)
+        
+        # remove bad electrodes 
+        selected_elec = np.setdiff1d(selected_elec, bad_electrode_idxs)
+        eeg_mne.pick(selected_elec)
         
         # downsample sr to 1000 if sr is > 1000
         if sr > 1000:
             sr = 1000   
             eeg_mne = eeg_mne.resample(sfreq=sr)
         
-        eeg_mne = eeg_mne.filter(l_freq=58, h_freq=62, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=4)
+        eeg_mne = eeg_mne.filter(l_freq=62, h_freq=58, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
         
-        # extract power
-        eeg_power = eeg_mne.filter(l_freq=118, h_freq=122, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=4)
-        eeg_power = eeg_power.filter(l_freq=0.5, h_freq=None, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=4)
+        if testing_mode:
+            eeg_mne.save('tutorials/eeg_mne_test-epo.fif')
         
-        HFA_freqs = np.logspace(np.log10(64),np.log10(178),10)
-        gamma_ripple_freqs = np.logspace(np.log10(30), np.log10(178), 20)
-        theta_freqs = np.array([5,6,7,8])
-        
-        print("HFA power")
-        HFA_power = compute_power_morlet(eeg_power, HFA_freqs, sr, mode='power')
-        print("low gamma power")
-        low_gamma_power = compute_power_morlet(eeg_power, gamma_ripple_freqs[:10], sr, mode='power')
-        print("high gamma power")
-        high_gamma_power = compute_power_morlet(eeg_power, gamma_ripple_freqs[-9:], sr, mode='power')
-        print("theta power")
-        theta_power = compute_power_morlet(eeg_power, theta_freqs, sr, mode='power')
-        print("theta phase")
-        theta_phase = compute_power_morlet(eeg_power, theta_freqs, sr, mode='phase')
-      
         ## FILTERS ##
         trans_width = 5.
         ntaps = (2/3)*np.log10(1/(10*(1e-3*1e-4)))*(sr/trans_width) # gives 400 with sr=500, trans=5
@@ -640,196 +662,169 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
 
         eeg_rip_band = eeg_mne.copy()
         eeg_ied_band = eeg_mne.copy()
-        eeg_mne = None
         eeg_rip_band._data = eeg_rip_band._data-filtfilt(FIR_bandstop,1.,eeg_rip_band._data)
         eeg_ied_band._data = eeg_ied_band._data-filtfilt(bandstop_25_60,1.,eeg_ied_band._data)
-                
+        
         eeg_rip_band.apply_hilbert(envelope=True)
         eeg_ied_band.apply_hilbert(envelope=True)
-        eeg_rip_band.crop(tmin=-.7, tmax=2.3)
-        eeg_ied_band.crop(tmin=-.7, tmax=2.3)   
-  
-        # get bad channel mask
-        try:
-            elec_cats = reader.load('electrode_categories') # this is cool
-        except:
-            if remove_soz_ictal == True:
-                print("Remove soz ictal is true")
-                add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
-                sys.exit() # don't know soz/ictal sites so skip this session
-            else:
-                elec_cats = [] # not removing these sites anyway so keep on keeping on
-#             e = 'No electrode categories for '+sub+', session '+str(session)
-#             LogDFExceptionLine(row, e, 'SWR_get_eeg_log.txt')
-
-        bad_bp_mask = getBadChannels(tal_struct,elec_cats,remove_soz_ictal)
         
-        electrode_search_range = getElectrodeRanges(elec_regions,exp,sub,session,mont)
-
         # go through each channel in given region and detect ripples!
-                        
         region_electrode_ct = 0
-        for channel in electrode_search_range:
-            if (elec_regions[channel] in selected_region) & \
-            (bad_bp_mask[channel] == 0): # don't use bad electrodes
+        selected_elec_ripples_idxs = []
+        for channel in range(len(selected_elec)):
+                
+            print(f"Using channel {channel}")
 
-                # get data from MNE container
-                eeg_rip = eeg_rip_band.get_data()[:,channel,:]     
-                eeg_ied = eeg_ied_band.get_data()[:,channel,:]
+            # get data from MNE container
+            eeg_rip = eeg_rip_band.get_data()[:,channel,:]     
+            eeg_ied = eeg_ied_band.get_data()[:,channel,:]
 
-                # select detection algorithm (note that iedlogic is same for both so always run that)
-                eeg_ied = eeg_ied**2 # already rectified now square
-                eeg_ied = filtfilt(kaiser_40lp_filter,1.,eeg_ied) # low pass filter  
-                mean1 = np.mean(eeg_ied)
-                std1 = np.std(eeg_ied)
-                iedlogic = eeg_ied>=mean1+4*std1 # Norman et al 2018             
-                # detect ripples
-                ripplelogic = detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic)   
-    
-                if sr>desired_sample_rate: # downsampling here for anything greater than 500
-                    ripplelogic = downsampleBinary(ripplelogic,sr/desired_sample_rate)
+            # select detection algorithm (note that iedlogic is same for both so always run that)
+            eeg_ied = eeg_ied**2 # already rectified now square
+            eeg_ied = filtfilt(kaiser_40lp_filter,1.,eeg_ied) # low pass filter  
+            mean1 = np.mean(eeg_ied)
+            std1 = np.std(eeg_ied)
+            iedlogic = eeg_ied>=mean1+4*std1 # Norman et al 2018     
                     
-                # ripples are detected, so can remove buffers now #**
-                ripplelogic = ripplelogic[:,int(eeg_buffer/(1000/desired_sample_rate)):
-                                          int((psth_end-psth_start+eeg_buffer)/(1000/desired_sample_rate))]  
-    
-                # skip this electrode if the ripple rate is below threshold
-                temp_start_array,_ = getStartEndArrays(ripplelogic)
-                elec_ripple_rate = np.sum(temp_start_array)/temp_start_array.shape[0]/((psth_end-psth_start)/1000)
-                if elec_ripple_rate < min_ripple_rate:
-#                     print(sub+', '+str(session)+' skipped b/c below ripple rate thresh for ch.: '+str(channel))
-                    continue
-                elif elec_ripple_rate > max_ripple_rate:
-#                     print(sub+', '+str(session)+' skipped b/c ABOVE ripple rate thresh for ch.: '+str(channel))
-                    continue # skip this electrode
-    
-                # check the ripples for this electrode and make sure they're not super correlated across trials
+            # detect ripples
+            ripplelogic = detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic)   
+            if sr>desired_sample_rate: # downsampling here for anything greater than 500
+                ripplelogic = downsampleBinary(ripplelogic,sr/desired_sample_rate)
+                
+            # ripples are detected, so can remove buffers now #**
+            ripplelogic = ripplelogic[:,int(eeg_buffer/(1000/desired_sample_rate)):int((psth_end-psth_start+eeg_buffer)/(1000/desired_sample_rate))]  
 
-                # first, bin the array so can get more realistic correlation not dependent on ms timing
-                binned_ripplelogic = downsampleBinary(ripplelogic,10) # downsample by 10x so 10 ms bins
-                trial_ripple_df = pd.DataFrame(data=np.transpose(binned_ripplelogic))
-                num_cols = len(list(trial_ripple_df))
-                trial_ripple_df.columns = ['col_' + str(i) for i in range(num_cols)] # generate range of ints for suffixes
-                temp_tbt_corr = np.mean(pg.pairwise_corr(trial_ripple_df,method='spearman').r)
-                
-                # save these even if removing
-                trial_by_trial_correlation.append(temp_tbt_corr) # corr b/w trials
-                
-                if temp_tbt_corr > max_trial_by_trial_correlation:
-#                     print(sub+', '+str(session)+' skipped b/c above trial-by-trial correlation for ch.: '+str(channel))
-                    continue
-                elec_ripple_rate_array.append(elec_ripple_rate) # record the average ripple rate for this electrode 
-        
-                ## if this electrode passes SAVE data ##
-                
+            # skip this electrode if the ripple rate is below threshold
+            temp_start_array,_ = getStartEndArrays(ripplelogic)
+            elec_ripple_rate = np.sum(temp_start_array)/temp_start_array.shape[0]/((psth_end-psth_start)/1000)
+            if elec_ripple_rate < min_ripple_rate:
+                print(sub+', '+str(session)+' skipped b/c below ripple rate thresh for ch.: '+str(channel))
+                continue
+            elif elec_ripple_rate > max_ripple_rate:
+                print(sub+', '+str(session)+' skipped b/c ABOVE ripple rate thresh for ch.: '+str(channel))
+                continue # skip this electrode
+
+            # check the ripples for this electrode and make sure they're not super correlated across trials
+            # first, bin the array so can get more realistic correlation not dependent on ms timing
+            binned_ripplelogic = downsampleBinary(ripplelogic,10) # downsample by 10x so 10 ms bins
+            trial_ripple_df = pd.DataFrame(data=np.transpose(binned_ripplelogic))
+            num_cols = len(list(trial_ripple_df))
+            trial_ripple_df.columns = ['col_' + str(i) for i in range(num_cols)] # generate range of ints for suffixes
+            temp_tbt_corr = np.mean(pg.pairwise_corr(trial_ripple_df,method='spearman').r)
+            
+            # save these even if removing
+            trial_by_trial_correlation.append(temp_tbt_corr) # corr b/w trials
+            
+            if temp_tbt_corr > max_trial_by_trial_correlation:
+                print(sub+', '+str(session)+' skipped b/c above trial-by-trial correlation for ch.: '+str(channel))
+                continue
+            elec_ripple_rate_array.append(elec_ripple_rate) # record the average ripple rate for this electrode 
+    
+            ## if this electrode passes SAVE data ##
+            
 #                 if selected_period == 'surrounding_recall': 
 #                     if len(np.array(temp_semantic_key)[selected_recalls_idxs]) != len(ripplelogic):
 #                         # eegoffsets with -1 should be removed above anyway but keep as a check
 #                         sys.exit()
-        
-                # append arrays across electrodes
-                ripple_array = superVstack(ripple_array,ripplelogic) # append across electrodes
-                session_ripple_rate_by_elec = superVstack(session_ripple_rate_by_elec,np.mean(binned_ripplelogic,0)) # for correlation b/w elecs below
+    
+            # append arrays across electrodes
+            ripple_array.append(ripplelogic)
+            selected_elec_ripples_idxs.append(channel)
+            session_ripple_rate_by_elec = superVstack(session_ripple_rate_by_elec,np.mean(binned_ripplelogic,0)) # for correlation b/w elecs below
+            
+            # get other info specific to task periods         
+            if selected_period == 'encoding':
+                encoded_word_key_array.append(encoded_word_key) # save the key for each electrode so easier to unpack later
+                serialpos_array.append(eeg_events.serialpos)
+                if len(encoded_word_key) != ripplelogic.shape[0]:
+                    e = 'Encoded word key and ripple_array dont match for '+sub+str(session)+'_'+str(channel)
+                    LogDFExceptionLine(row, e, 'SWR_get_eeg_log.txt')
+                if exp == 'catFR1':
+                    category_array.extend(np.array(eeg_events.category))
+                list_num_key.extend(eeg_events.list)                    
+                session_events = session_events.append(eeg_events)
                 
-                # save HFA too
-                HFA_power_array = superVstack(HFA_array,HFA_power[:,channel,:])               
-                theta_power_array = superVstack(theta_array,theta_power[:,channel,:])                 
-                low_gamma_power_array = superVstack(gamma_array,low_gamma_power[:,channel,:])                
-                high_gamma_power_array= superVstack(ripple_freq_array,high_gamma_power[:,channel,:])                 
+                # for every word place the recall output positions
+                temp_evs_free_recall = evs[(evs.type=='REC_WORD')&(evs.list>-1)]
+                list_nums = eeg_events.list.unique() 
+                for ln in list_nums:
+                    num_words = sum(eeg_events.list==ln)
+                    recall_position_array += num_words * [getSerialposOfRecalls(temp_evs_free_recall,eeg_events,ln)] # To add v, n times, to l:
                 
-                # get other info specific to task periods         
-                if selected_period == 'encoding':
-                    encoded_word_key_array.append(encoded_word_key) # save the key for each electrode so easier to unpack later
-                    serialpos_array.append(eeg_events.serialpos)
-                    if len(encoded_word_key) != ripplelogic.shape[0]:
-                        e = 'Encoded word key and ripple_array dont match for '+sub+str(session)+'_'+str(channel)
-                        LogDFExceptionLine(row, e, 'SWR_get_eeg_log.txt')
-                    if exp == 'catFR1':
-                        category_array.extend(np.array(eeg_events.category))
-                    list_num_key.extend(eeg_events.list)                    
-                    session_events = session_events.append(eeg_events)
+                # repurpose this value from recall to know identity of recalls for every word in scope of encoding
+                if exp == 'catFR1':
+                    semantic_clustering_key+=enc_semantic_key
+                elif exp == 'FR1':
+                    temporal_clustering_key+=enc_temporal_key
                     
-                    # for every word place the recall output positions
-                    temp_evs_free_recall = evs[(evs.type=='REC_WORD')&(evs.list>-1)]
-                    list_nums = eeg_events.list.unique() 
-                    for ln in list_nums:
-                        num_words = sum(eeg_events.list==ln)
-                        recall_position_array += num_words * [getSerialposOfRecalls(temp_evs_free_recall,eeg_events,ln)] # To add v, n times, to l:
-                    
-                    # repurpose this value from recall to know identity of recalls for every word in scope of encoding
-                    if exp == 'catFR1':
-                        semantic_clustering_key+=enc_semantic_key
-                    elif exp == 'FR1':
-                        temporal_clustering_key+=enc_temporal_key
-                        
-                if selected_period == 'whole_retrieval':
-                    # make a matrix of the times of free recall if looking at whole retrieval period
-                    list_nums = evs_rets.list.unique() # count all list numbers for this session
-                    temp_fr_array = np.zeros((len(list_nums),retrieval_whole_time),dtype=np.int8)
-                    for ln in list_nums:
-                        list_times = np.array(evs_free_recall[evs_free_recall.list==ln].mstime) - \
-                                    (np.array(evs_rets[evs_rets.list==ln].mstime) + align_adjust) # align all times to end of beep
+            if selected_period == 'whole_retrieval':
+                # make a matrix of the times of free recall if looking at whole retrieval period
+                list_nums = evs_rets.list.unique() # count all list numbers for this session
+                temp_fr_array = np.zeros((len(list_nums),retrieval_whole_time),dtype=np.int8)
+                for ln in list_nums:
+                    list_times = np.array(evs_free_recall[evs_free_recall.list==ln].mstime) - \
+                                (np.array(evs_rets[evs_rets.list==ln].mstime) + align_adjust) # align all times to end of beep
 #                         list_times = evs_free_recall[evs_free_recall.list==ln].rectime # I confirmed these are accurate relative to REC_START
-                        for i,list_time in enumerate(list_times):
-                            if list_time <= retrieval_whole_time:
-                                # used to do ln-1 instead of i to get order opposite but doesn't work now since I remove lists
-                                temp_fr_array[i][int(np.round(list_time))] = 1 
-                    fr_array = superVstack(fr_array,temp_fr_array)
-                    list_num_key.extend(temp_list_num_key)
-                    
-                elif selected_period == 'surrounding_recall':    # ~~~                                
-                    # adding new values 2020-11-24 for some suggested analyses from group
-
-                    # key of serialpos for recalls
-                    list_nums = evs_free_recall.list.unique()   
-                    temp_recalls_serialpos = []
-                    for ln in list_nums:
-                        temp_sp = getSerialposOfRecalls(evs_free_recall,word_evs,ln)
-                        temp_recalls_serialpos.extend(temp_sp)
-                        # recall number per list
-                        list_recall_num_array.extend(np.tile(len(temp_sp),len(temp_sp)))
-                        # recall position per list
-                        recall_position_array.extend(np.arange(len(temp_sp))+1) # 1-indexed
-                        # list_nums
-                        list_num_key.extend(np.tile(ln,len(temp_sp)))
-                    serialpos_array.extend(np.array(temp_recalls_serialpos))
-
-                    # key of rectimes for recalls
-                    rectime_array.extend(np.array(evs_free_recall.rectime))  
-                    
-                    # just save the whole dataframe too so I have name and list_num (so I can align to Jim/David's analysis 2021-10-05)
-                    session_events = session_events.append(eeg_events)    
-                    
-                    # put these here since for encoding now going to use semantic_clustering_key at that scope
-                    semantic_clustering_key.extend(np.array(temp_semantic_key)[selected_recalls_idxs])
-                    temporal_clustering_key.extend(np.array(temp_temporal_key)[selected_recalls_idxs])  
-                    if exp == 'catFR1':
-                        semantic_clustering_from_key.extend(np.array(temp_semantic_from_key)[selected_recalls_idxs])                    
-
-                serialpos_lags.extend(np.array(temp_serialpos_lags)[selected_recalls_idxs])
-                serialpos_from_lags.extend(np.array(temp_from_lags)[selected_recalls_idxs])
-                CRP_lags.extend(np.array(temp_CRP_lags)[selected_recalls_idxs])
-
-                # record list-level numbers (for whole_retrieval analysis)
-                list_trial_nums.extend(temp_list_trial_nums)                 
-                list_level_temporal.extend(temp_list_level_temporal)
-                list_level_semantic.extend(temp_list_level_semantic)
+                    for i,list_time in enumerate(list_times):
+                        if list_time <= retrieval_whole_time:
+                            # used to do ln-1 instead of i to get order opposite but doesn't work now since I remove lists
+                            temp_fr_array[i][int(np.round(list_time))] = 1 
+                fr_array = superVstack(fr_array,temp_fr_array)
+                list_num_key.extend(temp_list_num_key)
                 
-                trial_nums = np.append(trial_nums,ripplelogic.shape[0])
-                region_electrode_ct+=1 # channel ct for this session
-                HPC_names.append(elec_regions[channel])
-                sub_sess_names.append(sub+'-'+str(session))
-                sub_names.append(sub)
-                electrode_labels.append(pairs.iloc[channel].label) # get names of electrodes so can look for them across sessions
+            elif selected_period == 'surrounding_recall':    # ~~~                                
+                # adding new values 2020-11-24 for some suggested analyses from group
+
+                # key of serialpos for recalls
+                list_nums = evs_free_recall.list.unique()   
+                temp_recalls_serialpos = []
+                for ln in list_nums:
+                    temp_sp = getSerialposOfRecalls(evs_free_recall,word_evs,ln)
+                    temp_recalls_serialpos.extend(temp_sp)
+                    # recall number per list
+                    list_recall_num_array.extend(np.tile(len(temp_sp),len(temp_sp)))
+                    # recall position per list
+                    recall_position_array.extend(np.arange(len(temp_sp))+1) # 1-indexed
+                    # list_nums
+                    list_num_key.extend(np.tile(ln,len(temp_sp)))
+                serialpos_array.extend(np.array(temp_recalls_serialpos))
+
+                # key of rectimes for recalls
+                rectime_array.extend(np.array(evs_free_recall.rectime))  
                 
-                # get atlas coordinates for this electrode
-                if 'avg.x' in pairs:
-                    temp_coord = np.append(pairs.iloc[channel]['avg.x'],np.append(pairs.iloc[channel]['avg.y'],pairs.iloc[channel]['avg.z']))
-                elif 'ind.x' in pairs:
-                    temp_coord = np.append(pairs.iloc[channel]['ind.x'],np.append(pairs.iloc[channel]['ind.y'],pairs.iloc[channel]['ind.z']))
-                else:
-                    temp_coord = np.empty(3); temp_coord[:] = np.nan
-                channel_coords.append(temp_coord)              
+                # just save the whole dataframe too so I have name and list_num (so I can align to Jim/David's analysis 2021-10-05)
+                session_events = session_events.append(eeg_events)    
+                
+                # put these here since for encoding now going to use semantic_clustering_key at that scope
+                semantic_clustering_key.extend(np.array(temp_semantic_key)[selected_recalls_idxs])
+                temporal_clustering_key.extend(np.array(temp_temporal_key)[selected_recalls_idxs])  
+                if exp == 'catFR1':
+                    semantic_clustering_from_key.extend(np.array(temp_semantic_from_key)[selected_recalls_idxs])                    
+
+            serialpos_lags.extend(np.array(temp_serialpos_lags)[selected_recalls_idxs])
+            serialpos_from_lags.extend(np.array(temp_from_lags)[selected_recalls_idxs])
+            CRP_lags.extend(np.array(temp_CRP_lags)[selected_recalls_idxs])
+
+            # record list-level numbers (for whole_retrieval analysis)
+            list_trial_nums.extend(temp_list_trial_nums)                 
+            list_level_temporal.extend(temp_list_level_temporal)
+            list_level_semantic.extend(temp_list_level_semantic)
+            
+            trial_nums = np.append(trial_nums,ripplelogic.shape[0])
+            region_electrode_ct+=1 # channel ct for this session
+            elec_names.append(selected_elec_regions[channel])
+            sub_sess_names.append(sub+'-'+str(session))
+            sub_names.append(sub)
+            electrode_labels.append(pairs.iloc[channel].label) # get names of electrodes so can look for them across sessions
+            
+            # get atlas coordinates for this electrode
+            if 'avg.x' in pairs:
+                temp_coord = np.append(pairs.iloc[channel]['avg.x'],np.append(pairs.iloc[channel]['avg.y'],pairs.iloc[channel]['avg.z']))
+            elif 'ind.x' in pairs:
+                temp_coord = np.append(pairs.iloc[channel]['ind.x'],np.append(pairs.iloc[channel]['ind.y'],pairs.iloc[channel]['ind.z']))
+            else:
+                temp_coord = np.empty(3); temp_coord[:] = np.nan
+            channel_coords.append(temp_coord)              
 
         program_ran = 1  
                 
@@ -842,10 +837,30 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
             elec_by_elec_correlation = np.mean(pg.pairwise_corr(session_ripple_df,method='spearman').r) # correlation b/w elecs 
             if elec_by_elec_correlation > max_electrode_by_electrode_correlation:
                 program_ran = 0
-                add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
-                    
+                add_session_to_exclude_list("Program ran 0")
+                sys.exit()
+                            
+        if len(selected_elec_ripples_idxs) == 0:
+            add_session_to_exclude_list("Ripple array is empty")
+            sys.exit()
+
+        eeg_mne.pick(selected_elec_ripples_idxs)
+        eeg_mne = eeg_mne.filter(l_freq=122, h_freq=118, method='iir', 
+                                 iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
+        eeg_mne = eeg_mne.filter(l_freq=0.5, h_freq=None, method='iir', 
+                                 iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
+        HFA_freqs = np.logspace(np.log10(64),np.log10(178),10)
+        theta_freqs = np.array([5,6,7,8])
+        
+        print("HFA POWER")
+        HFA_power = compute_morlet(eeg_mne, HFA_freqs, sr, mode='power', desired_sr=50, n_jobs=n_jobs)
+        print("THETA POWER")
+        theta_power = compute_morlet(eeg_mne, theta_freqs, sr, mode='power', desired_sr=50, n_jobs=n_jobs)
+        print("THETA PHASE")
+        theta_phase = compute_morlet(eeg_mne, theta_freqs, sr, mode='phase', desired_sr=500, n_jobs=n_jobs)
+        
     except Exception as e:
-        add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
+        add_session_to_exclude_list(f"An exception occurred: {e}")
         LogDFExceptionLine(row, e, 'ClusterRunSWR_log.txt') 
         
     if save_values == 1 and program_ran == 1:
@@ -855,6 +870,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
              
             soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period,recall_minimum)
             path_name = save_path+subfolder
+            
             if os.path.isdir(path_name) == False:
                 os.makedirs(path_name)
                 
@@ -866,18 +882,18 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
                             '_'+soz_label+'_'+filter_type+'.p')  # str(min_recalls)+'.p') # don't need this now take care of min after loading # '-ZERO_IRI.p'
             
             print("SAVE FILE NAME: ", fn)    
-            breakpoint()
+            
             with open(fn,'wb') as f:
                 pickle.dump({'region_electrode_ct':region_electrode_ct, 
-                            'HPC_names':HPC_names, 'sub_sess_names':sub_sess_names,
-                            'ripple_array':ripple_array, 'HFA_pow':HFA_power_array, 'theta_pow':theta_power_array,
-                            'low_gamma_pow':low_gamma_power_array, 'high_gamma_pow': high_gamma_power_array,
+                            'elec_names':elec_names, 'sub_sess_names':sub_sess_names,
+                            'ripple_array':np.stack(ripple_array, axis=1), 'HFA_pow': HFA_power, 
+                            'theta_pow':theta_power, 'theta_phase_array':theta_phase,
                             'time_add_save':time_add_save,
                             'trial_nums':trial_nums, 
                             'encoded_word_key_array':encoded_word_key_array,'category_array':category_array,
                             'serialpos_array':serialpos_array,'list_recall_num_array':list_recall_num_array, # ~~
                             'rectime_array':rectime_array,'session_events':session_events,
-                            'recall_position_array':recall_position_array, # ~~
+                            'recall_position_array':recall_position_array, 
                             'fr_array':fr_array, 'sub_names':sub_names,
                             'total_recalls':total_recalls, 'kept_recalls':kept_recalls,
                             'trial_by_trial_correlation':trial_by_trial_correlation, # one value for each electrode for this session
@@ -893,9 +909,9 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
             
         except:
             LogDFExceptionLine(row, e, 'ClusterRunSWR_log.txt') 
+            add_session_to_exclude_list("Could not save file")
             
     else:
-        add_session_to_exclude_list('exclude_participants/exclude_participants.csv')
         print("Program ran: ", program_ran)
         print("Save values: ", save_values)
 
@@ -904,14 +920,12 @@ import dill
 
 temp_df = list(rerun_df.itertuples()) 
 
-
-run_all = False
+run_all = True
 
 # only run this once when doing slurm,
 # otherwise the size of temp_df will keep decreasing 
 # and the sys.argv[1] will exceed the number of rows in temp_df
-if run_all == True: 
-    if int(sys.argv[1]) == 0:
+if (run_all == True and int(sys.argv[1]) == 0) or (run_all==False):
         # opening a file with wb automatically clears its contents 
         with open(f'/home1/efeghhi/cluster/temp_dfSWR.p', 'wb') as f: 
             dill.dump(temp_df,f)
@@ -922,12 +936,12 @@ for i in range(len(temp_df)):
     
 print("Number of sessions left: ", len(params))
 
+
 if run_all == False:
-    print("Running cluster run")
-    ClusterRunSWRs(params[1], save_path=save_path, selected_period=selected_period, 
+    ClusterRunSWRs(params[2], save_path=save_path, selected_period=selected_period, 
                    selected_region=selected_region, exp=exp, len_params=len(params), testing_mode=True)
 else: 
     ClusterRunSWRs(int(sys.argv[1]), save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, len_params=len(params))
+                   selected_region=selected_region, exp=exp, len_params=len(params), n_jobs=8)
     
-    print(f'finished ClusterRunSWRs for {sys.argv[1]}!!')
+    print(f'finished ClusterRunSWRs for {sys.argv[1]}')

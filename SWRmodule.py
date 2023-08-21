@@ -2131,26 +2131,33 @@ def ClusterRun(function, parameter_list, max_cores=1000):
 # 25 didn't work for a few...made a list of the 15 or so in SWRanalysis 2022-03-09
 # 25 didn't work for a few catFR1 too. Made list of 20 and will try running with 50 cores/job
 
-def compute_morlet(eeg1, eeg2, freqs, sr, eeg_buffer):
-    
-    from ptsa.data.filters import MorletWaveletFilter, ResampleFilter
-    import xarray
+def z_score_epochs(power):
+    # power should be a 3d array of shape num_trials x num_channels x num_timesteps
+    return (power - np.mean(power, axis=(0,2), keepdims=True)) / np.std(np.mean(power, axis=2, keepdims=True),axis=0, keepdims=True) 
 
-    eeg1 = MorletWaveletFilter(timeseries=eeg1, freqs=freqs, output='power', width=7, verbose=True).filter()
-    eeg2 = MorletWaveletFilter(timeseries=eeg2, freqs=freqs, output='power', width=7, verbose=True).filter()
-    morlet = eeg1.append(eeg2,'channel')
-    eeg1 = None
-    eeg2 = None
+def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin=-.7, tmax=2.3, mode='power'):
     
-    # now can remove buffers
-    sr_factor = 1000/sr
-    morlet = morlet[:,:,:,int(eeg_buffer/sr_factor):int(np.shape(morlet)[3]-(eeg_buffer/sr_factor))]
-    morlet = xarray.ufuncs.log10(morlet, out=morlet.values)
-    # resample down to 10 Hz (100 ms bins)
-    morlet = ResampleFilter(timeseries=morlet,resamplerate=10).filter() 
-    # z-score using std of time-bin averaged instead (mean is same either way)
-    morlet = (morlet - np.mean(morlet, axis=(1,3))) / np.std(np.mean(morlet, axis=3),axis=1) 
-    return np.mean(morlet,0) # mean over the 10 frequencies (now down to events X pairs X 100 ms bins)
+    from mne.time_frequency import tfr_morlet
+    from mne.filter import resample
+    
+    morlet_output = tfr_morlet(eeg, freqs, n_cycles=5, return_itc=False, average=False, n_jobs=n_jobs, output=mode)
+    morlet_output.crop(tmin=tmin, tmax=tmax, include_tmax=False) # crop out the buffer 
+    
+    if mode == 'power':
+        
+        # log transform, mean across wavelet frequencies, and z-score
+        morlet_output.data = np.log10(morlet_output.data)
+        morlet_output.data = np.mean(morlet_output.data, axis=2)
+        morlet_output.data = z_score_epochs(morlet_output.data)
+                
+    if mode == 'phase':
+        # take circular mean across wavelet phase values
+        morlet_output.data = scipy.stats.circmean(morlet_output.data, high=np.pi, low=-np.pi, axis=2)
+        
+    if sr > desired_sr: 
+        morlet_output.data = resample(morlet_output.data, down=sr/desired_sr)
+        
+    return morlet_output.data
     
 
     

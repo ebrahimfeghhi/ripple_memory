@@ -13,13 +13,19 @@ from general import *
 from SWRmodule import *
 import statsmodels.formula.api as smf
 
+
+def convert_elec_2d(array_3d):
+    
+    array_3d_swapped = np.swapaxes(array_3d, 0, 1)
+    return np.reshape(array_3d_swapped, (-1, array_3d_swapped.shape[-1]))
+    
 class HFA_ripples_prepare_data():
 
     '''
     General class for loading data + other helpful functions. 
     '''
 
-    def __init__(self, exp, df, sub_selection, data_folder, ripple_regions=['ca1'],
+    def __init__(self, exp, df, sub_selection, ripple_regions=['ca1'],
                             select_subfield=True, hpc_regions=['ca1'], ripple_bin_start_end=[100,1700], HFA_bins=[400,1100], 
                             sr_factor=2.0, pre_encoding_time=-700, encoding_time=2300, bin_size=100,
                             smoothing_triangle=5, samples=100, sr=500):
@@ -28,7 +34,6 @@ class HFA_ripples_prepare_data():
         :param str exp: catFR1 or FR1
         :param pandas DataFrame df: subject data
         :param str sub_selection: whole, first_half, or second_half
-        :param str data_folder: SWR_scratch or SWR_semantic_scratch
         :param list ripple_regions: which regions in hpc to look for ripples, applies for any brain region
         :param bool selected_subfield: if true, only analyze data from hpc_regions when region name is set to hpc
         :param list hpc_regions: which regions in hpc to analyze, only applies when analyzing hpc
@@ -46,7 +51,6 @@ class HFA_ripples_prepare_data():
         self.exp = exp
         self.df = df 
         self.sub_selection = sub_selection
-        self.data_folder = data_folder 
         self.ripple_bin_start_end = ripple_bin_start_end
         self.HFA_bins = HFA_bins 
         self.sr_factor = sr_factor
@@ -61,7 +65,9 @@ class HFA_ripples_prepare_data():
         self.skipped_files = 0
         self.sr = sr 
         self.ripple_start_marker = int((self.ripple_bin_start_end[0] - self.pre_encoding_time) / self.sr_factor)
-        self.ripple_end_marker = int((self.encoding_time - self.ripple_bin_start_end[1]) / self.sr_factor)
+        self.ripple_end_marker = int((self.ripple_bin_start_end[1] - self.pre_encoding_time) / self.sr_factor)
+        print("RIPPLE START MARKER: ", self.ripple_start_marker)
+        print("RIPPLE END MARKER: ", self.ripple_end_marker)
         self.analysis_information = {}
         self.ripple_bin_duration = (ripple_bin_start_end[1] - ripple_bin_start_end[0]) / self.sr_factor
         self.HFA_bin_duration = (HFA_bins[1] - HFA_bins[0]) / self.sr_factor
@@ -150,9 +156,9 @@ class HFA_ripples_prepare_data():
         else: # these others I haven't set up indexing (see >line 100 in this cell)
             soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period, recall_minimum)
             
-        ripple_array = [];  HFA_array = []; theta_array = []; gamma_array = []
-        ripple_freq_array = []; trial_nums = [];  encoded_word_key_array = []
-        HPC_names = []; sub_sess_names = []; 
+        ripple_array = [];  HFA_array = []; theta_array = []; theta_phase_array = []
+        trial_nums = [];  encoded_word_key_array = []
+        elec_names = []; sub_sess_names = []; 
         region_electrode_ct = []; sub_names = []
         trial_by_trial_correlation = []; elec_ripple_rate_array = []
         elec_by_elec_correlation = []; fr_array = []
@@ -179,8 +185,6 @@ class HFA_ripples_prepare_data():
         
         if 'efeghhi' in base_path:
             path_name = f'{base_path}{self.exp}/{subfolder}'
-        if 'john' in base_path:
-            path_name = f'{base_path}{self.data_folder}/{subfolder}'
         
         for p, row in enumerate(analysis_df.itertuples()): 
             
@@ -201,7 +205,7 @@ class HFA_ripples_prepare_data():
                         dat_HPC = pickle.load(fh)
                         ripple_array_hpc = dat_HPC['ripple_array']
                         trial_nums_hpc =  dat_HPC['trial_nums']
-                        HPC_names_single_file = dat_HPC['HPC_names'] 
+                        elec_names_single_file = dat_HPC['elec_names'] 
                         
                     # skip rest of loop if there are no hpc ripples
                     if np.array(ripple_array_hpc).shape[0] == 0 or np.sum(ripple_array_hpc)==0:
@@ -217,7 +221,7 @@ class HFA_ripples_prepare_data():
                     
                     dat = pickle.load(f)
                     trial_nums_single_file = dat['trial_nums']
-                    region_names_single_file = self.add_location(dat['channel_coords'], dat['HPC_names'])
+                    region_names_single_file = self.add_location(dat['channel_coords'], dat['elec_names'])
                     
                     if len(trial_nums_single_file) == 0:
                         self.skipped_files_no_trials += 1
@@ -238,18 +242,17 @@ class HFA_ripples_prepare_data():
                     
                         # evaluates to True if there are hpc ripples on the same side as area 2
                         # if area2 is hpc, automatically returns true
-                        hpc_ripples_ipsilateral = self.check_hpc_ripples(region_names_single_file, HPC_names_single_file)
+                        hpc_ripples_ipsilateral = self.check_hpc_ripples(region_names_single_file, elec_names_single_file)
                         
                         if hpc_ripples_ipsilateral==False:
                             self.skipped_files_ipsilateral += 1
                             self.missing_subjects[sub] = 'no_ispilateral_hpc_ripples'
                             continue 
                     
-                    trial_nums = np.append(trial_nums,dat['trial_nums'])
-                    HFA_array = superVstack(HFA_array,dat['HFA_array'])
-                    theta_array = superVstack(theta_array, dat['theta_array'])
-                    gamma_array = superVstack(gamma_array, dat['gamma_array'])
-                    ripple_freq_array = superVstack(ripple_freq_array, dat['ripple_freq_array'])
+                    trial_nums = np.append(trial_nums, dat['trial_nums'])
+                    HFA_array = superVstack(HFA_array, convert_elec_2d(dat['HFA_pow']))
+                    theta_array = superVstack(theta_array, convert_elec_2d(dat['theta_pow']))
+                    theta_phase_array = superVstack(theta_phase_array, convert_elec_2d(dat['theta_phase_array']))
      
                     if region_name == 'HPC':
                         ripple_array_hpc = dat['ripple_array']
@@ -260,7 +263,7 @@ class HFA_ripples_prepare_data():
                     sub_names.extend(dat['sub_names'])
                     
                     channel_coords.extend(dat['channel_coords'])
-                    HPC_names.extend(region_names_single_file)
+                    elec_names.extend(region_names_single_file)
                     # check to see the number of trials
                     trial_by_trial_correlation.extend(dat['trial_by_trial_correlation']) # one value for each electrode for this session
                     elec_by_elec_correlation = np.append(elec_by_elec_correlation,dat['elec_by_elec_correlation'])
@@ -294,7 +297,7 @@ class HFA_ripples_prepare_data():
                         
                         ripples_single_file = self.ripples_hpc_any_ipsi(trial_nums_single_file, 
                                                                region_names_single_file, trial_nums_hpc, 
-                                                               HPC_names_single_file, ripple_array_hpc)  
+                                                               elec_names_single_file, ripple_array_hpc)  
                         ripple_array = superVstack(ripple_array, ripples_single_file)
         
                     elif region_name == 'HPC' and hpc_ripple_type == 'any_ipsi_elec':
@@ -306,15 +309,16 @@ class HFA_ripples_prepare_data():
                         ripple_array = superVstack(ripple_array, ripples_single_file)
                         
                     else:
-                        # remove ripples outside the HPC regions if region name is HPC 
+                        # remove ripples outside the selected HPC regions if region name is HPC 
                         if region_name == 'HPC':
                             ripple_array_single_file = self.remove_ripples_outside_selected_region(np.stack(dat['ripple_array']), 
                                                                                                region_names_single_file, 
                                                                                                 trial_nums_single_file)  
                         else:
                             ripple_array_single_file = dat['ripple_array']
-                                         
-                        ripple_array = superVstack(ripple_array, ripple_array_single_file)
+                        
+                 
+                        ripple_array = superVstack(ripple_array, convert_elec_2d(ripple_array_single_file))
                         
                     self.loaded_files += 1
                         
@@ -354,20 +358,19 @@ class HFA_ripples_prepare_data():
         print('Number of electrodes: '+str(len(np.unique(sub_elec))))
 
         print('Electrode regions X sessions:')
-        unique_names = np.unique(HPC_names)
+        unique_names = np.unique(elec_names)
         for name in unique_names:
-            num_elecs = sum(np.array([names.find(name) for names in HPC_names])>=0)
+            num_elecs = sum(np.array([names.find(name) for names in elec_names])>=0)
             print(str(num_elecs)+' for '+name)
 
         # save data to class 
         self.HFA_array = HFA_array
         self.theta_array = theta_array
-        self.gamma_array = gamma_array
-        self.ripple_freq_array = ripple_freq_array
+        self.theta_phase_array = theta_phase_array
         self.ripple_array = ripple_array
         self.trial_nums = trial_nums
         self.sub_sess_names = sub_sess_names
-        self.HPC_names = HPC_names
+        self.elec_names = elec_names
         self.recall_before_intrusion_array = recall_before_intrusion_array
         self.rectime_array = rectime_array
         self.list_recall_num_array = list_recall_num_array
@@ -386,8 +389,10 @@ class HFA_ripples_prepare_data():
         self.list_num_key = list_num_key
         self.encoded_word_key_array = encoded_word_key_array
         self.recall_position_array = recall_position_array
-        #self.session_events = session_events
-        self.clean_up_ripples()
+        
+        # Not sure what to do with 0.5 values right now, so going to remove them.
+        self.ripple_array = np.where(self.ripple_array==0.5, 0, self.ripple_array)
+
         
     def add_location(self, coords, names):
         
@@ -428,28 +433,34 @@ class HFA_ripples_prepare_data():
     
     def remove_lists_not_ll(self):
         
-        list_num = 1
-        ll = 0
+        list_num = 1 
+        ll = 0 # position in list
         self.num_lists_wrong = 0
         mask_idxs_all = []
+        
+        # shape num_trials, where each element is the list
+        # number that this trial corresponds to
         list_num_key_np_all = np.array(self.list_num_key)
         
         for i in range(list_num_key_np_all.shape[0]):
             
+            # increment ll when on the same list
             if list_num_key_np_all[i] == list_num:
                 ll += 1 
                 
+            # moving to another list
             else:
-                
+                # if list was not of list length, add it to the mask
                 if ll != self.list_length:
                     mask_idxs = [x for x in range(i-ll, i)]
                     mask_idxs_all.append(mask_idxs)
                     self.num_lists_wrong += 1
                     
+                # update list_num and ll
                 list_num = list_num_key_np_all[i]
                 ll = 1  
                 
-        self.mask_idxs_np = np.hstack(mask_idxs_all)  
+        return mask_idxs_all
 
     def select_idxs_numpy(self):
             
@@ -461,9 +472,9 @@ class HFA_ripples_prepare_data():
             
             # location names will be a list of length num trials
             # where every entry is the HPC region the trial is recorded from 
-            for s in range(len(self.HPC_names)):
+            for s in range(len(self.elec_names)):
                 selected_trials = int(self.trial_nums[s])
-                location_names.extend(np.tile(self.HPC_names[s],selected_trials))  
+                location_names.extend(np.tile(self.elec_names[s],selected_trials))  
                 
             # loop through location names, and if location name is
             # equal to the desired hpc region change the corresponding
@@ -483,11 +494,11 @@ class HFA_ripples_prepare_data():
             selected_recalls[(np.array(self.session_name_array)=='R1278E-10') & (np.array(self.list_num_key)==25)] = 0
             
         # mask lists that are not of the correct length
-        self.remove_lists_not_ll()
-        selected_recalls[self.mask_idxs_np] = 0
+        mask_idxs = self.remove_lists_not_ll()
+        if len(mask_idxs) != 0:
+            selected_recalls[np.hstack(mask_idxs)] = 0
         
         self.num_selected_trials = np.sum(selected_recalls)
-            
         self.session_names_np = np.array(self.session_name_array)[selected_recalls]
         self.electrode_array_np = np.array(self.electrode_array)[selected_recalls]
         self.recall_position_np = np.array(self.recall_position_array)[selected_recalls]
@@ -496,14 +507,12 @@ class HFA_ripples_prepare_data():
         self.serialpos_array_np = np.array(self.serialpos_array)[selected_recalls]
         self.list_num_key_np = np.array(self.list_num_key)[selected_recalls]
         self.word_correct_array_np = self.word_correct_array[selected_recalls]
-        #self.session_events_np = self.session_events[selected_recalls]
         self.HFA_array_np = self.HFA_array[selected_recalls]
         self.session_name_array_np = np.array(self.session_name_array)[selected_recalls]
         self.subject_name_array_np = np.array(self.subject_name_array)[selected_recalls]
         self.ripple_array_np = np.array(self.ripple_array)[selected_recalls]
         self.theta_array_np = np.array(self.theta_array)[selected_recalls]
-        self.gamma_array_np = np.array(self.gamma_array)[selected_recalls]
-        self.ripple_freq_array_np = np.array(self.ripple_freq_array)[selected_recalls]
+        self.theta_phase_array_np = np.array(self.theta_phase_array)[selected_recalls]
         
         if self.exp == 'FR1':
             print("Creating temporal clustering array")
@@ -651,15 +660,6 @@ class HFA_ripples_prepare_data():
                         
         return ripples_hpc_area2shape
     
-    def clean_up_ripples(self):
-        
-        # Not sure what to do with 0.5 values right now, so going to remove them.
-        self.ripple_array = np.where(self.ripple_array==0.5, 0, self.ripple_array)
-                
-        # select ripples only in time range of interest
-        self.ripple_array = self.ripple_array[:, self.ripple_start_marker:-self.ripple_end_marker]
-        self.analysis_information['ripple_timesteps'] = self.ripple_array.shape[0]
-        
     def compute_HFA_mean(self):
         
         HFA_bins = [(self.HFA_bins[0]-self.pre_encoding_time)/self.bin_size, (self.HFA_bins[1]-self.pre_encoding_time)/self.bin_size]
@@ -681,9 +681,11 @@ class HFA_ripples_prepare_data():
         '''
         Returns idxs of ripples and no ripples from ripple_array
         '''
-
+        
+        # select time region of interest (tri)
+        ripple_array_tri = self.ripple_array_np[:, self.ripple_start_marker:self.ripple_end_marker]
         # sum across rows to find rows where a ripple occurs
-        ripple_array_rowsum = np.sum(self.ripple_array_np,axis=1)
+        ripple_array_rowsum = np.sum(ripple_array_tri,axis=1)
         # if the row consists of all zeros, no ripple occurred, so set value to False
         # otherwise a ripple occurred, so set the value to True 
         ripple_bool = np.where(ripple_array_rowsum==0, False, True) 

@@ -11,14 +11,14 @@ from HFA_ripples_analysis import HFA_ripples_analysis
 
 
 # init variables
-sub_selection = 'first_half'
+sub_selection = 'whole'
 df = get_data_index("r1") # all RAM subjects
-exp = 'FR1' # 'FR1' 'catFR1' 'RepFR1'
+exp = 'catFR1' # 'FR1' 'catFR1' 'RepFR1'
 
 data_folder = 'SWR_scratch'
 select_subfield = True
 ripple_bin_start_end = [100, 1100]
-hpc_region = ['ca3', 'dg']
+hpc_region = ['ca1', 'ca3', 'dg']
 ripple_region = ['ca1', 'ca3', 'dg']
 hpc_ripple_type = 'single_elec'
 region_name = 'HPC'
@@ -33,7 +33,3 @@ RS.load_data_from_cluster(base_path='/scratch/efeghhi/', selected_period='encodi
                           hpc_ripple_type='single_elec', ripple_bool=False)
 RS.getStartArray()
 RS.select_idxs_numpy()
-RS.create_temporal_clustered_array()
-breakpoint()
-
-#(55200, 30)
