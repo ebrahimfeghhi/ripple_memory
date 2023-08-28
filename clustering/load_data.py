@@ -9,7 +9,7 @@ def convert_elec_2d(array_3d):
     array_3d_swapped = np.swapaxes(array_3d, 0, 1)
     return np.reshape(array_3d_swapped, (-1, array_3d_swapped.shape[-1]))
 
-def load_data(directory, region_name):
+def load_data(directory, region_name, encoding_mode):
     
     '''
     
@@ -17,6 +17,7 @@ def load_data(directory, region_name):
     
         :param str directory: directory where data is stored
         :param str region_name: which brain region to load 
+        :param int encoding_mode: 1 means encoding mode, 0 means recall mode
         
     Ouputs:
 
@@ -28,9 +29,14 @@ def load_data(directory, region_name):
         
     '''
     
-    data_dict = {'ripple': [], 'HFA': [], 'theta_phase': [], 'clust': [], 'correct': [], 'position': [], 
-        'list_num': [], 'subj': [], 'sess': [], 'elec_names':[]}
-
+    if encoding_mode: 
+        
+        data_dict = {'ripple': [], 'HFA': [], 'theta_phase': [], 'clust': [], 'correct': [], 'position': [], 
+        'list_num': [], 'subj': [], 'sess': [], 'elec_names':[], 'serial_pos': []}
+    else:
+        
+        data_dict = {'ripple': [], 'HFA': [], 'theta_phase': [], 'list_num': [], 'subj': [], 'sess': [], 'elec_names':[]}
+         
     file_list = os.listdir(directory)
     for f in file_list:
         
@@ -41,6 +47,8 @@ def load_data(directory, region_name):
         with open(f'{directory}/{f}', 'rb') as pickle_file:
             loaded_data = pickle.load(pickle_file)    
             
+        if encoding_mode == 0:
+            breakpoint()
         # rows of HFA give us number of words presented in that session
         num_trials = loaded_data['HFA_pow'].shape[0]
             
@@ -49,18 +57,24 @@ def load_data(directory, region_name):
         data_dict['HFA'].append(np.asarray(loaded_data['HFA_pow']))
         data_dict['theta_phase'].append(np.asarray(loaded_data['theta_phase_array']))
 
-        # vstack to get 2d shape num_trials x num_elecs
-        data_dict['correct'].append(np.vstack(loaded_data['encoded_word_key_array']).T)
-    
-        # reshape 1d array of shape (num__elec x num_trials) to num_trials x num_elec
-        data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
-        data_dict['position'].append(np.reshape(loaded_data['recall_position_array'], (-1, num_trials)).T)
+        if encoding_mode:
+            
+            # vstack to get 2d shape num_trials x num_elecs
+            data_dict['correct'].append(np.vstack(loaded_data['encoded_word_key_array']).T)
+            data_dict['serial_pos'].append(np.vstack(loaded_data['serialpos_array']).T)
+
+            # reshape 1d array of shape (num__elec x num_trials) to num_trials x num_elec
+            data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
+            data_dict['position'].append(np.reshape(loaded_data['recall_position_array'], (-1, num_trials)).T)
+            
         data_dict['list_num'].append(np.reshape(loaded_data['list_num_key'], (-1, num_trials)).T)
-        
+                
         # each of these entries is of shape num_electrodes, so need to repeat num_trials times
-        data_dict['elec_names'].append(np.asarray(loaded_data['elec_names']))
         data_dict['subj'].append(np.repeat(np.expand_dims(loaded_data['sub_names'], -1), num_trials, axis=-1).T)
         data_dict['sess'].append(np.repeat(np.expand_dims(loaded_data['sub_sess_names'], -1), num_trials, axis=-1).T)
+        
+        # elec_names is the only entry which is of shape num_elecs
+        data_dict['elec_names'].append(np.asarray(loaded_data['elec_names']))
 
     return data_dict
 
@@ -81,7 +95,9 @@ def remove_wrong_length_lists(data_dict, list_length=12):
     
     list_nums_sessions = data_dict['list_num']
     num_lists_wrong = 0
+    serial_pos = []
 
+    # loop through sessions 
     for sess, list_num_sess in enumerate(list_nums_sessions):
                 
         mask_idxs = []
@@ -92,12 +108,15 @@ def remove_wrong_length_lists(data_dict, list_length=12):
             
         for idx, ln in enumerate(list_num_sess_1d):
             
+            # if trial is part of the current list
+            # increment the position in the list 
             if ln == list_num:
-                ll += 1
+                ll += 1 
             
+            # new list 
             else:
                 # list is of incorrect length 
-                if ll % list_length != 0:
+                if ll != list_length:
                     mask_idxs.extend([i for i in range(idx-ll, idx)])
                     num_lists_wrong += 1
      
@@ -107,13 +126,16 @@ def remove_wrong_length_lists(data_dict, list_length=12):
                     
             num_trials += 1
             
-        # for the last list in the session 
-        if ll % list_length != 0: 
+        # for the last list in the session, there is no new list
+        # so just check to see if it was of the correct length
+        if ll != list_length: 
             mask_idxs.extend([i for i in range(idx-ll, idx)])
             num_lists_wrong += 1
-                    
+  
         if len(mask_idxs) > 0:  
             for key, val in data_dict.items():
+                # elec names are only repeated num_channel times, 
+                # so don't need to delete them
                 if key != 'elec_names':
                     data_dict[key][sess] = np.delete(val[sess], mask_idxs, axis=0)
                     
@@ -141,13 +163,16 @@ def select_region(data_dict, selected_elecs):
     # for each session, store indices corresponding to the selected_elecs
     for sess, elec_name in enumerate(elec_names):
         
+        # store indices corresponding to the desired electrodes
         selected_ind = [int(i) for i, x in enumerate(elec_name) if x in selected_elecs]
         
         if len(selected_ind) == 0:
             continue
         
+        # 1D data so we'll selec the proper indices outside the for loop
         data_dict_selected_elecs['elec_names'].append(data_dict['elec_names'][sess][selected_ind])
         
+        # remainder of data is 2D
         for key, val in data_dict.items():
             if key != 'elec_names':
                 data_dict_selected_elecs[key].append(val[sess][:, selected_ind])

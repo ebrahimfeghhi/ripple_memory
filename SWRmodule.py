@@ -2135,7 +2135,7 @@ def z_score_epochs(power):
     # power should be a 3d array of shape num_trials x num_channels x num_timesteps
     return (power - np.mean(power, axis=(0,2), keepdims=True)) / np.std(np.mean(power, axis=2, keepdims=True),axis=0, keepdims=True) 
 
-def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin=-.7, tmax=2.3, mode='power'):
+def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin=-2, tmax=2, mode='power'):
     
     from mne.time_frequency import tfr_morlet
     from mne.filter import resample

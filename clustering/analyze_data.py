@@ -58,14 +58,20 @@ def average_hfa_across_elecs(data_dict, HFA_start=400, HFA_end=1100, sr=50, star
 def reshape_to_trial_num(data_dict, keys):
     
     '''
-    YAY
+    :param dict data_dict: dictionary containing session related information 
+    :param dict keys: keys of data_dict to add to returned output
+    
+    This function takes as input data_dict and keys, and modifies the items 
+    corresponding to these lists to be np arrays of shape num_trials.
     '''
 
     data_dict_raveled = {}
 
+    # each key is a list with num_session entries 
     for key, val in data_dict.items():
         if key in keys:
             data_dict_raveled[key] = []
+            # add the information from the first electrode (since information is repeated across elecs)
             for sess in val:
                 if len(sess.shape) != 2:
                     print(f"{key} is not of the correct shape")
@@ -80,12 +86,22 @@ def create_semantic_clustered_array(data_dict,
                                     clustered=['A','C'], unclustered=['D', 'Z']):
             
     '''
-    :param list clustered: indicates what recalls count as clustered. There are four possible recalls:
-        1) 'A': adjacent semantic
-        2) 'C': remote semantic
-        3) 'D': remote unclustered
-        4) 'Z': dead end 
-    The default is to use A and C as clustered, and D and Z as unclustered. 
+    :param dict data_dict: dictionary which needs to have the following keys ->
+    
+    
+        clust: indicates what recalls count as clustered. There are four possible recalls:
+            1) 'A': adjacent semantic
+            2) 'C': remote semantic
+            3) 'D': remote unclustered
+            4) 'Z': dead end 
+            
+        position: position that each word was recalled in 
+    :param list clustered: which entries count as clustered
+    :param list unclustered: which entries count as unclustered 
+    
+        The default is to use A and C as clustered, and D and Z as unclustered. 
+        
+    Modifies clust key to be 1 for clustered, 0 for unclustered, and -1 for everything else
     '''
     
     list_length = 12        

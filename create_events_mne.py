@@ -37,90 +37,16 @@ save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = AMY_labels 
-region_name = 'AMY'
+selected_region = AMY_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
 extra = '' #'-ZERO_IRI'
+run_all = True
 ################################################################
-              
-subs = ['R1488T','R1381T','R1004D']
-sub_df = df[(df.subject.isin(subs))  & (df.experiment == exp)] # all sessions for subs
-sub_df = sub_df.reset_index()
-sub_df = sub_df.filter(items = [0,1,4] , axis=0)
-sub_df
-
-# 575 FR sessions. first 18 of don't load so skip those 
-exp_df = df[df.experiment==exp]
-if exp == 'FR1':
-    exp_df = exp_df[
-                    ((df.subject!='R1015J') | (df.session!=0)) & 
-                    ((df.subject!='R1063C') | (df.session!=1)) & 
-                    ((df.subject!='R1093J') | (~df.session.isin([1,2]))) &
-                    ((df.subject!='R1100D') | (~df.session.isin([0,1,2]))) &
-                    ((df.subject!='R1120E') | (df.session!=0)) &
-                    ((df.subject!='R1122E') | (df.session!=2)) &
-                    ((df.subject!='R1154D') | (df.session!=0)) &
-                    ((df.subject!='R1186P') | (df.session!=0)) &
-                    ((df.subject!='R1201P') | (~df.session.isin([0,1]))) &
-                    ((df.subject!='R1216E') | (~df.session.isin([0,1,2]))) &
-                    ((df.subject!='R1277J') | (df.session!=0)) &
-                    ((df.subject!='R1413D') | (df.session!=0)) & 
-                    ((df.subject!='R1123C') | (df.session!=2)) & # artifacts that bleed through channels (see SWR FR1 prob sessions ppt)
-                    ((df.subject!='R1151E') | (~df.session.isin([1,2]))) & # more bleed-through artifacts (see same ppt)
-                    ((df.subject!='R1275D') | (df.session!=3)) & # 3rd session an actual repeat of 2nd session (Paul should have removed from database by now)
-                    ((df.subject!='R1311T') | (df.session!=0)) & ## these next 3 eegoffset -1 for many recalls so messes things up for clustering analysis ##
-                    ((df.subject!='R1113T') | (df.session!=0)) &
-                    ((df.subject!='R1137E') | (df.session!=0)) 
-                   ] 
-if exp == 'catFR1':
-    exp_df = exp_df[
-                    ((df.subject!='R1044J') | (df.session!=0)) & # too few trials to do pg pairwise corr
-                    ((df.subject!='R1491T') | (~df.session.isin([1,3,5]))) & # too few trials to do pg pairwise corr
-                    ((df.subject!='R1486J') | (~df.session.isin([4,5,6,7]))) & # repeated data...will be removed at some point... @@
-                    ((df.subject!='R1501J') | (~df.session.isin([0,1,2,3,4,5]))) & # these weren't catFR1 (and they don't load right anyway)
-                    ((df.subject!='R1235E') | (df.session!=0)) & # split EEG filenames error...documented on Asana
-                    ((df.subject!='R1310J') | (df.session!=1)) & # session 1 is just a repeat of session 0
-                    ((df.subject!='R1239E') | (df.session!=0)) # some correlated noise (can see in catFR1 problem sessions ppt)
-                    ]
 
 
-exclude_sessions = []
-
-exclude_from_rerun = 'exclude_participants/exclude_participants.csv'
-file_exists = os.path.exists(exclude_from_rerun)
-field_name = 'Filename'
-excluded_sessions = []
-
-if file_exists:
-    excluded_sessions_csv = pd.read_csv(exclude_from_rerun)
-    excluded_sessions = list(excluded_sessions_csv.Filename)
-
-soz_label,recall_selection_name,subfolder = getSWRpathInfo(remove_soz_ictal,recall_type_switch,selected_period,recall_minimum)
-
-rerun_mask = []
-
-for i,row in enumerate(exp_df.itertuples()):
-    
-    sub = row.subject; session = row.session; exp = row.experiment
-    path_name = os.path.join(save_path, subfolder)
-    fn = os.path.join(path_name,
-            'SWR_'+exp+'_'+sub+'_'+str(session)+'_'+region_name+'_'+selected_period+recall_selection_name+
-                          '_'+soz_label+'_'+filter_type+extra+'.p') 
-    if fn in excluded_sessions:
-        continue 
-    try:
-        with open(fn,'rb') as f:
-            dat = pickle.load(f)
-    except:
-        rerun_mask.append(i)
-        
-rerun_df = exp_df.iloc[rerun_mask]
-
-def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_params, n_jobs=4, testing_mode=False):
-    
-
+def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jobs=4, testing_mode=False):
     
     ### params that clusterRun used
     recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
@@ -246,7 +172,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
     
     try:
         
-        with open(f'/home1/efeghhi/cluster/temp_dfSWR.p', 'rb') as f: ### change here to avoid overwrite
+        with open(f'/home1/efeghhi/cluster/temp_dfSWR_{region_name}_{selected_period}_{exp}.p', 'rb') as f: ### change here to avoid overwrite
             temp_df = dill.load(f)
             
         row = temp_df[param]
@@ -257,16 +183,6 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
         # won't run the same session
     
         print(f'{sub}-{session}')
-        
-        mont = int(row.montage); loc = int(row.localization)
-        reader = CMLReadDFRow(row)
-        evs = reader.load('task_events')
-        evs_free_recall = evs[(evs.type=='REC_WORD')] #& (evs.recalled==True)] # recalled word AND correct (from this list...no instrusions). 
-                        # deal with intrusions after checking clustering to ensure removing them doesn't create fake transitions
-
-        # need to remove free recalls that happened more than once
-        word_evs = evs[evs['type']=='WORD'] # get words 
-        
         
         def add_session_to_exclude_list(message):
             
@@ -299,6 +215,16 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
                     writer.writeheader()
                     
                 writer.writerow(data_dict)
+        
+        mont = int(row.montage); loc = int(row.localization)
+        reader = CMLReadDFRow(row)
+        evs = reader.load('task_events')
+        evs_free_recall = evs[(evs.type=='REC_WORD')] #& (evs.recalled==True)] # recalled word AND correct (from this list...no instrusions). 
+                        # deal with intrusions after checking clustering to ensure removing them doesn't create fake transitions
+
+        # need to remove free recalls that happened more than once
+        word_evs = evs[evs['type']=='WORD'] # get words 
+        
                 
         session_words = word_evs.item_name.unique()
         if len(findAinB(['BARRO','CABALLO','COSTILLA','DULCE','FICHA','ESTUFA','GALLINA','FRIJOL',
@@ -915,33 +841,12 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, len_
         print("Program ran: ", program_ran)
         print("Save values: ", save_values)
 
-# save as dill so can bypass pickling in ipython for cluster parallelization
-import dill
-
-temp_df = list(rerun_df.itertuples()) 
-
-run_all = True
-
-# only run this once when doing slurm,
-# otherwise the size of temp_df will keep decreasing 
-# and the sys.argv[1] will exceed the number of rows in temp_df
-if (run_all == True and int(sys.argv[1]) == 0) or (run_all==False):
-        # opening a file with wb automatically clears its contents 
-        with open(f'/home1/efeghhi/cluster/temp_dfSWR.p', 'wb') as f: 
-            dill.dump(temp_df,f)
-        
-params = []
-for i in range(len(temp_df)):
-    params.append(i)
-    
-print("Number of sessions left: ", len(params))
-
 
 if run_all == False:
-    ClusterRunSWRs(params[2], save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, len_params=len(params), testing_mode=True)
+    ClusterRunSWRs(params[0], save_path=save_path, selected_period=selected_period, 
+                   selected_region=selected_region, exp=exp, testing_mode=False)
 else: 
     ClusterRunSWRs(int(sys.argv[1]), save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, len_params=len(params), n_jobs=8)
+                   selected_region=selected_region, exp=exp, n_jobs=8)
     
     print(f'finished ClusterRunSWRs for {sys.argv[1]}')
