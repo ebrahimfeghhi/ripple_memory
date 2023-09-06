@@ -29,13 +29,19 @@ def load_data(directory, region_name, encoding_mode):
         
     '''
     
+    
     if encoding_mode: 
         
-        data_dict = {'ripple': [], 'HFA': [], 'theta_phase': [], 'clust': [], 'correct': [], 'position': [], 
+        data_dict = {'ripple': [], 'HFA': [], 'theta': [], 'theta_phase': [], 'clust': [], 'correct': [], 'position': [], 
         'list_num': [], 'subj': [], 'sess': [], 'elec_names':[], 'serial_pos': []}
-    else:
         
-        data_dict = {'ripple': [], 'HFA': [], 'theta_phase': [], 'list_num': [], 'subj': [], 'sess': [], 'elec_names':[]}
+        num_timesteps_HFA = 150
+        
+    else:
+
+        data_dict = {'ripple': [], 'HFA': [], 'theta': [], 'theta_phase': [], 'list_num': [], 'subj': [], 'sess': [], 'elec_names':[], 
+                     'clust': []}
+        num_timesteps_HFA = 200
          
     file_list = os.listdir(directory)
     for f in file_list:
@@ -45,16 +51,21 @@ def load_data(directory, region_name, encoding_mode):
          
         # Open the pickle file for reading
         with open(f'{directory}/{f}', 'rb') as pickle_file:
-            loaded_data = pickle.load(pickle_file)    
-            
-        if encoding_mode == 0:
-            breakpoint()
+            loaded_data = pickle.load(pickle_file)  
+
         # rows of HFA give us number of words presented in that session
         num_trials = loaded_data['HFA_pow'].shape[0]
+        
+        # there's a session in entphc where trials are longer for encoding (185 vs 150) (not sure why)
+        # going to exclude any sessions like this
+        HFA_timesteps = loaded_data['HFA_pow'].shape[2]
+        if HFA_timesteps != num_timesteps_HFA:
+            continue
             
         # 3d array of shape num_trials x num_electrodes x num_timesteps
         data_dict['ripple'].append(np.asarray(loaded_data['ripple_array']))
         data_dict['HFA'].append(np.asarray(loaded_data['HFA_pow']))
+        data_dict['theta'].append(np.asarray(loaded_data['theta_pow']))
         data_dict['theta_phase'].append(np.asarray(loaded_data['theta_phase_array']))
 
         if encoding_mode:
@@ -63,10 +74,12 @@ def load_data(directory, region_name, encoding_mode):
             data_dict['correct'].append(np.vstack(loaded_data['encoded_word_key_array']).T)
             data_dict['serial_pos'].append(np.vstack(loaded_data['serialpos_array']).T)
 
-            # reshape 1d array of shape (num__elec x num_trials) to num_trials x num_elec
-            data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
+            # reshape 1d array of shape to num_trials x num_elec 
             data_dict['position'].append(np.reshape(loaded_data['recall_position_array'], (-1, num_trials)).T)
-            
+           
+        # reshape 1d array of shape to num_trials x num_elec 
+        data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
+        
         data_dict['list_num'].append(np.reshape(loaded_data['list_num_key'], (-1, num_trials)).T)
                 
         # each of these entries is of shape num_electrodes, so need to repeat num_trials times
@@ -77,6 +90,7 @@ def load_data(directory, region_name, encoding_mode):
         data_dict['elec_names'].append(np.asarray(loaded_data['elec_names']))
 
     return data_dict
+
 
 def remove_wrong_length_lists(data_dict, list_length=12):
     
@@ -179,8 +193,56 @@ def select_region(data_dict, selected_elecs):
                 
     return data_dict_selected_elecs
 
+def count_num_trials(data_dict, dd_name, use_key='HFA'):
+    
+    '''
+    
+    Inputs:
+    
+        :param dict data_dict: dictionary with session related data 
+        :param str dd_name: name of data_dict
+        :param str use_key: the key to use to count number of trials 
+        
+    Ouputs:
 
-
+        Number of trials in data_dict before averaging across elecs
+        
+    '''
+    
+    num_trials = 0
+    
+    key_val = data_dict[use_key]
+    for sess in key_val:
+        num_trials += sess.shape[0]*sess.shape[1]
+        
+    print(f"Number of trials in {dd_name}: {num_trials}")
+        
+    
+def dict_to_numpy(data_dict, order):
+    
+    print(f"order: {order}")
+    
+    dd_trials = {}
+    for key, val in data_dict.items():
+        dd_trials[key] = []
+        for sess in val:
+            if key == 'correct':
+                sess = np.where(sess>0, 1, 0)
+            # non neural data is 2D (num_trials x num_electrodes)
+            # values are repeated along each row 
+            if len(sess.shape) == 2:
+                # reshape here will give us a 1d vector, where data for electrodes for a given trial
+                # are placed next to each other 
+                dd_trials[key].extend(np.reshape(sess, -1, order=order))
+            if len(sess.shape) == 3:
+                # for 3d data reshape will do the same thing, meaning that electrodes from the same trial
+                # are placed next to each other             
+                dd_trials[key].extend(np.reshape(sess, (-1, sess.shape[-1]), order=order))
+ 
+    for key, val in dd_trials.items():
+        dd_trials[key] = np.asarray(val)
+        
+    return dd_trials
 
         
         

@@ -41,7 +41,7 @@ class HFA_ripples_analysis(HFA_ripples_prepare_data):
         super().load_data_from_cluster(base_path, selected_period, ripple_bool = ripple_bool, 
                                        hpc_ripple_type = hpc_ripple_type, region_name = region_name)
         
-    def getStartArray(self):
+    def getMixedEffectMeanSEsStartArray(self):
         
         super().getStartArray()
         

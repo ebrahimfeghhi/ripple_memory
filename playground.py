@@ -1,35 +1,30 @@
-import pandas as pd 
-pd.set_option('display.max_columns', 30); pd.set_option('display.max_rows', 100)
-from cmlreaders import get_data_index
-import xarray as xarray
+from load_data import * 
+from analyze_data import * 
+import sys
+import warnings
 import matplotlib.pyplot as plt
-from pylab import *
-plt.rcParams['pdf.fonttype'] = 42; plt.rcParams['ps.fonttype'] = 42 # fix fonts for Illustrator
-from general import *
 from SWRmodule import *
-from HFA_ripples_analysis import HFA_ripples_analysis
+sys.path.append('/home1/efeghhi/ripple_memory/')
+from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
+                        MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
 
+############### set parameters ###############
+save_data = True
+start_time = -2000 # recording start time relative to word onset (ms)
+end_time = 2000 # recording end time relative to word onset (ms)
+##############################################
+catFR_dir = '/scratch/efeghhi/catFR1/IRIonly/'
 
-# init variables
-sub_selection = 'whole'
-df = get_data_index("r1") # all RAM subjects
-exp = 'catFR1' # 'FR1' 'catFR1' 'RepFR1'
+region_name = '' # if empty string, loads all data
+encoding_mode = 0
+data_dict = load_data(catFR_dir, region_name=region_name, encoding_mode=encoding_mode)
+if encoding_mode:
+    data_dict = remove_wrong_length_lists(data_dict)
 
-data_folder = 'SWR_scratch'
-select_subfield = True
-ripple_bin_start_end = [100, 1100]
-hpc_region = ['ca1', 'ca3', 'dg']
-ripple_region = ['ca1', 'ca3', 'dg']
-hpc_ripple_type = 'single_elec'
-region_name = 'HPC'
+ca1_elecs = [x for x in HPC_labels if 'ca1' in x]
+data_dict_ca1 = select_region(data_dict, ca1_elecs)
 
+# create clustered int array
+clustered_int = create_semantic_clustered_array(data_dict_ca1, encoding_mode)
+breakpoint()
 
-RS = HFA_ripples_analysis(exp=exp, df=df, sub_selection=sub_selection, data_folder=data_folder,
-                                        select_subfield=select_subfield, hpc_regions=hpc_region, ripple_regions=ripple_region, 
-                                        ripple_bin_start_end=ripple_bin_start_end)
-
-RS.remove_subject_sessions()
-RS.load_data_from_cluster(base_path='/scratch/efeghhi/', selected_period='encoding', region_name=region_name, 
-                          hpc_ripple_type='single_elec', ripple_bool=False)
-RS.getStartArray()
-RS.select_idxs_numpy()
