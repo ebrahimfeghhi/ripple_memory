@@ -4,15 +4,24 @@ import sys
 import warnings
 import matplotlib.pyplot as plt
 from SWRmodule import *
+import mne
 sys.path.append('/home1/efeghhi/ripple_memory/')
 from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
                         MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
 
+
+def create_ripple_exists(dd_trials, ripple_start, ripple_end):
+    
+    ripple_exists_idxs = np.argwhere(np.sum(dd_trials['ripple'][:, ripple_start:ripple_end],axis=1)>0)
+    ripple_exists = np.zeros(dd_trials['ripple'].shape[0])
+    ripple_exists[ripple_exists_idxs] = 1
+    
+    return ripple_exists
+    
 def format_ripples(data_dict, ripple_start=400, ripple_end=1100, sr=500, start_time=-700, 
                          end_time=2300):
     
     '''
-    
     Inputs: 
     
     :param dict data_dict: 
@@ -20,10 +29,8 @@ def format_ripples(data_dict, ripple_start=400, ripple_end=1100, sr=500, start_t
     :param int ripple_end: end time (ms) relative to recording start time for ripple analysis
     
     Outputs:
-    
     ripple_exists: contains 1 if any electrode has a ripple, 0 else
     ripple_avg: avg number of ripples across electrodes
-    
     '''
     
     ripple_exists_all_elecs_list = []
@@ -277,10 +284,10 @@ def plot_SCE_SME(data_dict, power, mode, region, xr, encoding_mode, behav_key, y
     
     if behav_key == 'correct':
         idxs1, idxs2, legend1, legend2, saveName = correct_ripple_idxs(data_dict, mode)
-        savePATH = "/home1/efeghhi/ripple_memory/SMEs/"
+        savePATH = "/home1/efeghhi/ripple_memory/figures/SMEs/"
     if behav_key == 'clust':
         idxs1, idxs2, legend1, legend2, saveName = clust_ripple_idxs(data_dict, mode)
-        savePATH = "/home1/efeghhi/ripple_memory/clustering/"
+        savePATH = "/home1/efeghhi/ripple_memory/figures/clustering/"
     
     legend1 = f'{legend1}: {idxs1.shape[0]}'
     legend2 = f'{legend2}: {idxs2.shape[0]}'
@@ -321,7 +328,12 @@ def plot_SCE_SME(data_dict, power, mode, region, xr, encoding_mode, behav_key, y
     
     plt.close()
     
+def downsample_power(data_dict, downsample_factor=10, downsample_keys=['HFA', 'theta']):
     
+    for key in downsample_keys:
+        data_dict[key] = mne.filter.resample(data_dict[key], down=downsample_factor)
+    
+    return data_dict 
     
     
 
