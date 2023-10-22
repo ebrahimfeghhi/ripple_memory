@@ -30,6 +30,19 @@ from SWRmodule import downsampleBinary,LogDFExceptionLine,getBadChannels,getStar
 
 import pingouin as pg
 
+'''
+This script loads all file names for a given experiment. 
+It then iterates through these files and checks whether the data
+corresponding to those files have a) already processed and stored
+within the user-specified save_path, or b) are in the excluded 
+sessions list. If neither criteria is met, the file is placed in
+a temp pickle file, which create_events_mne.py uses to process 
+the data.
+
+RERUN THIS FILE BEFORE RUNNING CREATE_EVENTS.SLURM. If you do not, 
+the temp pickle file won't be updated. 
+'''
+
 ################################################################
 df = get_data_index("r1") # all RAM subjects
 exp = 'catFR1' # 'catFR1' #'FR1'
@@ -37,7 +50,7 @@ save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = AMY_labels
+selected_region = HPC_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
@@ -135,7 +148,6 @@ rerun_df = exp_df.iloc[rerun_mask]
 
 # save as dill so can bypass pickling in ipython for cluster parallelization
 import dill
-
 # save rerun_df to pickle when using slurm,
 # slurm works by doing a N sessions in parallel, 
 # where each slurm process indexes a row of rerun_df

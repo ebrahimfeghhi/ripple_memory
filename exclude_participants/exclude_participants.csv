@@ -2356,3 +2356,14 @@ Filename,Reason for failure
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1056M_0_ENTPHC_encoding_soz_in_hamming.p,"An exception occurred: No appropriate channels found for the given picks (array([], dtype=float64))"
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1045E_0_ENTPHC_encoding_soz_in_hamming.p,Ripple array is empty
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1393T_1_AMY_encoding_soz_in_hamming.p,"An exception occurred: No appropriate channels found for the given picks (array([], dtype=float64))"
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1393T_1_AMY_encoding_soz_in_hamming.p,"An exception occurred: No appropriate channels found for the given picks (array([], dtype=float64))"
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1393T_1_AMY_encoding_soz_in_hamming.p,"An exception occurred: No appropriate channels found for the given picks (array([], dtype=float64))"
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1683A_3_HPC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1004D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: [Errno 5] Input/output error
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'

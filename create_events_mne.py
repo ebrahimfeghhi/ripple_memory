@@ -37,7 +37,7 @@ save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = AMY_labels
+selected_region = HPC_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
@@ -777,13 +777,27 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
                                  iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
         HFA_freqs = np.logspace(np.log10(64),np.log10(178),10)
         theta_freqs = np.array([5,6,7,8])
+        low_gamma_freqs = np.logspace(np.log10(30),np.log10(75),10)
+        high_gamma_freqs = np.logspace(np.log10(80),np.log10(178),10)
+        broad_band_gamma_freqs = np.hstack((low_gamma_freqs, high_gamma_freqs))
         
         print("HFA POWER")
-        HFA_power = compute_morlet(eeg_mne, HFA_freqs, sr, mode='power', desired_sr=50, n_jobs=n_jobs)
+        HFA_power = compute_morlet(eeg_mne, HFA_freqs, 
+                                   tmin=psth_start, tmax=psth_end, 
+                                   sr=sr, mode='power', desired_sr=50, n_jobs=n_jobs)
         print("THETA POWER")
-        theta_power = compute_morlet(eeg_mne, theta_freqs, sr, mode='power', desired_sr=50, n_jobs=n_jobs)
+        theta_power = compute_morlet(eeg_mne, theta_freqs, 
+                                     tmin=psth_start, tmax=psth_end, sr=sr, 
+                                     mode='power', desired_sr=50, n_jobs=n_jobs)
         print("THETA PHASE")
-        theta_phase = compute_morlet(eeg_mne, theta_freqs, sr, mode='phase', desired_sr=500, n_jobs=n_jobs)
+        # not going to downsample theta phase for now because it leads to weird values 
+        theta_phase = compute_morlet(eeg_mne, theta_freqs, 
+                                     tmin=psth_start, tmax=psth_end, 
+                                     sr=sr, mode='phase', desired_sr=sr, n_jobs=n_jobs)
+        print("GAMMA POWER")
+        broadband_gamma, low_gamma, high_gamma = compute_morlet(eeg_mne, broad_band_gamma_freqs, 
+                                                                tmin=psth_start, tmax=psth_end, sr=sr, mode='power', 
+                                                                desired_sr=50, n_jobs=n_jobs, split_power_idx=10)
         
     except Exception as e:
         add_session_to_exclude_list(f"An exception occurred: {e}")
@@ -814,6 +828,9 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
                             'elec_names':elec_names, 'sub_sess_names':sub_sess_names,
                             'ripple_array':np.stack(ripple_array, axis=1), 'HFA_pow': HFA_power, 
                             'theta_pow':theta_power, 'theta_phase_array':theta_phase,
+                            'broadband_gamma': broadband_gamma, 
+                            'low_gamma': low_gamma,
+                            'high_gamma': high_gamma, 
                             'time_add_save':time_add_save,
                             'trial_nums':trial_nums, 
                             'encoded_word_key_array':encoded_word_key_array,'category_array':category_array,
@@ -841,9 +858,8 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
         print("Program ran: ", program_ran)
         print("Save values: ", save_values)
 
-
 if run_all == False:
-    ClusterRunSWRs(params[0], save_path=save_path, selected_period=selected_period, 
+    ClusterRunSWRs(0, save_path=save_path, selected_period=selected_period, 
                    selected_region=selected_region, exp=exp, testing_mode=False)
 else: 
     ClusterRunSWRs(int(sys.argv[1]), save_path=save_path, selected_period=selected_period, 

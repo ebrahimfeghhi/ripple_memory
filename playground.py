@@ -1,30 +1,14 @@
-from load_data import * 
-from analyze_data import * 
-import sys
-import warnings
-import matplotlib.pyplot as plt
-from SWRmodule import *
-sys.path.append('/home1/efeghhi/ripple_memory/')
-from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
-                        MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
-
-############### set parameters ###############
-save_data = True
-start_time = -2000 # recording start time relative to word onset (ms)
-end_time = 2000 # recording end time relative to word onset (ms)
-##############################################
-catFR_dir = '/scratch/efeghhi/catFR1/IRIonly/'
-
-region_name = '' # if empty string, loads all data
-encoding_mode = 0
-data_dict = load_data(catFR_dir, region_name=region_name, encoding_mode=encoding_mode)
-if encoding_mode:
-    data_dict = remove_wrong_length_lists(data_dict)
-
-ca1_elecs = [x for x in HPC_labels if 'ca1' in x]
-data_dict_ca1 = select_region(data_dict, ca1_elecs)
-
-# create clustered int array
-clustered_int = create_semantic_clustered_array(data_dict_ca1, encoding_mode)
-breakpoint()
-
+def make_plot(HFA_select, correct_select, saveName):
+     
+    plt.title(br)
+    HFA_c= HFA_selct[correct_select==1]
+    HFA_nc= HFA_selct[correct_select==0]
+    plt.plot(np.linspace(-700, 2300, HFA.shape[1]), np.mean(HFA_c, axis=0), color='tab:blue', label=f'Recalled: {HFA_c.shape[0]}')
+    plt.plot(np.linspace(-700, 2300, HFA.shape[1]), np.mean(HFA_nc, axis=0), color='tab:orange', label=f'Not recalled: {HFA_nc.shape[0]}')
+    plt.xticks(np.arange(-700, 2300, 350))
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Normalized HFA power")
+    plt.legend()
+    plt.savefig(f'{savefigs}/{saveName}_{br}', dpi=300)
+    plt.show()
+    

@@ -1118,6 +1118,7 @@ def detectRipplesHamming(eeg_rip,trans_width,sr,iedlogic):
 #      Duration expanded until ripple power <2 SD. Events <20 ms or >200 ms excluded. Adjacent events <30 ms separation (peak-to-peak) merged.
     from scipy.signal import firwin,filtfilt,kaiserord,convolve2d
     
+
     candidate_SD = 3
     artifact_buffer = 100 # ms around IED events to remove SWRs
     sr_factor = 1000/sr
@@ -2135,28 +2136,53 @@ def z_score_epochs(power):
     # power should be a 3d array of shape num_trials x num_channels x num_timesteps
     return (power - np.mean(power, axis=(0,2), keepdims=True)) / np.std(np.mean(power, axis=2, keepdims=True),axis=0, keepdims=True) 
 
-def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin=-2, tmax=2, mode='power'):
+def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin, tmax, mode='power', split_power_idx=None):
+    
+    '''
+    
+    :param mne array eeg: eeg data 
+    :param ndarray freqs: frequencies to compute morlet wavelets over
+    :param int sr: sampling rate of eeg data
+    :param int desired_sr: desired sr of power/phase data
+    :param int n_jobs: how many threads to run on
+    :param float tmin, tmax: where to select signal from (to remove buffer), in ms
+    :param str mode: power or phase
+    :param int/None split_power_idx: compute two freq bands, return both and their intersection 
+    if int this is where freqs is divided
+    
+    '''
     
     from mne.time_frequency import tfr_morlet
     from mne.filter import resample
     
     morlet_output = tfr_morlet(eeg, freqs, n_cycles=5, return_itc=False, average=False, n_jobs=n_jobs, output=mode)
-    morlet_output.crop(tmin=tmin, tmax=tmax, include_tmax=False) # crop out the buffer 
+    morlet_output.crop(tmin=tmin/1000, tmax=tmax/1000, include_tmax=False) # crop out the buffer 
     
     if mode == 'power':
         
         # log transform, mean across wavelet frequencies, and z-score
         morlet_output.data = np.log10(morlet_output.data)
-        morlet_output.data = np.mean(morlet_output.data, axis=2)
-        morlet_output.data = z_score_epochs(morlet_output.data)
-                
+        
+        # split frequency bands into two groups 
+        if split_power_idx is not None:
+            morlet_output_data_1 = z_score_epochs(np.mean(morlet_output.data[:, :, :split_power_idx], axis=2))
+            morlet_output_data_2 = z_score_epochs(np.mean(morlet_output.data[:, :, split_power_idx:], axis=2))
+            
+        morlet_output.data = z_score_epochs(np.mean(morlet_output.data, axis=2))
+        
     if mode == 'phase':
         # take circular mean across wavelet phase values
         morlet_output.data = scipy.stats.circmean(morlet_output.data, high=np.pi, low=-np.pi, axis=2)
         
     if sr > desired_sr: 
+        
         morlet_output.data = resample(morlet_output.data, down=sr/desired_sr)
         
+        if split_power_idx is not None: 
+            morlet_output_data_1 = resample(morlet_output_data_1, down=sr/desired_sr)
+            morlet_output_data_2 = resample(morlet_output_data_2, down=sr/desired_sr)
+            return morlet_output.data, morlet_output_data_1, morlet_output_data_2
+            
     return morlet_output.data
     
 

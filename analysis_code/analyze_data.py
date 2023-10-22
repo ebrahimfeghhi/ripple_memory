@@ -1,5 +1,4 @@
 from load_data import * 
-from analyze_data import * 
 import sys
 import warnings
 import matplotlib.pyplot as plt
@@ -10,16 +9,16 @@ from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_label
                         MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
 
 
-def create_ripple_exists(dd_trials, ripple_start, ripple_end):
+def create_ripple_exists(dd_trials, ripple_start, ripple_end, min_ripple_time):
     
-    ripple_exists_idxs = np.argwhere(np.sum(dd_trials['ripple'][:, ripple_start:ripple_end],axis=1)>0)
+    ripple_exists_idxs = np.argwhere(np.sum(dd_trials['ripple'][:, ripple_start:ripple_end],axis=1)>min_ripple_time)
     ripple_exists = np.zeros(dd_trials['ripple'].shape[0])
     ripple_exists[ripple_exists_idxs] = 1
     
     return ripple_exists
     
-def format_ripples(data_dict, ripple_start=400, ripple_end=1100, sr=500, start_time=-700, 
-                         end_time=2300):
+def format_ripples(data_dict, ripple_start, ripple_end, sr, start_time, 
+                         end_time):
     
     '''
     Inputs: 
@@ -278,7 +277,9 @@ def correct_ripple_idxs(data_dict, mode):
     if mode==3:
         return correct_no_ripple, no_correct_no_ripple, "Recalled", "Not recalled", "Correct_no_ripple"
         
-def plot_SCE_SME(data_dict, power, mode, region, xr, encoding_mode, behav_key, ymin=None, ymax=None, smoothing_triangle=5):
+def plot_SCE_SME(data_dict, power, mode, region, xr, encoding_mode, behav_key, idxs1=None, 
+                 idxs2=None, legend1=None, legend2=None, saveName=None, savePath=None, 
+                 ymin=None, ymax=None, smoothing_triangle=5):
 
     power_arr = data_dict[power]
     
@@ -288,6 +289,9 @@ def plot_SCE_SME(data_dict, power, mode, region, xr, encoding_mode, behav_key, y
     if behav_key == 'clust':
         idxs1, idxs2, legend1, legend2, saveName = clust_ripple_idxs(data_dict, mode)
         savePATH = "/home1/efeghhi/ripple_memory/figures/clustering/"
+    if behav_key == None:
+        pass
+        
     
     legend1 = f'{legend1}: {idxs1.shape[0]}'
     legend2 = f'{legend2}: {idxs2.shape[0]}'

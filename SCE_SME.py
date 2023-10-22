@@ -7,34 +7,55 @@ from SWRmodule import *
 sys.path.append('/home1/efeghhi/ripple_memory/')
 from brain_labels import HPC_labels, ENT_labels, PHC_labels, temporal_lobe_labels,\
                         MFG_labels, IFG_labels, nonHPC_MTL_labels, ENTPHC_labels, AMY_labels
+                        
+'''
+Creates SCE and SME figures for specified frequency band.
+'''
 ############### set parameters ###############
 encoding_mode = 1
+power_bands = ['low_gamma', 'high_gamma']
+behav_key = 'correct'
+
+sr = 500 # sampling rate in Hz
+sr_factor = 1000/sr 
 
 if encoding_mode: 
     start_time = -700
     end_time = 2300
     num_bins = 150
-    downsample_factor = 5
-    num_bins = int(num_bins/downsample_factor)
+    
     catFR_dir = '/scratch/efeghhi/catFR1/ENCODING/'
     
+    # find ripples within these timepoints
+    # this corresponds to 400ms to 1100ms post-word onset 
+    ripple_start = 400
+    ripple_end = 1100
+    
+    ymin = -0.25
+    ymax = 2.0
+
 else:
+    
     start_time = -2000
     end_time = 2000
     num_bins = 200
     catFR_dir = '/scratch/efeghhi/catFR1/IRIonly/'
     
+    # -600 to -100 ms (0 ms is word onset)
+    ripple_start = -600
+    ripple_end = -100
+    
+    ymin = None
+    ymax = None
+    
+downsample_factor = 5
+
+# convert ripple_start and ripple_end to idxs
+ripple_start_idx = int((ripple_start - start_time)/sr_factor)
+ripple_end_idx = int((ripple_end-start_time)/sr_factor)
+
+num_bins = int(num_bins/downsample_factor)
 xr = np.linspace(start_time/1000, end_time/1000, num_bins)
-
-ripple_start = 550
-ripple_end = 900
-
-theta_bool = True
-HFA_bool = True
-ymin = -0.25
-ymax = 2.0
-
-behav_key = 'correct'
 ##############################################
 
 region_name = '' # if empty string, loads all data
@@ -69,8 +90,9 @@ data_dict_labels = ['ca1', 'dg', 'amy', 'entphc']
 
 # if behav key is clust (if correct, everything is the same but replace clust with correct) -> 
 # 0 is ripple/no ripple, 1 is clust/no clust, 2 is 1 but ripple only, 3 is 1 but no ripple only 
-modes = [[2,3], [2,3], [2,3], [2,3]]
-skip_regions = ['ca1']
+# pass in a mode for each brain region 
+modes = [[1, 3], [1,2,3], [1], [1,2,3]] 
+skip_regions = ['ca1', 'dg', 'entphc']
 
 for data_dict_region, brain_region, mode in zip(data_dicts, data_dict_labels, modes):
         
@@ -83,7 +105,7 @@ for data_dict_region, brain_region, mode in zip(data_dicts, data_dict_labels, mo
 
     dd_trials = dict_to_numpy(data_dict_region, order='C')
     
-    ripple_exists = create_ripple_exists(dd_trials, ripple_start, ripple_end)
+    ripple_exists = create_ripple_exists(dd_trials, ripple_start_idx, ripple_end_idx, 0)
     dd_trials['ripple_exists'] = ripple_exists
         
     dd_trials = downsample_power(dd_trials, downsample_factor=downsample_factor, 
@@ -93,16 +115,10 @@ for data_dict_region, brain_region, mode in zip(data_dicts, data_dict_labels, mo
         print("Mode: ", m)
         print("Brain region: ", brain_region)
         
-        if HFA_bool:
-            plot_SCE_SME(dd_trials, power='HFA', mode=m, xr=xr, region=brain_region, 
+        for p in power_bands:
+            
+            plot_SCE_SME(dd_trials, power=p, mode=m, xr=xr, region=brain_region, 
                 ymin=ymin, ymax=ymax, smoothing_triangle=5, encoding_mode=encoding_mode, behav_key=behav_key)
         
-        if theta_bool:
-            plot_SCE_SME(dd_trials, power='theta', mode=m, xr=xr, region=brain_region, 
-                ymin=ymin, ymax=ymax, smoothing_triangle=5, encoding_mode=encoding_mode, behav_key=behav_key)
-        
-
-
-
 
 

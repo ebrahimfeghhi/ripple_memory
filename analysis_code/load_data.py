@@ -322,21 +322,36 @@ def dict_to_numpy(data_dict, order):
     
     print(f"order: {order}")
     
+    # store num trials for elec names 
+    trial_nums = []
+    for sess in data_dict['HFA']:
+        trial_nums.append(sess.shape[0])
+    
     dd_trials = {}
     for key, val in data_dict.items():
         dd_trials[key] = []
-        for sess in val:
+        for idx, sess in enumerate(val):
+            # replace elec_names with numbers 
+            # only need elec_names at this point to group 
+            # data by channels, and elec_names are not unique 
+            # w/n a session necessarily, whereas ascending integers are 
+            if key == 'elec_names':
+                sess = np.arange(0, sess.shape[0])
             if key == 'correct':
                 sess = np.where(sess>0, 1, 0)
+            if len(sess.shape) == 1:
+                dd_trials[key].extend(np.repeat(sess, trial_nums[idx]))
             # non neural data is 2D (num_trials x num_electrodes)
-            # values are repeated along each row 
+            # values are repeated along each row
             if len(sess.shape) == 2:
                 # reshape here will give us a 1d vector, where data for electrodes for a given trial
-                # are placed next to each other 
+                # are placed next to each other if order is C, and all data from a given electrode are placed
+                # next to each other if order is F 
                 dd_trials[key].extend(np.reshape(sess, -1, order=order))
             if len(sess.shape) == 3:
                 # for 3d data reshape will do the same thing, meaning that electrodes from the same trial
-                # are placed next to each other             
+                # are placed next to each other if order is C and all data from a given electrode are placed
+                # next to each other if order is F         
                 dd_trials[key].extend(np.reshape(sess, (-1, sess.shape[-1]), order=order))
  
     for key, val in dd_trials.items():

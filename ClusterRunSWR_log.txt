@@ -1608,3 +1608,13 @@
 2023-08-23_11-08-09: DF Exception: Sub: R1042M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
 2023-08-23_11-08-09: DF Exception: Sub: R1056M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
 2023-08-23_11-10-36: DF Exception: Sub: R1393T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2023-09-21_14-18-39: DF Exception: Sub: R1393T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2023-09-21_14-19-00: DF Exception: Sub: R1393T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2023-09-21_14-26-00: DF Exception: Sub: R1683A, Sess: 3, BdbQuit, , file: create_events_mne.py, line no: 611
+2023-10-19_20-19-25: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-19-29: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-19-30: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-19-31: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-19-32: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-21-35: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-19_20-25-41: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
