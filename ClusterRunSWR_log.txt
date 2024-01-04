@@ -1618,3 +1618,27 @@
 2023-10-19_20-19-32: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
 2023-10-19_20-21-35: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
 2023-10-19_20-25-41: DF Exception: Sub: R1015J, Sess: 0, TypeError, compute_morlet() missing 1 required positional argument: 'sr', file: create_events_mne.py, line no: 793
+2023-10-25_19-16-08: DF Exception: Sub: R1013E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_19-16-15: DF Exception: Sub: R1013E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_19-16-18: DF Exception: Sub: R1013E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_19-16-20: DF Exception: Sub: R1013E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_19-16-40: DF Exception: Sub: R1013E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_19-27-55: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-27-57: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-28-19: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-28-22: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-28-30: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-35-49: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-35-49: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-36-27: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-36-30: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_19-36-56: DF Exception: Sub: R1013E, Sess: 0, ValueError, too many values to unpack (expected 3), file: create_events_mne.py, line no: 800
+2023-10-25_23-29-55: DF Exception: Sub: R1024E, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-25_23-35-25: DF Exception: Sub: R1032D, Sess: 0, AttributeError, not enough data for array, file: create_events_mne.py, line no: 787
+2023-10-25_23-36-31: DF Exception: Sub: R1032D, Sess: 1, AttributeError, not enough data for array, file: create_events_mne.py, line no: 787
+2023-10-25_23-37-34: DF Exception: Sub: R1045E, Sess: 0, AttributeError, not enough data for array, file: create_events_mne.py, line no: 787
+2023-10-25_23-46-55: DF Exception: Sub: R1032D, Sess: 0, AttributeError, not enough data for array, file: create_events_mne.py, line no: 787
+2023-10-25_23-54-26: DF Exception: Sub: R1032D, Sess: 0, AttributeError, not enough data for array, file: create_events_mne.py, line no: 787
+2023-10-25_23-59-09: DF Exception: Sub: R1032D, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-10-26_12-45-19: DF Exception: Sub: R1032D, Sess: 0, BdbQuit, , file: create_events_mne.py, line no: 787
+2023-11-01_18-35-27: DF Exception: Sub: R1450D, Sess: 1, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647

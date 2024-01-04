@@ -2135,7 +2135,7 @@ def ClusterRun(function, parameter_list, max_cores=1000):
 def z_score_epochs(power):
     # power should be a 3d array of shape num_trials x num_channels x num_timesteps
     return (power - np.mean(power, axis=(0,2), keepdims=True)) / np.std(np.mean(power, axis=2, keepdims=True),axis=0, keepdims=True) 
-
+ 
 def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin, tmax, mode='power', split_power_idx=None):
     
     '''
@@ -2154,36 +2154,40 @@ def compute_morlet(eeg, freqs, sr, desired_sr, n_jobs, tmin, tmax, mode='power',
     
     from mne.time_frequency import tfr_morlet
     from mne.filter import resample
-    
     morlet_output = tfr_morlet(eeg, freqs, n_cycles=5, return_itc=False, average=False, n_jobs=n_jobs, output=mode)
+    
     morlet_output.crop(tmin=tmin/1000, tmax=tmax/1000, include_tmax=False) # crop out the buffer 
     
     if mode == 'power':
         
         # log transform, mean across wavelet frequencies, and z-score
-        morlet_output.data = np.log10(morlet_output.data)
+        #morlet_output.data = np.log10(morlet_output.data)
         
         # split frequency bands into two groups 
         if split_power_idx is not None:
-            morlet_output_data_1 = z_score_epochs(np.mean(morlet_output.data[:, :, :split_power_idx], axis=2))
-            morlet_output_data_2 = z_score_epochs(np.mean(morlet_output.data[:, :, split_power_idx:], axis=2))
+            morlet_output_data_1 = np.mean(morlet_output.data[:, :, :split_power_idx], axis=2)
+            morlet_output_data_2 = np.mean(morlet_output.data[:, :, split_power_idx:], axis=2)
             
-        morlet_output.data = z_score_epochs(np.mean(morlet_output.data, axis=2))
+        morlet_output.data = np.mean(morlet_output.data, axis=2)
         
     if mode == 'phase':
         # take circular mean across wavelet phase values
         morlet_output.data = scipy.stats.circmean(morlet_output.data, high=np.pi, low=-np.pi, axis=2)
         
     if sr > desired_sr: 
-        
+      
         morlet_output.data = resample(morlet_output.data, down=sr/desired_sr)
         
         if split_power_idx is not None: 
+            
             morlet_output_data_1 = resample(morlet_output_data_1, down=sr/desired_sr)
             morlet_output_data_2 = resample(morlet_output_data_2, down=sr/desired_sr)
-            return morlet_output.data, morlet_output_data_1, morlet_output_data_2
-            
-    return morlet_output.data
+    
+    if split_power_idx is not None:
+        return morlet_output.data, morlet_output_data_1, morlet_output_data_2
+        
+    else: 
+        return morlet_output.data
     
 
     

@@ -35,7 +35,7 @@ df = get_data_index("r1") # all RAM subjects
 exp = 'catFR1' # 'catFR1' #'FR1'
 save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
-selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
+selected_period = 'surrounding_recall' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 0 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
 selected_region = HPC_labels
 remove_soz_ictal = 0
@@ -565,10 +565,18 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
         selected_elec = np.setdiff1d(selected_elec, bad_electrode_idxs)
         eeg_mne.pick(selected_elec)
         
-        # downsample sr to 1000 if sr is > 1000
-        if sr > 1000:
-            sr = 1000   
+        # downsample sr to 500 
+        if sr > 500:
+            sr = 500
             eeg_mne = eeg_mne.resample(sfreq=sr)
+            
+        elif sr == 500:
+            pass
+        
+        else:
+            print("Sampling rate is too low: ", sr)
+            add_session_to_exclude_list("Sampling rate is too low")
+            sys.exit()
         
         eeg_mne = eeg_mne.filter(l_freq=62, h_freq=58, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
         
@@ -793,11 +801,11 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
         # not going to downsample theta phase for now because it leads to weird values 
         theta_phase = compute_morlet(eeg_mne, theta_freqs, 
                                      tmin=psth_start, tmax=psth_end, 
-                                     sr=sr, mode='phase', desired_sr=sr, n_jobs=n_jobs)
+                                     sr=sr, mode='phase', desired_sr=500, n_jobs=n_jobs)
         print("GAMMA POWER")
         broadband_gamma, low_gamma, high_gamma = compute_morlet(eeg_mne, broad_band_gamma_freqs, 
                                                                 tmin=psth_start, tmax=psth_end, sr=sr, mode='power', 
-                                                                desired_sr=50, n_jobs=n_jobs, split_power_idx=10)
+                                                                desired_sr=500, n_jobs=n_jobs, split_power_idx=10)
         
     except Exception as e:
         add_session_to_exclude_list(f"An exception occurred: {e}")
@@ -826,6 +834,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
             with open(fn,'wb') as f:
                 pickle.dump({'region_electrode_ct':region_electrode_ct, 
                             'elec_names':elec_names, 'sub_sess_names':sub_sess_names,
+                            'raw_eeg':eeg_mne._data,
                             'ripple_array':np.stack(ripple_array, axis=1), 'HFA_pow': HFA_power, 
                             'theta_pow':theta_power, 'theta_phase_array':theta_phase,
                             'broadband_gamma': broadband_gamma, 
@@ -860,7 +869,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
 
 if run_all == False:
     ClusterRunSWRs(0, save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, testing_mode=False)
+                   selected_region=selected_region, exp=exp, testing_mode=True)
 else: 
     ClusterRunSWRs(int(sys.argv[1]), save_path=save_path, selected_period=selected_period, 
                    selected_region=selected_region, exp=exp, n_jobs=8)

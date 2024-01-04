@@ -2367,3 +2367,67 @@ Filename,Reason for failure
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
 /scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1015J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: compute_morlet() missing 1 required positional argument: 'sr'
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1013E_0_ENTPHC_encoding_soz_in_hamming.p,An exception occurred: too many values to unpack (expected 3)
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1092J_0_HPC_encoding_soz_in_hamming.p,An exception occurred: [Errno 116] Stale file handle
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1024E_0_HPC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: not enough data for array
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_1_HPC_encoding_soz_in_hamming.p,An exception occurred: not enough data for array
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1045E_0_HPC_encoding_soz_in_hamming.p,An exception occurred: not enough data for array
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: not enough data for array
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: not enough data for array
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1032D_0_HPC_encoding_soz_in_hamming.p,An exception occurred: 
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1035M_0_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1066P_0_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1066P_1_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1066P_2_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1067P_0_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1089P_0_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1102P_0_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1102P_1_HPC_encoding_soz_in_hamming.p,Sampling rate is too low
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1163T_0_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1207J_3_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1271P_0_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1271P_1_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1275D_0_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1278E_10_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1372C_0_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1380D_3_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1388T_0_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1469D_1_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1469D_3_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1518T_1_HPC_encoding_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/ENCODING/SWR_catFR1_R1659A_2_HPC_encoding_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1004D_0_HPC_surrounding_recall_soz_in_hamming.p,An exception occurred: [Errno 116] Stale file handle
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1015J_0_HPC_surrounding_recall_soz_in_hamming.p,An exception occurred: [Errno 116] Stale file handle
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1147P_0_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1226D_4_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1243T_0_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1243T_2_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1269E_2_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1313J_0_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1337E_1_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1380D_3_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1450D_1_HPC_surrounding_recall_soz_in_hamming.p,"An exception occurred: No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values."
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1469D_3_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1472T_1_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1530J_2_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1530J_6_HPC_surrounding_recall_soz_in_hamming.p,Program ran 0
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1635T_1_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1655S_2_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1666S_2_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
+/scratch/efeghhi/catFR1/IRIonly/SWR_catFR1_R1666S_5_HPC_surrounding_recall_soz_in_hamming.p,Ripple array is empty
