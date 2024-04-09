@@ -1,4 +1,7 @@
 tutorials/
+analysis_code/pac_analyses/figures/
 analysis_code/pac_analyses/saved_results/
+analysis_code/pac_analyses/updated_data/
+analysis_code/pac_analyses/saved_results_old/
 saved_logs/
 session_data/

@@ -123,26 +123,35 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
     assert type(region_name)==list, print("Incorrect format for region_name")
     
     if encoding_mode: 
-        data_dict = {'ripple': [], 'HFA': [], 'theta': [], 'low_gamma': [], 'high_gamma': [], 
-                     'broadband_gamma': [], 'theta_phase': [], 'clust': [], 
+        
+        data_dict = {'ripple': [], 'clust': [], 
                      'correct': [], 'position': [], 'list_num': [], 'subj': [], 'sess': [],
-                     'elec_names':[], 'serial_pos': [], 'raw': []}
-        num_timesteps_HFA = 150
+                     'elec_names':[], 'elec_labels': [], 'serial_pos': [], 'raw': [], 'elec_by_elec_correlation': [], 
+                    'trial_by_trial_correlation': [], 'elec_ripple_rate_array': []}
+        
+        num_timesteps = 2500 # ms
         
     else:
-        data_dict = {'ripple': [], 'HFA': [], 'theta': [], 'theta_phase': [], 'list_num': [], 
-                     'subj': [], 'sess': [], 'elec_names':[], 'clust': [], 'low_gamma': [], 
-                     'high_gamma': [], 'broadband_gamma': [], 'raw': []}
-        num_timesteps_HFA = 200
+        
+        data_dict = {'ripple': [], 'list_num': [], 
+                     'subj': [], 'sess': [], 'elec_names':[], 'elec_labels': [], 'clust': [], 'raw': [],
+                     'elec_by_elec_correlation': [], 
+                    'trial_by_trial_correlation': [], 'elec_ripple_rate_array': []}
+        
+        
+        num_timesteps = 3000 # ms
          
     file_list = os.listdir(directory)
+    
+    one_d_keys = ['trial_by_trial_correlation', 'elec_by_elec_correlation', 'elec_names', 'elec_labels', 
+                    'elec_ripple_rate_array']
     
     for f in file_list:
         
         if train_only: 
             in_train = check_PID_train(f)
             if not in_train:
-                continue
+                continue      
         
         skipFile = True
         if len(region_name) != 0:
@@ -158,6 +167,7 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         # Open the pickle file for reading
         with open(f'{directory}/{f}', 'rb') as pickle_file:
             loaded_data = pickle.load(pickle_file)  
+            
         
         # we'll also load HPC data if conditioning on ca1 ripples
         # for non-HPC files 
@@ -175,18 +185,25 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         else:
             loaded_data_ca1 = None
 
-        # rows of HFA give us number of words presented in that session
-        num_trials = loaded_data['HFA_pow'].shape[0]
+        # rows of raw give us number of words presented in that session
+        num_trials = loaded_data['raw_eeg'].shape[0]
         
+
         # there's a session in entphc where trials are longer for encoding (185 vs 150) (not sure why)
         # going to exclude any sessions like this
-        HFA_timesteps = loaded_data['HFA_pow'].shape[2]
-        if HFA_timesteps != num_timesteps_HFA:
+        raw_timesteps = loaded_data['raw_eeg'].shape[2]
+        if raw_timesteps != num_timesteps:
             continue
+        
         
         # elec_names is the only entry which is of shape num_elecs
         cleaned_elec_names = clean_elec_names(loaded_data['elec_names'], loaded_data['channel_coords'])
         
+        ca1_elecs = [1 for x in cleaned_elec_names if 'ca1' in x]
+        ca1_elecs_bool = False
+        if len(ca1_elecs) > 0:
+            ca1_elecs_bool = True
+  
         # reload ripple array with ca1 ripples from the ipsilateral side if conditioning on ca1 ripples
         if loaded_data_ca1 is not None:
             cleaned_elec_names_hpc = clean_elec_names(loaded_data_ca1['elec_names'], loaded_data_ca1['channel_coords'])
@@ -204,17 +221,12 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
              # 3d array of shape num_trials x num_electrodes x num_timesteps
             data_dict['ripple'].append(np.asarray(loaded_data['ripple_array']))
 
-        data_dict['HFA'].append(np.asarray(loaded_data['HFA_pow']))
-        data_dict['theta'].append(np.asarray(loaded_data['theta_pow']))
-        data_dict['theta_phase'].append(np.asarray(loaded_data['theta_phase_array']))
-        data_dict['low_gamma'].append(np.asarray(loaded_data['low_gamma']))
-        data_dict['high_gamma'].append(np.asarray(loaded_data['high_gamma']))
-        data_dict['broadband_gamma'].append(np.asarray(loaded_data['broadband_gamma']))
         data_dict['raw'].append(np.asarray(loaded_data['raw_eeg']))
 
         if encoding_mode:
             
             # vstack to get 2d shape num_trials x num_elecs
+            # the correct indices should all be repetitions of each other
             data_dict['correct'].append(np.vstack(loaded_data['encoded_word_key_array']).T)
             data_dict['serial_pos'].append(np.vstack(loaded_data['serialpos_array']).T)
 
@@ -230,11 +242,21 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         data_dict['subj'].append(np.repeat(np.expand_dims(loaded_data['sub_names'], -1), num_trials, axis=-1).T)
         data_dict['sess'].append(np.repeat(np.expand_dims(loaded_data['sub_sess_names'], -1), num_trials, axis=-1).T)
         
+        # num_electrodes
+        num_elecs = len(loaded_data['elec_ripple_rate_array'])
         data_dict['elec_names'].append(np.asarray(cleaned_elec_names))
+        data_dict['elec_labels'].append(np.asarray(loaded_data['electrode_labels']))
+        data_dict['trial_by_trial_correlation'].append(np.asarray(loaded_data['trial_by_trial_correlation']))
+        data_dict['elec_ripple_rate_array'].append(np.asarray(loaded_data['elec_ripple_rate_array']))
+        if num_elecs == 1:
+            data_dict['elec_by_elec_correlation'].append(np.array([1]))
+        else:
+            data_dict['elec_by_elec_correlation'].append(np.repeat(loaded_data['elec_by_elec_correlation'], 
+                                                                         num_elecs))
         
-    return data_dict
+    return data_dict, one_d_keys
 
-def remove_wrong_length_lists(data_dict, list_length=12):
+def remove_wrong_length_lists(data_dict, one_d_keys, list_length=12):
     
     '''
     
@@ -252,7 +274,7 @@ def remove_wrong_length_lists(data_dict, list_length=12):
     list_nums_sessions = data_dict['list_num']
     num_lists_wrong = 0
     serial_pos = []
-
+ 
     # loop through sessions 
     for sess, list_num_sess in enumerate(list_nums_sessions):
                 
@@ -290,15 +312,13 @@ def remove_wrong_length_lists(data_dict, list_length=12):
   
         if len(mask_idxs) > 0:  
             for key, val in data_dict.items():
-                # elec names are only repeated num_channel times, 
-                # so don't need to delete them
-                if key != 'elec_names':
+                if key not in one_d_keys:
                     data_dict[key][sess] = np.delete(val[sess], mask_idxs, axis=0)
                     
     return data_dict
             
         
-def select_region(data_dict, selected_elecs):
+def select_region(data_dict, selected_elecs, one_d_keys):
     
     '''
     Inputs:
@@ -325,19 +345,21 @@ def select_region(data_dict, selected_elecs):
             continue
         
         # 1D data so we'll selec the proper indices outside the for loop
-        data_dict_selected_elecs['elec_names'].append(data_dict['elec_names'][sess][selected_ind])
+        for key in one_d_keys:
+            try:
+                data_dict_selected_elecs[key].append(data_dict[key][sess][selected_ind])
+            except:
+                print(key)
         
         # remainder of data is 2D
         for key, val in data_dict.items():
-            if key != 'elec_names':
-                try:
-                    data_dict_selected_elecs[key].append(val[sess][:, selected_ind])
-                except:
-                    breakpoint()
+            if key not in one_d_keys:
+                data_dict_selected_elecs[key].append(val[sess][:, selected_ind])
+            
                 
     return data_dict_selected_elecs
 
-def count_num_trials(data_dict, dd_name, use_key='HFA'):
+def count_num_trials(data_dict, dd_name, use_key='subj'):
     
     '''
     
@@ -362,29 +384,39 @@ def count_num_trials(data_dict, dd_name, use_key='HFA'):
     print(f"Number of trials in {dd_name}: {num_trials}")
         
     
-def dict_to_numpy(data_dict, order):
+def dict_to_numpy(data_dict, order='C'):
     
     print(f"order: {order}")
     
     # store num trials for elec names 
     trial_nums = []
-    for sess in data_dict['HFA']:
+    for sess in data_dict['subj']:
         trial_nums.append(sess.shape[0])
+        
+    elec_num = 0
     
     dd_trials = {}
+    session_info = data_dict['sess']
     for key, val in data_dict.items():
         dd_trials[key] = []
         for idx, sess in enumerate(val):
+            current_session = np.unique(session_info[idx])[0]
             # replace elec_names with numbers 
             # only need elec_names at this point to group 
             # data by channels, and elec_names are not unique 
             # w/n a session necessarily, whereas ascending integers are 
-            if key == 'elec_names':
-                sess = np.arange(0, sess.shape[0])
-            if key == 'correct':
+            if key == 'elec_labels':
+                elec_name = []
+                for elec in sess:
+                    elec_name.append(f'{current_session}_{elec}')
+                sess = np.array(elec_name)
+                
+            elif key == 'correct':
                 sess = np.where(sess>0, 1, 0)
+
             if len(sess.shape) == 1:
-                dd_trials[key].extend(np.repeat(sess, trial_nums[idx]))
+                dd_trials[key].extend(np.tile(sess, trial_nums[idx]))
+                
             # non neural data is 2D (num_trials x num_electrodes)
             # values are repeated along each row
             if len(sess.shape) == 2:

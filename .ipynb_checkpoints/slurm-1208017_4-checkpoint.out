@@ -1,0 +1,40 @@
+Running task number 4
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/timeseries.py:526: FutureWarning: xarray subclass TimeSeriesX should explicitly define __slots__
+  class TimeSeriesX(TimeSeries):
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package outdated is out of date. Your version is 0.2.0, the latest is 0.2.2.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package pingouin is out of date. Your version is 0.3.4, the latest is 0.5.4.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+R1065J-2
+/home1/efeghhi/cmlreaders/cmlreaders/readers/electrodes.py:238: MissingCoordinatesWarning: Could not load MNI coordinates
+  "Could not load MNI coordinates"))
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/readers/tal.py:43: FutureWarning: Lab-specific readers may be moved to the cmlreaders package (https://github.com/pennmem/cmlreaders)
+  FutureWarning)
+300 matching events found
+No baseline correction applied
+Not setting metadata
+0 projection items activated
+0 bad epochs dropped
+Adding metadata with 23 columns
+Setting up band-stop filter from 58 - 62 Hz
+
+IIR filter parameters
+---------------------
+Butterworth bandstop zero-phase (two-pass forward and reverse) non-causal filter:
+- Filter order 16 (effective, after forward-backward)
+- Cutoffs at 58.00, 62.00 Hz: -6.02, -6.02 dB
+
+[Parallel(n_jobs=8)]: Using backend LokyBackend with 8 concurrent workers.
+[Parallel(n_jobs=8)]: Done  10 tasks      | elapsed:    5.9s
+[Parallel(n_jobs=8)]: Done 709 tasks      | elapsed:    7.1s
+[Parallel(n_jobs=8)]: Done 4772 tasks      | elapsed:   10.9s
+[Parallel(n_jobs=8)]: Done 5100 out of 5100 | elapsed:   11.2s finished
+Using channel 0
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/pingouin/effsize.py:145: RuntimeWarning: divide by zero encountered in arctanh
+  z = np.arctanh(stat)
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/pingouin/power.py:923: RuntimeWarning: divide by zero encountered in arctanh
+  zr = np.arctanh(r) + r / (2 * (n - 1))

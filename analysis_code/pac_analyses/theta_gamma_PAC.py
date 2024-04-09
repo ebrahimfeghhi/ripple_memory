@@ -1,12 +1,11 @@
 import numpy as np 
-
 import sys 
 sys.path.append('/home1/efeghhi/ripple_memory/analysis_code/')
 from load_data import *
 from analyze_data import *
 import statsmodels.formula.api as smf
-
 import matplotlib.pyplot as plt
+from scipy.spatial.distance import jensenshannon
 
 def permute_amplitude_time_series(amplitude_time_series):
     
@@ -90,62 +89,52 @@ def compute_MI(dist, n_bins):
     MI = (uniform_entropy - entropy_vals)/uniform_entropy
     return MI
 
-def compute_MOVI(distA, distB, n_bins):
-    
-    '''
-    ndarray distA, distB: probability distribution of gamma amplitudes grouped by theta phase.
-    For permutated data dist is of shape num_permutations x n_bins
-    int n_bins: number of theta phase bins used
-    
-    Computes MOVI, which is the MI of the difference of the two distributions
-    '''
-    
-    # from chanaz 
-    dist_diff = ((distA - distB) + 2/n_bins)/2
-    MI_dist_diff = compute_MI(dist_diff, n_bins)
-    return MI_dist_diff
 
-def compute_p_value(MI, MI_permuted):
+def compute_p_value(dat, dat_permuted):
     
     '''
-    float MI: modulation index values from real data
-    ndarray MI_permuted: modulation index from permuted data
+    :param float dat: values from real data
+    :param ndarray dat_permuted: permuted data
     
-    Returns p-value based on permuted modulation index data  
+    Returns one-side p-value testing the hypothesis that the real
+    data value is larger than the permuted distribution.
     '''
     
-    p_value = 1 - np.argwhere(MI > MI_permuted).shape[0]/MI_permuted.shape[0]
+    # 1) find the number of permuted values the real data is larger than 
+    # 2) divide this by the number of permuted values 
+    # 3) Subtract by 1 to get p value
+    p_value = 1 - np.argwhere(dat > dat_permuted).shape[0]/dat_permuted.shape[0]
     return p_value
 
 
 # load data 
-def load_pac_pd(encoding_mode):
+def load_pac_pd(encoding_mode, roi_mode):
     
-    print("Loading data")
-    
-    region_name = ['HPC']
+    '''
+    :param int encoding_mode: 0 for recall, 1 for encoding 
 
-    condition_on_ca1_ripples = False
+    :param int roi_mode: 0 for short, 1 for medium, 2 for long.
+    '''
     
-    if encoding_mode: 
-        catFR_dir = '/scratch/efeghhi/catFR1/ENCODING/'
-    else:
-        catFR_dir = '/scratch/efeghhi/catFR1/IRIonly/'
+    if roi_mode == 0:
+        enc_start_roi = 400
+        enc_end_roi = 1100
+        rec_start_roi = -600
+        rec_end_roi = -100
         
-    data_dict = load_data(catFR_dir, region_name=region_name, encoding_mode=encoding_mode, 
-                        condition_on_ca1_ripples=condition_on_ca1_ripples)
-
-    if encoding_mode: 
-        data_dict = remove_wrong_length_lists(data_dict)
-        
-    # ca1
-    ca1_elecs = [x for x in HPC_labels if 'ca1' in x]
-    data_dict_ca1 = select_region(data_dict, ca1_elecs)
-    count_num_trials(data_dict_ca1, "ca1")
-
-    data_dict_region = data_dict_ca1
+    if roi_mode == 1:
+        print("Loading 1 second data")
+        enc_start_roi = 300
+        enc_end_roi = 1300
+        rec_start_roi = -1100
+        rec_end_roi = -100
     
-    
+    if roi_mode == 2: 
+        enc_start_roi = 100
+        enc_end_roi = 1700
+        rec_start_roi = -1600
+        rec_end = -100
+
     sr = 500 # sampling rate in Hz
     sr_factor = 1000/sr 
     
@@ -157,71 +146,66 @@ def load_pac_pd(encoding_mode):
         end_time = 2300
 
         # timepoints of interest
-        ripple_start = 400
-        ripple_end = 1100
+        start_roi = enc_start_roi
+        end_roi = enc_end_roi
 
     else:
         # for recall trials, neural recording 
-        # starts from -200 ms before word onset 
-        # and finishes 2000 ms post word onset 
+        # starts from -1000 ms before word onset 
+        # and finishes 1000 ms post word onset 
         start_time = -2000
         end_time = 2000
         
         # this is where we are interested in analyzing 
         # -600 to -100 ms (0 ms is word onset)
-        ripple_start = -600
-        ripple_end = -100
+        start_roi = rec_start_roi
+        end_roi = rec_end_roi
 
     # convert to indices based on start time and sampling rate factor
-    ripple_start_idx = int((ripple_start - start_time)/sr_factor)
-    ripple_end_idx = int((ripple_end-start_time)/sr_factor)
+    start_idx = int((start_roi - start_time)/sr_factor)
+    end_idx = int((end_roi-start_time)/sr_factor)
 
-    data_dict_ca1.keys()
-
-    # create clustered int array
-    clustered_int = create_semantic_clustered_array(data_dict_region, encoding_mode)
-    data_dict_region['clust_int'] = clustered_int
-
-    dd_trials = dict_to_numpy(data_dict_region, order='C')
-
-    ripple_exists = create_ripple_exists(dd_trials, ripple_start_idx, ripple_end_idx, 0)
-    dd_trials['ripple_exists'] = ripple_exists
     
+    if encoding_mode:
+        dd_trials = np.load('/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/updated_data/dd_trials_encoding.npz')
+    else:
+        dd_trials = np.load('/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/updated_data/dd_trials_recall.npz')
+
     # corresponds to 400 - 1100 ms post word onset if encoding
     # or -600 to -100 ms before word recall if recalled 
-    start_time = ripple_start_idx
-    end_time = ripple_end_idx
+    start_time = start_roi
+    end_time = end_roi
     num_time_points = end_time - start_time
-    num_trials = len(dd_trials['theta_phase'])
+    num_trials = len(dd_trials['theta'])
     n_bins = 18 # number of bins for theta phase 
-
-    theta_raveled = np.ravel(dd_trials['theta_phase'][:, start_time:end_time])
-    theta_binned = np.floor((((theta_raveled + np.pi)/(2*np.pi))*n_bins))
+        
+    selected_idxs = np.ones(num_trials,  dtype=bool)
+    
+    # discretize theta phase to take on integer values from 0 to 18
+    theta_binned = np.ravel(np.floor(((dd_trials['theta'][:, start_time:end_time] + np.pi)/(2*np.pi))*n_bins))
     high_gamma_raveled = np.ravel(dd_trials['high_gamma'][:, start_time:end_time])
     low_gamma_raveled = np.ravel(dd_trials['low_gamma'][:, start_time:end_time])
     trial_number = np.repeat(np.arange(num_trials), num_time_points)
-
-    clustered = np.repeat(dd_trials['clust_int'], num_time_points)
-    subj_ravel = np.repeat(dd_trials['subj'], num_time_points)
+    clustered = np.repeat(dd_trials['clust_int'][selected_idxs], num_time_points)
+    subj_ravel = np.repeat(dd_trials['subj'][selected_idxs], num_time_points)
+    elec_ravel = np.repeat(dd_trials['elec_labels'][selected_idxs], num_time_points)
     
     if encoding_mode: 
-        correct = np.repeat(dd_trials['correct'], num_time_points)
+        correct = np.repeat(dd_trials['correct'][selected_idxs], num_time_points)
     else:
         # if using recalled data, just fill all trials with correct set to -1
         # since there is no correct key
         correct = -1*np.ones_like(clustered)
         
-    regression_pd = pd.DataFrame({'theta':theta_binned, 'high_gamma': high_gamma_raveled, 'low_gamma':low_gamma_raveled, 
-                        'correct': correct, 'clust': clustered, 'subj': subj_ravel, 'trial_num': trial_number})
+   
+    regression_pd = pd.DataFrame({'theta':theta_binned, 'high_gamma': high_gamma_raveled,'low_gamma':low_gamma_raveled, 
+                        'correct': correct, 'clust': clustered, 'subj': subj_ravel, 'trial_num': trial_number, 
+                                 'elec_labels': elec_ravel})
 
-
-    return regression_pd, n_bins, num_time_points, np.unique(dd_trials['subj'])
-    
-            
+    return regression_pd, n_bins, num_time_points
 
 def compute_gamma_theta_dist(pd):
     
-               
     low_gammas_by_theta = []
     high_gammas_by_theta = []
     
@@ -237,18 +221,18 @@ def compute_gamma_theta_dist(pd):
     return lg_pdist, hg_pdist
         
 def compute_theta_gamma_PAC(single_subject, num_time_points, n_bins,
-                            num_permutations=300):
+                            num_permutations=100):
     
     num_trials_subj = np.unique(single_subject.trial_num).shape[0]
-
     stored_dist_lg = np.zeros((num_trials_subj, n_bins))
     stored_dist_permutations_lg = np.zeros((num_trials_subj, num_permutations, n_bins))
     stored_dist_hg = np.zeros((num_trials_subj, n_bins))
     stored_dist_permutations_hg = np.zeros((num_trials_subj, num_permutations, n_bins))
 
     for idx, trial_num in enumerate(np.unique(single_subject.trial_num)):
-
-        print(f"Trial {idx} out {np.unique(single_subject.trial_num).shape[0]}")
+        
+        if idx % 20 == 0:
+            print(f"Trial {idx} out {np.unique(single_subject.trial_num).shape[0]}")
 
         trial_pd = single_subject.loc[single_subject.trial_num == trial_num]
 
@@ -282,7 +266,8 @@ def compute_theta_gamma_PAC(single_subject, num_time_points, n_bins,
 
     return stored_dist_lg, stored_dist_hg, stored_dist_permutations_lg, stored_dist_permutations_hg
 
-def finished_subjects(mode, metric, savePath = '/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/saved_results/'):
+def finished_subjects(mode, metric, 
+                      savePath = '/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/saved_results/'):
     
     '''
     :param int mode: not correct (0), correct (1), unclustered (2), clustered (3) 
@@ -295,174 +280,53 @@ def finished_subjects(mode, metric, savePath = '/home1/efeghhi/ripple_memory/ana
     
     subjects_ran = sorted(results.keys())
     
-    return subjects_ran 
-    
-
-def save_MOVI(mode, savePath='/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/'):
-    
-    low_gamma_MOVI_by_subj = {}
-    high_gamma_MOVI_by_subj = {}
-    low_gamma_MOVI_z_by_subj = {}
-    high_gamma_MOVI_z_by_subj = {}
-    
-    low_gamma_p_vals_by_subj = {}
-    high_gamma_p_vals_by_subj = {}
-    
-    pac_pd_encoding, n_bins, num_time_points_encoding, subj_encoding = load_pac_pd(1)
-    pac_pd_recalled, _, num_time_points_recalled, subj_recalled = load_pac_pd(0)
-    
-    if mode == 2:
-        pac_pd_encoding = pac_pd_encoding.loc[pac_pd_encoding.clust==0]
-        pac_pd_recalled = pac_pd_recalled.loc[pac_pd_recalled.clust==0]
-    if mode == 3:
-        pac_pd_encoding = pac_pd_encoding.loc[pac_pd_encoding.clust==1]
-        pac_pd_recalled = pac_pd_recalled.loc[pac_pd_recalled.clust==1]
-        
-    subj_both = np.intersect1d(subj_encoding, subj_recalled) 
-    
-    min_num_trials = 30
-    
-    subjects_ran = finished_subjects(mode, 'MOVI') 
-        
-    for subj in subj_both:
-        
-        print(f"Subject: {subj}")
-        
-        if subj in subjects_ran:
-            print("Ran subject already, skipping")
-            continue
-
-        single_subject_encoding = pac_pd_encoding.loc[pac_pd_encoding.subj==subj]
-        single_subject_recalled = pac_pd_recalled.loc[pac_pd_recalled.subj==subj]
-
-        num_trials_subj_encoding = int(single_subject_encoding.high_gamma.shape[0]/num_time_points_encoding)
-        num_trials_subj_recalled = int(single_subject_recalled.high_gamma.shape[0]/num_time_points_recalled)
-        
-        if min(num_trials_subj_encoding, num_trials_subj_recalled) < int(min_num_trials):
-
-            print("trial count too low, skipping subject")
-            continue
+    return subjects_ran         
             
-        print("ENCODING")
-        theta_gamma_hist_encoding = compute_theta_gamma_PAC(single_subject_encoding,
-                                                            num_time_points_encoding, n_bins)
-        print("RECALLED")
-        theta_gamma_hist_recalled = compute_theta_gamma_PAC(single_subject_recalled, 
-                                                            num_time_points_recalled, n_bins)
-                                                 
+def save_JSD(theta_gamma_hist_encoding, theta_gamma_hist_recalled):
+         
+        stored_dist_lg_encoding = np.mean(theta_gamma_hist_encoding[0],axis=0)
+        stored_dist_hg_encoding = np.mean(theta_gamma_hist_encoding[1],axis=0)
+        stored_dist_permutations_lg_encoding = np.mean(theta_gamma_hist_encoding[2],axis=0)
+        stored_dist_permutations_hg_encoding = np.mean(theta_gamma_hist_encoding[3], axis=0)
         
-        stored_dist_lg_encoding = theta_gamma_hist_encoding[0]
-        stored_dist_hg_encoding = theta_gamma_hist_encoding[1]
-        stored_dist_permutations_lg_encoding = theta_gamma_hist_encoding[2]
-        stored_dist_permutations_hg_encoding = theta_gamma_hist_encoding[3]
+        stored_dist_lg_recalled = np.mean(theta_gamma_hist_recalled[0],axis=0)
+        stored_dist_hg_recalled = np.mean(theta_gamma_hist_recalled[1],axis=0)
+        stored_dist_permutations_lg_recalled = np.mean(theta_gamma_hist_recalled[2],axis=0)
+        stored_dist_permutations_hg_recalled = np.mean(theta_gamma_hist_recalled[3],axis=0)
         
-        stored_dist_lg_recalled = theta_gamma_hist_recalled[0]
-        stored_dist_hg_recalled = theta_gamma_hist_recalled[1]
-        stored_dist_permutations_lg_recalled = theta_gamma_hist_recalled[2]
-        stored_dist_permutations_hg_recalled = theta_gamma_hist_recalled[3]
+        print(stored_dist_lg_encoding.shape, stored_dist_permutations_lg_encoding.shape)
         
-        MOVI_lg = compute_MOVI(np.mean(stored_dist_lg_encoding, axis=0), 
-                               np.mean(stored_dist_lg_recalled, axis=0), n_bins)
-        MOVI_hg = compute_MOVI(np.mean(stored_dist_hg_encoding, axis=0), 
-                               np.mean(stored_dist_hg_recalled, axis=0), n_bins)
+        jsd_lg = jensenshannon(stored_dist_lg_encoding, stored_dist_lg_recalled)
+        jsd_hg = jensenshannon(stored_dist_hg_encoding, stored_dist_hg_recalled)
+       
+        jsd_lg_permuted = jensenshannon(stored_dist_permutations_lg_encoding, 
+                                        stored_dist_permutations_lg_recalled, axis=1)
         
-        MOVI_lg_p = compute_MOVI(np.mean(stored_dist_permutations_hg_encoding, axis=0), 
-                               np.mean(stored_dist_permutations_lg_recalled, axis=0), n_bins)
-        MOVI_hg_p = compute_MOVI(np.mean(stored_dist_permutations_hg_encoding, axis=0), 
-                               np.mean(stored_dist_permutations_hg_recalled, axis=0), n_bins)
+        jsd_hg_permuted = jensenshannon(stored_dist_permutations_hg_encoding, 
+                                        stored_dist_permutations_hg_recalled, axis=1)
         
-        # compute p-value as fraction of permuted MI values that are higher
-        # than or equal to the MI value obtained with the real data 
-        p_val_lg = compute_p_value(MOVI_lg, MOVI_lg_p)
-        p_val_hg = compute_p_value(MOVI_hg, MOVI_hg_p)
+        p_val_lg = compute_p_value(jsd_lg, jsd_lg_permuted)
+        p_val_hg = compute_p_value(jsd_hg, jsd_hg_permuted)
         
-        low_gamma_p_vals_by_subj[subj] = p_val_lg
-
-        high_gamma_p_vals_by_subj[subj] = p_val_hg
-
-        print("P val: ", p_val_lg, p_val_hg)
-        print("MOVI: ", MOVI_lg, MOVI_hg)
-
-        # save MI for non-permuted data
-        low_gamma_MOVI_by_subj[subj] = MOVI_lg
-        high_gamma_MOVI_by_subj[subj] = MOVI_hg
-
-        # save MI normalized by null distribution
-        low_gamma_MOVI_z_by_subj[subj] = (MOVI_lg - np.mean(MOVI_lg_p))/np.std(MOVI_lg_p)
-        high_gamma_MOVI_z_by_subj[subj] = (MOVI_hg - np.mean(MOVI_hg_p))/np.std(MOVI_hg_p)
-
-
-        np.savez(f'{savePath}lg_MOVI_by_subj_{mode}', **low_gamma_MOVI_by_subj)
-        np.savez(f'{savePath}hg_MOVI_by_subj_{mode}', **high_gamma_MOVI_by_subj)
-
-        np.savez(f'{savePath}lg_MOVI_by_subj_z_{mode}', **low_gamma_MOVI_z_by_subj)
-        np.savez(f'{savePath}hg_MOVI_by_subj_z_{mode}', **high_gamma_MOVI_z_by_subj)
-
-        np.savez(f'{savePath}lg_MOVI_p_vals_by_subj_{mode}', **low_gamma_p_vals_by_subj)
-        np.savez(f'{savePath}hg_MOVI_p_vals_by_subj_{mode}', **high_gamma_p_vals_by_subj)
-
+          
+        jsd_lg_z = (jsd_lg - np.mean(jsd_lg_permuted))/np.std(jsd_lg_permuted)
+        jsd_hg_z = (jsd_hg - np.mean(jsd_hg_permuted))/np.std(jsd_hg_permuted)
         
-def save_MI(encoding_mode, mode, savePath='/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/'):
     
-    '''
-    :param int encoding_mode: 1 for encoding, 0 for recall data 
-    :param int mode: 0 for correct trials, 1 for incorrect, 
-    2 for not clustered, 3 for clustered. Note for recall data only modes
-    2 and 3 can be passed.
-    '''
-
-    pac_pd, n_bins, num_time_points, subj_arr = load_pac_pd(encoding_mode)
-    
-    min_num_trials = 30
-    
-    if mode == 0 or mode == 1:
-        if encoding_mode == 0:
-            print("Cannot pass modes 0 and 1 for recalled data")
-            return 0 
-    
-    if mode == 0:
-        pac_pd = pac_pd.loc[pac_pd.correct==0]
-    if mode == 1:
-        pac_pd = pac_pd.loc[pac_pd.correct==1]
-    if mode == 2:
-        pac_pd = pac_pd.loc[pac_pd.clust==0]
-    if mode == 3:
-        pac_pd = pac_pd.loc[pac_pd.clust==1]
-    
-    # MI stands for modulation index
-    # which is (log(n_bins) - H(p))/log(n_bins), which is 0 if the PAC
-    # histogram has the same entropy as the uniform distribution, and b/w 0 and 1
-    # to the extent its entropy is less than the uniform distribution
-    
-    low_gamma_MI_by_subj = {}
-    high_gamma_MI_by_subj = {}
-    low_gamma_MI_z_by_subj = {}
-    high_gamma_MI_z_by_subj = {}
-    
-    low_gamma_p_vals_by_subj = {}
-    high_gamma_p_vals_by_subj = {}
-    
-    for subj in subj_arr:
-    
+        return jsd_lg, jsd_hg, p_val_lg, p_val_hg, jsd_lg_z, jsd_hg_z, jsd_lg_permuted, jsd_hg_permuted
         
-        print(f"Subject: {subj}")
-
-        single_subject = pac_pd.loc[pac_pd.subj==subj]
-
-        num_trials_subj = int(single_subject.high_gamma.shape[0]/num_time_points)
-
-        if num_trials_subj < int(min_num_trials):
-
-            print("trial count too low, skipping subject")
-            continue
-            
-        theta_gamma_hist = compute_theta_gamma_PAC(single_subject, 
-                                                  num_time_points, n_bins)
         
+def save_MI(theta_gamma_hist, n_bins):
+    
         stored_dist_lg = theta_gamma_hist[0]
         stored_dist_hg = theta_gamma_hist[1]
         stored_dist_permutations_lg = theta_gamma_hist[2]
         stored_dist_permutations_hg = theta_gamma_hist[3]
+
+        # average aross distributions generated across trials for a given participant 
+        # and compute MI
+        dist_lg = np.mean(stored_dist_lg, axis=0)
+        dist_hg = np.mean(stored_dist_hg, axis=0)
 
         # average aross distributions generated across trials for a given participant 
         # and compute MI
@@ -480,34 +344,147 @@ def save_MI(encoding_mode, mode, savePath='/home1/efeghhi/ripple_memory/analysis
         # than or equal to the MI value obtained with the real data 
         p_val_lg = compute_p_value(MI_lg, MI_lg_p)
         p_val_hg = compute_p_value(MI_hg, MI_hg_p)
+        
+        MI_lg_z = (MI_lg - np.mean(MI_lg_p))/np.std(MI_lg_p)
+        MI_hg_z = (MI_hg - np.mean(MI_hg_p))/np.std(MI_hg_p)
+        
+        return MI_lg, MI_hg, MI_lg_z, MI_hg_z, p_val_lg, p_val_hg, dist_lg, dist_hg
+    
+def save_MI_JSD(behav_mode, roi_mode,
+            savePath='/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/saved_results/'):
+    
+    '''
+    :param int behav_mode: whether to analyze clustered (3) or unclustered (2) recalls
+    :param int roi_mode: 0 (short), 1 (1 sec), or 2 (1.5 sec) region of interest 
+    :param str savePath: where to save MI and JSD values
+    '''
+    
+    bad_sessions = ['R1108J-2']
+    
+    # load neural and behavorial data for encoding and recall phases 
+    dd_trials_encode = np.load('/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/updated_data/dd_trials_encoding.npz')
+    dd_trials_recalled = np.load('/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/updated_data/dd_trials_recall.npz')
+    
+    # process into a pd dataframe
+    pac_pd_encoding, n_bins, num_time_points_encoding = load_pac_pd(1, roi_mode)
+    pac_pd_recalled, _, num_time_points_recalled = load_pac_pd(0, roi_mode)
+    
+    # only interested in clust/unclust recalls for now, so analyzing
+    # only subsuquently recalled trials
+    pac_pd_encoding = pac_pd_encoding.loc[pac_pd_encoding.correct==1]
+    
+    # unclustered recalls
+    if behav_mode == 2:
+        pac_pd_encoding = pac_pd_encoding.loc[(pac_pd_encoding.clust==0)]
+        pac_pd_recalled = pac_pd_recalled.loc[pac_pd_recalled.clust==0]
+        
+    # clustered recall
+    if behav_mode == 3:
+        pac_pd_encoding = pac_pd_encoding.loc[pac_pd_encoding.clust==1]
+        pac_pd_recalled = pac_pd_recalled.loc[pac_pd_recalled.clust==1]
+    
+        
+    min_num_trials = 5
+    
+    store_MI_dict = {'MI_lg': [], 'MI_hg': [], 'MI_lg_z': [], 
+                     'MI_hg_z': [], 'p_lg': [], 'p_hg': [], 'encoding': [], 'sub_sess_elec': [], 
+                    'num_trials': []}
+    
+    store_JSD_dict = {'jsd_lg': [], 'jsd_hg': [],'jsd_lg_z': [], 'jsd_hg_z': [], 'p_lg': [], 'p_hg': [], 
+                      'jsd_lg_permuted': [], 'jsd_hg_permuted': [], 'sub_sess_elec': [], 
+                      'num_trials': []}
+    
+    store_theta_gamma_PAC_dist = {'lg_encode': [], 'hg_encode': [], 'lg_recall': [], 'hg_recall': []}
+    
+    # elec labels contains the subject, session number, and electrode name 
+    # for each electrode 
+    subj_sess_elec_encoding = np.unique(pac_pd_encoding['elec_labels'])
+    subj_sess_elec_recalled = np.unique(pac_pd_recalled['elec_labels'])
+    
+    shared_elec_labels = np.intersect1d(subj_sess_elec_encoding, subj_sess_elec_recalled) 
+    
+    for sel in shared_elec_labels:
+        
+        if len([x for x in bad_sessions if x in sel]) > 0:
+            print("Skipping bad session")
+            continue
+        
+        electrode_encoding = pac_pd_encoding.loc[pac_pd_encoding.elec_labels==sel]
+        electrode_recalled = pac_pd_recalled.loc[pac_pd_recalled.elec_labels==sel]
 
-        low_gamma_p_vals_by_subj[subj] = p_val_lg
+        print(f"Electrode: {sel}")
 
-        high_gamma_p_vals_by_subj[subj] = p_val_hg
+        num_trials_elec_encoding = int(electrode_encoding.high_gamma.shape[0]/num_time_points_encoding)
+        num_trials_elec_recalled = int(electrode_recalled.high_gamma.shape[0]/num_time_points_recalled)
+        
+        print(num_trials_elec_encoding, num_trials_elec_recalled)
 
-        print("P val: ", p_val_lg, p_val_hg)
-        print("MI: ", MI_lg, MI_hg)
+        # because we are only looking at recalled (clust/noclust) trials, 
+        # the trial count should be identical 
+        if num_trials_elec_encoding != num_trials_elec_recalled:
+            print("TRIAL COUNT IS WEIRD")
+            print(sel)
+            print(num_trials_elec_encoding, num_trials_elec_recalled)
+            print(num_time_points_encoding, num_time_points_recalled)
+            continue
 
-        # save MI for non-permuted data
-        low_gamma_MI_by_subj[subj] = MI_lg
-        high_gamma_MI_by_subj[subj] = MI_hg
+        if min(num_trials_elec_encoding, num_trials_elec_recalled) < int(min_num_trials):
+            print("trial count too low, skipping elec")
+            print(sel)
+            continue
 
-        # save MI normalized by null distribution
-        low_gamma_MI_z_by_subj[subj] = (MI_lg - np.mean(MI_lg_p))/np.std(MI_lg_p)
-        high_gamma_MI_z_by_subj[subj] = (MI_hg - np.mean(MI_hg_p))/np.std(MI_hg_p)
+        print("ENCODING")
+        theta_gamma_hist_encoding = compute_theta_gamma_PAC(electrode_encoding,
+                                                            num_time_points_encoding, n_bins)
+        print("RECALLED")
+        theta_gamma_hist_recalled = compute_theta_gamma_PAC(electrode_recalled, 
+                                                            num_time_points_recalled, n_bins)
 
-        if encoding_mode == 0:
-            recall_str = "recalled"
-        else:
-            recall_str = ""
+        MI_lg, MI_hg, MI_lg_z, MI_hg_z, p_val_lg, p_val_hg, dist_lg, dist_hg = save_MI(theta_gamma_hist_encoding, n_bins)
 
-        np.savez(f'{savePath}lg_MI_by_subj_{mode}{recall_str}', **low_gamma_MI_by_subj)
-        np.savez(f'{savePath}hg_MI_by_subj_{mode}{recall_str}', **high_gamma_MI_by_subj)
+        store_MI_dict['MI_lg'].append(MI_lg)
+        store_MI_dict['MI_hg'].append(MI_hg)
+        store_MI_dict['MI_lg_z'].append(MI_lg_z)
+        store_MI_dict['MI_hg_z'].append(MI_hg_z)
+        store_MI_dict['p_lg'].append(p_val_lg)
+        store_MI_dict['p_hg'].append(p_val_hg)
+        store_MI_dict['encoding'].append(1)
+        store_MI_dict['sub_sess_elec'].append(sel)
+        store_MI_dict['num_trials'].append(num_trials_elec_encoding)
+        
+        store_theta_gamma_PAC_dist['lg_encode'].append(dist_lg)
+        store_theta_gamma_PAC_dist['hg_encode'].append(dist_hg)
 
-        np.savez(f'{savePath}lg_MI_by_subj_z_{mode}{recall_str}', **low_gamma_MI_z_by_subj)
-        np.savez(f'{savePath}hg_MI_by_subj_z_{mode}{recall_str}', **high_gamma_MI_z_by_subj)
 
-        np.savez(f'{savePath}lg_MI_p_vals_by_subj_{mode}{recall_str}', **low_gamma_p_vals_by_subj)
-        np.savez(f'{savePath}hg_MI_p_vals_by_subj_{mode}{recall_str}', **high_gamma_p_vals_by_subj)
+        MI_lg, MI_hg, MI_lg_z, MI_hg_z, p_val_lg, p_val_hg, dist_lg, dist_hg = save_MI(theta_gamma_hist_recalled, n_bins)
 
+        store_MI_dict['MI_lg'].append(MI_lg)
+        store_MI_dict['MI_hg'].append(MI_hg)
+        store_MI_dict['MI_lg_z'].append(MI_lg_z)
+        store_MI_dict['MI_hg_z'].append(MI_hg_z)
+        store_MI_dict['p_lg'].append(p_val_lg)
+        store_MI_dict['p_hg'].append(p_val_hg)
+        store_MI_dict['encoding'].append(0)
+        store_MI_dict['sub_sess_elec'].append(sel)
+        store_MI_dict['num_trials'].append(num_trials_elec_recalled)
+        
+        store_theta_gamma_PAC_dist['lg_recall'].append(dist_lg)
+        store_theta_gamma_PAC_dist['hg_recall'].append(dist_hg)
 
+        jsd_lg, jsd_hg, p_val_lg, p_val_hg, jsd_lg_z, jsd_hg_z, jsd_lg_permuted, jsd_hg_permuted = \
+        save_JSD(theta_gamma_hist_encoding, theta_gamma_hist_recalled)
+
+        store_JSD_dict['jsd_lg'].append(jsd_lg)
+        store_JSD_dict['jsd_hg'].append(jsd_hg)
+        store_JSD_dict['jsd_lg_z'].append(jsd_lg_z)
+        store_JSD_dict['jsd_hg_z'].append(jsd_hg_z)
+        store_JSD_dict['p_lg'].append(p_val_lg)
+        store_JSD_dict['p_hg'].append(p_val_hg)
+        store_JSD_dict['jsd_lg_permuted'].append(jsd_lg_permuted)
+        store_JSD_dict['jsd_hg_permuted'].append(jsd_hg_permuted)
+        store_JSD_dict['sub_sess_elec'].append(sel)
+        store_JSD_dict['num_trials'].append([num_trials_elec_encoding, num_trials_elec_recalled])
+
+        np.savez(f'{savePath}MI_behav_{behav_mode}_roi_{roi_mode}_train', **store_MI_dict)
+        np.savez(f'{savePath}JSD_behav_{behav_mode}_roi_{roi_mode}_train', **store_JSD_dict)
+        np.savez(f'{savePath}dist_behav_{behav_mode}_roi_{roi_mode}_train', **store_theta_gamma_PAC_dist)

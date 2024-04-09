@@ -97,8 +97,11 @@ def create_semantic_clustered_array(data_dict, encoding_mode, clustered=['A','C'
     
     clustered_all_list = []
     
+    # if recalled data
     if encoding_mode == 0:
         
+        # 2d array containing recall type for each item
+        # second axis repeats these values across electrodes
         for sess_clust in semantic_array_all:
             
             clustered_sess_list = []
@@ -113,13 +116,16 @@ def create_semantic_clustered_array(data_dict, encoding_mode, clustered=['A','C'
                     clustered_sess_list.append(0)
                 else:
                     clustered_sess_list.append(-1)
-        
+            
+            # reshape so that its num_trials x elecs again 
             clustered_np = np.expand_dims(np.array(clustered_sess_list),axis=-1)
             clustered_np = np.repeat(clustered_np, num_elecs, axis=-1)
             clustered_all_list.append(clustered_np)
     
+    # if encoding data
     else:    
         
+        # get postion of recall
         recall_position_all = data_dict['position']
         
         for sess_pos, sess_clust in zip(recall_position_all, semantic_array_all):
