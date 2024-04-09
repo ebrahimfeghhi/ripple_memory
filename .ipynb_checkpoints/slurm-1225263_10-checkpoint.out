@@ -1,5 +1,0 @@
-Running task number 10
-  File "/home1/efeghhi/ripple_memory/create_events_mne.py", line 840
-    ClusterRunSWRs(23, save_path=save_path, selected_period=selected_period, 
-    ^
-IndentationError: unexpected indent
