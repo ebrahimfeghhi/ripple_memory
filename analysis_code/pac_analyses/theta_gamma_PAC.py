@@ -215,8 +215,9 @@ def compute_gamma_theta_dist(pd):
         low_gammas_by_theta.append(np.mean(tp.lg))
         high_gammas_by_theta.append(np.mean(tp.hg))
         
-    lg_pdist = np.array(low_gammas_by_theta)/np.sum(low_gammas_by_theta)
-    hg_pdist = np.array(high_gammas_by_theta)/np.sum(high_gammas_by_theta)
+    # don't make into a distribution until after you sum across trials
+    lg_pdist = np.array(low_gammas_by_theta)
+    hg_pdist = np.array(high_gammas_by_theta)
     
     return lg_pdist, hg_pdist
         

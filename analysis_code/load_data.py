@@ -401,10 +401,6 @@ def dict_to_numpy(data_dict, order='C'):
         dd_trials[key] = []
         for idx, sess in enumerate(val):
             current_session = np.unique(session_info[idx])[0]
-            # replace elec_names with numbers 
-            # only need elec_names at this point to group 
-            # data by channels, and elec_names are not unique 
-            # w/n a session necessarily, whereas ascending integers are 
             if key == 'elec_labels':
                 elec_name = []
                 for elec in sess:
