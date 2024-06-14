@@ -15,11 +15,10 @@ from mne.time_frequency import tfr_array_morlet
 from scipy.signal import hilbert
 
 
-def load_data_np(encoding_mode):
+def load_data_np(encoding_mode, region_name=['HPC'], subregion=['ca1']):
     
     print("Loading data")
-    
-    region_name = ['HPC']
+
 
     condition_on_ca1_ripples = False
     
@@ -28,26 +27,27 @@ def load_data_np(encoding_mode):
     else:
         catFR_dir = '/scratch/efeghhi/catFR1/NOIRI/'
         
+    print("LOADING DATA FROM: ", region_name[0])
+        
     data_dict, one_d_keys = load_data(directory=catFR_dir, region_name=region_name, 
                           encoding_mode=encoding_mode)
 
     if encoding_mode: 
         data_dict = remove_wrong_length_lists(data_dict, one_d_keys)
         
-    # ca1
-    ca1_elecs = [x for x in HPC_labels if 'ca1' in x]
+    selected_elecs = []
+    if region_name == ['HPC']:
+        for s in subregion:
+            selected_elecs_s = [x for x in HPC_labels if s in x]
+            selected_elecs.extend(selected_elecs_s)
     
-    data_dict_ca1 = select_region(data_dict, ca1_elecs, one_d_keys)
-    count_num_trials(data_dict_ca1, "ca1")
-
-    data_dict_region = data_dict_ca1
-    
+        data_dict = select_region(data_dict, selected_elecs, one_d_keys)
 
     # create clustered int array
-    clustered_int = create_semantic_clustered_array(data_dict_region, encoding_mode)
-    data_dict_region['clust_int'] = clustered_int
+    clustered_int = create_semantic_clustered_array(data_dict, encoding_mode)
+    data_dict['clust_int'] = clustered_int
 
-    dd_trials = dict_to_numpy(data_dict_region, order='C')
+    dd_trials = dict_to_numpy(data_dict, order='C')
     
     return dd_trials
 

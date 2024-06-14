@@ -48,9 +48,9 @@ df = get_data_index("r1") # all RAM subjects
 exp = 'catFR1' # 'catFR1' #'FR1'
 save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
-selected_period = 'surrounding_recall' # surrounding_recall # whole_retrieval # encoding 
+selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 10 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = HPC_labels
+selected_region = AMY_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'

@@ -9,7 +9,7 @@ from scipy.spatial.distance import jensenshannon
 
 def permute_amplitude_time_series(amplitude_time_series):
     
-     
+    
     '''
     ndarray amplitude_time_series: array containing amplitude values over a given trial 
     

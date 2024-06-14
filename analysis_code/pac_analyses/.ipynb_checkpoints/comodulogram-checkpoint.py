@@ -7,8 +7,6 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.signal import decimate, resample
-
-from mne.time_frequency import tfr_array_morlet
 from scipy.signal import hilbert
 
 
@@ -23,7 +21,7 @@ def remove_session_string(subject_session_elec_string):
     
     return subj_elec
 
-def get_filtered_signal(raw_data, freq_range, start_idx, end_idx, fs):
+def get_filtered_signal(raw_data, freq_range, start_idx, end_idx, fs, bandwidth='auto'):
     
     '''
     :param ndarray raw_data: n_epochs x n_timepoints
@@ -46,7 +44,8 @@ def get_filtered_signal(raw_data, freq_range, start_idx, end_idx, fs):
     for jj, frequency in enumerate(freq_range):
         
         bandpassed_data = filter_data(raw_data, sfreq=fs, l_freq=frequency[0], 
-                                              h_freq=frequency[1], verbose=False)
+                       h_freq=frequency[1], l_trans_bandwidth=bandwidth, 
+                       h_trans_bandwidth=bandwidth, verbose=False)
         filtered[jj, :] = hilbert(bandpassed_data)
         
     return filtered[:, :, start_idx:end_idx]
@@ -145,7 +144,8 @@ def modulation_index(phase_orig, amplitude, n_surrogates, n_bins, min_shift):
 
 def save_MI_amplitude(subj_elec_idxs_all, raw_data, postfix_save, fs, savePath, 
                       low_fq_range, high_fq_range, start_idx, end_idx, 
-                      subj_elec_min_epochs_condition, random_seed=42):
+                      subj_elec_min_epochs_condition, match_trial_count=True, bandwidth_lfreq=2, 
+                      bandwidth_hfreq=18, random_seed=42):
     
     '''
     :param ndarray subj_elec_idxs_all: array of shape num_epochs, 
@@ -170,27 +170,28 @@ def save_MI_amplitude(subj_elec_idxs_all, raw_data, postfix_save, fs, savePath,
         
         num_epochs = subj_elec_idxs.shape[0] 
         
-        if subj_elec in subj_elec_min_epochs_condition.keys():
-            
-            min_epochs = int(subj_elec_min_epochs_condition[subj_elec])
-            
-            # randomly select a subportion of epochs so that trial count
-            # is equivalent across conditions
-            if min_epochs < num_epochs:
-                print(min_epochs, num_epochs)
-                selected_epochs = np.random.randint(0, num_epochs, min_epochs)
-                subj_elec_idxs = subj_elec_idxs[selected_epochs].squeeze()
-        else:
-            
-            continue
+        if match_trial_count:
+
+            if subj_elec in subj_elec_min_epochs_condition.keys():
+
+                min_epochs = int(subj_elec_min_epochs_condition[subj_elec])
+
+                # randomly select a subportion of epochs so that trial count
+                # is equivalent across conditions
+                if min_epochs < num_epochs:
+                    print(min_epochs, num_epochs)
+                    selected_epochs = np.random.randint(0, num_epochs, min_epochs)
+                    subj_elec_idxs = subj_elec_idxs[selected_epochs].squeeze()
+            else:
+                continue
 
         if subj_elec_idxs.shape[0] < 10:
             continue
 
         raw_data_elec_subj = raw_data[subj_elec_idxs].squeeze()
 
-        low_sig = get_filtered_signal(raw_data_elec_subj, low_fq_range, start_idx, end_idx, fs=fs)
-        high_sig = get_filtered_signal(raw_data_elec_subj, high_fq_range, start_idx, end_idx, fs=fs)
+        low_sig = get_filtered_signal(raw_data_elec_subj, low_fq_range, start_idx, end_idx, fs=fs, bandwidth=bandwidth_lfreq)
+        high_sig = get_filtered_signal(raw_data_elec_subj, high_fq_range, start_idx, end_idx, fs=fs, bandwidth=bandwidth_hfreq)
  
         MI, pac_hist = compute_pac(low_sig, high_sig, n_bins=18, min_shift=50, n_surrogates=300)
 

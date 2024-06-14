@@ -27,8 +27,8 @@ dd_trials = load_data_np(encoding_mode)
 
 if encoding_mode:
     # relative to word onset 
-    start_roi = 300
-    end_roi = 1300
+    start_roi = 200
+    end_roi = 900
     
     # each trial consists of 5 sec of raw data, which starts
     # 1.7 before word onset and ends 3.3 sec after word onset 
@@ -48,7 +48,7 @@ else:
     
 sr_factor = 2
 
-# convert to indices based on start time and sampling rate factor
+# convert to indices based on start time, sampling rate factor, and time region of interest
 start_idx = int((start_roi - start_time)/sr_factor)
 end_idx = int((end_roi-start_time)/sr_factor)
 
@@ -58,15 +58,17 @@ raw_data = dd_trials['raw']
 clust = dd_trials['clust_int']
 correct = dd_trials['correct']
 
+print("RAW DATA SHAPE: ", raw_data.shape)
+
 nonclust_idxs = np.argwhere(clust==0)
 clust_idxs = np.argwhere(clust==1)
 incorrect_idxs = np.argwhere(correct==0)
 
 subj_elec_labels = np.array([remove_session_string(x) for x in dd_trials['elec_labels']])
 
-subj_elec_clust_idxs = subj_elec_labels[clust_idxs].squeeze()
-subj_elec_nonclust_idxs = subj_elec_labels[nonclust_idxs].squeeze()
-subj_elec_incorrect_idxs = subj_elec_labels[incorrect_idxs].squeeze()
+subj_elec_clust = subj_elec_labels[clust_idxs].squeeze()
+subj_elec_nonclust = subj_elec_labels[nonclust_idxs].squeeze()
+subj_elec_incorrect = subj_elec_labels[incorrect_idxs].squeeze()
 
 subj_elec_min_trials_condition = dict(np.load("/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/subj_elec_min_trials_condition.npz"))
 
@@ -75,21 +77,28 @@ raw_data_not_clust = raw_data[nonclust_idxs].squeeze()
 raw_data_incorrect = raw_data[incorrect_idxs].squeeze()
     
 savePath = '/home1/efeghhi/ripple_memory/analysis_code/pac_analyses/saved_results/comodulogram/'
-low_fq_range = [[2,5],[6,10]]
-high_fq_range = [[30,75], [80,120], [125,170]]
+low_fq_range = [[2,4],[7,9]]
+high_fq_range = [[30,70], [80,120], [130,170]]
 fs = 500
 
 behavorial_mode = int(sys.argv[1])
 
 if behavorial_mode == 0:
     print("RUNNING CLUSTERED")
-    save_MI_amplitude(subj_elec_clust_idxs, raw_data_clust, 'clust', fs, savePath, 
-                  low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition)
+    save_MI_amplitude(subj_elec_clust, raw_data_clust, 'clust', fs, savePath, 
+                  low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition, 
+                     match_trial_count=False)
 if behavorial_mode == 1:
     print("RUNNING NOT CLUSTERED")
-    save_MI_amplitude(subj_elec_nonclust_idxs, raw_data_not_clust, 'not_clust', fs, savePath, 
-                      low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition)
+    save_MI_amplitude(subj_elec_nonclust, raw_data_not_clust, 'not_clust', fs, savePath, 
+                      low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition, 
+                     match_trial_count=False)
 if behavorial_mode == 2:
     print("RUNNING NOT CORRECT")
-    save_MI_amplitude(subj_elec_incorrect_idxs, raw_data_incorrect, 'not_recalled', fs, savePath, 
+    save_MI_amplitude(subj_elec_incorrect, raw_data_incorrect, 'not_recalled', fs, savePath, 
                        low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition)
+if behavorial_mode == 3:
+    print("RUNNING ALL")
+    save_MI_amplitude(subj_elec_labels, raw_data, 'all_data', fs, savePath, 
+                      low_fq_range, high_fq_range, start_idx, end_idx, subj_elec_min_trials_condition, 
+                      match_trial_count=False)

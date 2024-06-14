@@ -1,4 +1,4 @@
-Running task number 1
+Running task number 0
 /home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/timeseries.py:526: FutureWarning: xarray subclass TimeSeriesX should explicitly define __slots__
   class TimeSeriesX(TimeSeries):
 /home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
@@ -6,25 +6,7 @@ Running task number 1
 Loading data
 Number of trials in ca1: 55356
 order: C
-1000 1500
-RUNNING NOT CLUSTERED
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
-SAVED DATA
+950 1300
+RAW DATA SHAPE:  (55356, 2500)
+RUNNING CLUSTERED
+267 486

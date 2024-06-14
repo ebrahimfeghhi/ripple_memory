@@ -69,7 +69,7 @@ def ravel_HFA(data_dict, HFA_start=400, HFA_end=1100, sr=50, start_time=-700,
 
     return np.hstack(HFA)
 
-def create_semantic_clustered_array(data_dict, encoding_mode, clustered=['A','C'], unclustered=['D', 'Z']):
+def create_semantic_clustered_array(data_dict, encoding_mode):
             
     '''
     :param dict data_dict: dictionary which needs to have the following keys ->
@@ -110,12 +110,18 @@ def create_semantic_clustered_array(data_dict, encoding_mode, clustered=['A','C'
             num_elecs = sess_clust.shape[1]
         
             for s in semantic_array_np:
-                if s in clustered:
+                if s == 'A': 
+                    clustered_sess_list.append(3)
+                elif s == 'B':
                     clustered_sess_list.append(1)
-                elif s in unclustered:
-                    clustered_sess_list.append(0)
-                else:
+                elif s == 'C':
+                    clustered_sess_list.append(2)
+                elif s == 'D':
                     clustered_sess_list.append(-1)
+                elif s == 'Z':
+                    clustered_sess_list.append(-2)
+                else:
+                    clustered_sess_list.append(0)
             
             # reshape so that its num_trials x elecs again 
             clustered_np = np.expand_dims(np.array(clustered_sess_list),axis=-1)
@@ -149,14 +155,21 @@ def create_semantic_clustered_array(data_dict, encoding_mode, clustered=['A','C'
                 cluster = semantic_array_np[list_idx]
                 
                 # init values to -1 so that non recalled items are -1 
-                cluster_trial = [-1 for x in range(list_length)]
+                cluster_trial = [0 for x in range(list_length)]
                 
                 for r, c in zip(recalled_idx, cluster):
                     if r > 0 and r <= list_length:
-                        if c in clustered:
-                            cluster_trial[r-1] = 1 # change to 1 for clustered recall
-                        elif c in unclustered:
-                            cluster_trial[r-1] = 0 # change to 0 for unclustered but recalled
+                        if c == 'A':
+                            cluster_trial[r-1] = 3 # semantic and temporal 
+                        if c == 'B':
+                            cluster_trial[r-1] = 1 # temporal
+                        if c == 'C':
+                            cluster_trial[r-1] = 2 # semantic 
+                        if c == 'D':
+                            cluster_trial[r-1] = -1 # neither
+                        if c == 'Z': 
+                            cluster_trial[r-1] = -2 # dead end
+          
                 
                 clustered_sess_list.extend(cluster_trial)
             

@@ -127,7 +127,7 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         data_dict = {'ripple': [], 'clust': [], 
                      'correct': [], 'position': [], 'list_num': [], 'subj': [], 'sess': [],
                      'elec_names':[], 'elec_labels': [], 'serial_pos': [], 'raw': [], 'elec_by_elec_correlation': [], 
-                    'trial_by_trial_correlation': [], 'elec_ripple_rate_array': []}
+                    'trial_by_trial_correlation': [], 'elec_ripple_rate_array': [], 'category_array': []}
         
         num_timesteps = 2500 # ms
         
@@ -237,6 +237,7 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
         
         data_dict['list_num'].append(np.reshape(loaded_data['list_num_key'], (-1, num_trials)).T)
+        data_dict['category_array'].append(np.reshape(loaded_data['category_array'], (-1, num_trials)).T)
                 
         # each of these entries is of shape num_electrodes, so need to repeat num_trials times
         data_dict['subj'].append(np.repeat(np.expand_dims(loaded_data['sub_names'], -1), num_trials, axis=-1).T)
@@ -327,7 +328,7 @@ def select_region(data_dict, selected_elecs, one_d_keys):
         :param list selected_elecs: list containing which electrodes to keep 
         
     Ouputs:
-
+``
         dictionary with data corresponding to selected electrodes.
         
     '''
@@ -340,6 +341,7 @@ def select_region(data_dict, selected_elecs, one_d_keys):
         
         # store indices corresponding to the desired electrodes
         selected_ind = [int(i) for i, x in enumerate(elec_name) if x in selected_elecs]
+        
         
         if len(selected_ind) == 0:
             continue
