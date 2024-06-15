@@ -37,7 +37,7 @@ save_path = f'/scratch/efeghhi/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 10 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = AMY_labels
+selected_region = HPC_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
@@ -578,7 +578,7 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
             add_session_to_exclude_list("Sampling rate is too low")
             sys.exit()
         
-        eeg_mne = eeg_mne.filter(l_freq=62, h_freq=58, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
+        #eeg_mne = eeg_mne.filter(l_freq=62, h_freq=58, method='iir', iir_params=dict(ftype='butter', order=4), n_jobs=n_jobs)
         
         if testing_mode:
             eeg_mne.save('tutorials/eeg_mne_test-epo.fif')

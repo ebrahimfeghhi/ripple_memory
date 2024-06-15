@@ -612,3 +612,175 @@
 2024-05-27_15-25-55: DF Exception: Sub: R1681J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 568
 2024-05-27_15-26-21: DF Exception: Sub: R1696L, Sess: 0, ValueError, len(channels) (196) must be the same length as the second data dimension (179), file: create_events_mne.py, line no: 515
 2024-05-27_15-26-29: DF Exception: Sub: R1689J, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 649
+2024-06-14_20-27-40: DF Exception: Sub: R1016M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-27-47: DF Exception: Sub: R1016M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-27-48: DF Exception: Sub: R1013E, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-27-53: DF Exception: Sub: R1021D, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-27-59: DF Exception: Sub: R1026D, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-28-04: DF Exception: Sub: R1028M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-28-12: DF Exception: Sub: R1028M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-30-34: DF Exception: Sub: R1036M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-30-42: DF Exception: Sub: R1041M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-30-47: DF Exception: Sub: R1042M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-33-02: DF Exception: Sub: R1045E, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_20-33-06: DF Exception: Sub: R1050M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-33-08: DF Exception: Sub: R1056M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=int64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-33-11: DF Exception: Sub: R1060M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-58-10: DF Exception: Sub: R1069M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-58-15: DF Exception: Sub: R1074M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-58-22: DF Exception: Sub: R1075J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_20-58-36: DF Exception: Sub: R1083J, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_21-00-00: DF Exception: Sub: R1093J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-01-23: DF Exception: Sub: R1106M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=int64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-01-29: DF Exception: Sub: R1107J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-01-31: DF Exception: Sub: R1107J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-11-35: DF Exception: Sub: R1111M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-11-40: DF Exception: Sub: R1111M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-12-11: DF Exception: Sub: R1114C, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-12-17: DF Exception: Sub: R1119P, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-13-20: DF Exception: Sub: R1130M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-13-41: DF Exception: Sub: R1135E, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-13-56: DF Exception: Sub: R1135E, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-15-11: DF Exception: Sub: R1141T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-15-18: DF Exception: Sub: R1141T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-15-23: DF Exception: Sub: R1141T, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-25-53: DF Exception: Sub: R1169P, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_21-25-56: DF Exception: Sub: R1170J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-26-00: DF Exception: Sub: R1170J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-26-11: DF Exception: Sub: R1178P, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-27-50: DF Exception: Sub: R1181E, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-27-56: DF Exception: Sub: R1181E, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-28-02: DF Exception: Sub: R1181E, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-28-07: DF Exception: Sub: R1184M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=int64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-28-58: DF Exception: Sub: R1189M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-29-43: DF Exception: Sub: R1191J, Sess: 1, ValueError, Events must correspond to the session with which the reader was initialized: 1 (events correspond to 0), file: create_events_mne.py, line no: 513
+2024-06-14_21-30-09: DF Exception: Sub: R1202M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-30-14: DF Exception: Sub: R1202M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-33-24: DF Exception: Sub: R1221P, Sess: 2, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_21-33-30: DF Exception: Sub: R1222M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-36-33: DF Exception: Sub: R1229M, Sess: 0, ValueError, Events must correspond to the session with which the reader was initialized: 0 (events correspond to 1), file: create_events_mne.py, line no: 513
+2024-06-14_21-36-52: DF Exception: Sub: R1231M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-36-59: DF Exception: Sub: R1235E, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-37-04: DF Exception: Sub: R1235E, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-41-28: DF Exception: Sub: R1251M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-42-38: DF Exception: Sub: R1266J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-42-46: DF Exception: Sub: R1266J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-42-53: DF Exception: Sub: R1266J, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-42-59: DF Exception: Sub: R1266J, Sess: 5, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-46-07: DF Exception: Sub: R1269E, Sess: 3, ValueError, Events must correspond to the session with which the reader was initialized: 3 (events correspond to 10), file: create_events_mne.py, line no: 513
+2024-06-14_21-46-54: DF Exception: Sub: R1273D, Sess: 0, ValueError, Events must correspond to the session with which the reader was initialized: 0 (events correspond to 1), file: create_events_mne.py, line no: 513
+2024-06-14_21-46-57: DF Exception: Sub: R1273D, Sess: 1, ValueError, Events must correspond to the session with which the reader was initialized: 1 (events correspond to 2), file: create_events_mne.py, line no: 513
+2024-06-14_21-47-01: DF Exception: Sub: R1273D, Sess: 2, ValueError, Events must correspond to the session with which the reader was initialized: 2 (events correspond to 3), file: create_events_mne.py, line no: 513
+2024-06-14_21-47-06: DF Exception: Sub: R1274T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-47-11: DF Exception: Sub: R1274T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-47-16: DF Exception: Sub: R1274T, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-48-51: DF Exception: Sub: R1277J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-48-58: DF Exception: Sub: R1277J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-55-02: DF Exception: Sub: R1290M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-56-56: DF Exception: Sub: R1302M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_21-57-02: DF Exception: Sub: R1302M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-00-21: DF Exception: Sub: R1317D, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-01-40: DF Exception: Sub: R1321M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-01-48: DF Exception: Sub: R1321M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-01-55: DF Exception: Sub: R1324M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-22-55: DF Exception: Sub: R1351M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-22-55: DF Exception: Sub: R1351M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-28-02: DF Exception: Sub: R1364C, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-28-29: DF Exception: Sub: R1364C, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-31-15: DF Exception: Sub: R1370E, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-34-15: DF Exception: Sub: R1375C, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-34-26: DF Exception: Sub: R1375C, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-34-34: DF Exception: Sub: R1375C, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-34-44: DF Exception: Sub: R1375C, Sess: 4, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-35-47: DF Exception: Sub: R1377M, Sess: 6, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_22-36-06: DF Exception: Sub: R1378T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-36-24: DF Exception: Sub: R1378T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-38-21: DF Exception: Sub: R1380D, Sess: 2, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_22-41-53: DF Exception: Sub: R1384J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-42-00: DF Exception: Sub: R1384J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-44-49: DF Exception: Sub: R1389J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-44-51: DF Exception: Sub: R1389J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-44-56: DF Exception: Sub: R1389J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-44-58: DF Exception: Sub: R1389J, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-02: DF Exception: Sub: R1390M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-04: DF Exception: Sub: R1390M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-08: DF Exception: Sub: R1390M, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-10: DF Exception: Sub: R1390M, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-14: DF Exception: Sub: R1391T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-45-16: DF Exception: Sub: R1391T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-48-56: DF Exception: Sub: R1400N, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-01: DF Exception: Sub: R1400N, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-02: DF Exception: Sub: R1400N, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-06: DF Exception: Sub: R1400N, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-09: DF Exception: Sub: R1401J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-12: DF Exception: Sub: R1401J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-15: DF Exception: Sub: R1401J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-17: DF Exception: Sub: R1403N, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-21: DF Exception: Sub: R1403N, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-22: DF Exception: Sub: R1403N, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-49-28: DF Exception: Sub: R1403N, Sess: 4, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-50-54: DF Exception: Sub: R1406M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-50-59: DF Exception: Sub: R1406M, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-51-05: DF Exception: Sub: R1406M, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-51-11: DF Exception: Sub: R1406M, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-51-17: DF Exception: Sub: R1408N, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-51-22: DF Exception: Sub: R1408N, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-54-38: DF Exception: Sub: R1426N, Sess: 1, ValueError, could not broadcast input array from shape (121,5000) into shape (121), file: create_events_mne.py, line no: 513
+2024-06-14_22-55-09: DF Exception: Sub: R1441T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_22-55-15: DF Exception: Sub: R1441T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-01-43: DF Exception: Sub: R1457T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-01-57: DF Exception: Sub: R1462M, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-04-14: DF Exception: Sub: R1466J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-10-33: DF Exception: Sub: R1474T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-10-39: DF Exception: Sub: R1474T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-10-45: DF Exception: Sub: R1474T, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-10-52: DF Exception: Sub: R1475J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-10-58: DF Exception: Sub: R1475J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-11-06: DF Exception: Sub: R1475J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-15-01: DF Exception: Sub: R1478T, Sess: 0, ValueError, len(channels) (188) must be the same length as the second data dimension (186), file: create_events_mne.py, line no: 513
+2024-06-14_23-15-06: DF Exception: Sub: R1478T, Sess: 1, ValueError, len(channels) (188) must be the same length as the second data dimension (186), file: create_events_mne.py, line no: 513
+2024-06-14_23-17-26: DF Exception: Sub: R1485J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-17-32: DF Exception: Sub: R1485J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-17-39: DF Exception: Sub: R1485J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-17-45: DF Exception: Sub: R1485J, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-22-56: DF Exception: Sub: R1488T, Sess: 0, IndexError, index 91 is out of bounds for axis 0 with size 91, file: create_events_mne.py, line no: 485
+2024-06-14_23-24-47: DF Exception: Sub: R1490T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-24-52: DF Exception: Sub: R1490T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-24-57: DF Exception: Sub: R1490T, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-25-34: DF Exception: Sub: R1492J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-25-42: DF Exception: Sub: R1492J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-25-50: DF Exception: Sub: R1492J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-25-57: DF Exception: Sub: R1492J, Sess: 4, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-32: DF Exception: Sub: R1495J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-39: DF Exception: Sub: R1495J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-41: DF Exception: Sub: R1495J, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-41: DF Exception: Sub: R1495J, Sess: 10, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-45: DF Exception: Sub: R1495J, Sess: 4, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-46: DF Exception: Sub: R1495J, Sess: 5, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-47: DF Exception: Sub: R1495J, Sess: 6, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-26-48: DF Exception: Sub: R1495J, Sess: 8, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-30-27: DF Exception: Sub: R1500T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-30-35: DF Exception: Sub: R1500T, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-30-43: DF Exception: Sub: R1500T, Sess: 2, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-30-52: DF Exception: Sub: R1500T, Sess: 3, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-36-14: DF Exception: Sub: R1525J, Sess: 3, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-14_23-40-22: DF Exception: Sub: R1526J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-14_23-56-45: DF Exception: Sub: R1626S, Sess: 0, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-56-51: DF Exception: Sub: R1626S, Sess: 2, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-56-56: DF Exception: Sub: R1626S, Sess: 3, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-57-02: DF Exception: Sub: R1626S, Sess: 4, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-57-04: DF Exception: Sub: R1626S, Sess: 6, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-57-06: DF Exception: Sub: R1626S, Sess: 7, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-14_23-57-08: DF Exception: Sub: R1626S, Sess: 8, ValueError, len(channels) (189) must be the same length as the second data dimension (156), file: create_events_mne.py, line no: 513
+2024-06-15_00-00-06: DF Exception: Sub: R1642J, Sess: 1, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-00-08: DF Exception: Sub: R1642J, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-01-08: DF Exception: Sub: R1642J, Sess: 3, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-01-42: DF Exception: Sub: R1642J, Sess: 2, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-21-11: DF Exception: Sub: R1676J, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-21-53: DF Exception: Sub: R1676J, Sess: 1, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-22-25: DF Exception: Sub: R1678T, Sess: 2, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-22-32: DF Exception: Sub: R1676J, Sess: 2, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-24-19: DF Exception: Sub: R1681J, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-15_00-24-25: DF Exception: Sub: R1681J, Sess: 1, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+2024-06-15_00-25-08: DF Exception: Sub: R1689J, Sess: 0, ValueError, No column combination found. Please make sure that the specified columns exist in the dataframe, are numeric, and contains at least two unique values., file: create_events_mne.py, line no: 647
+2024-06-15_00-25-12: DF Exception: Sub: R1696L, Sess: 0, ValueError, len(channels) (196) must be the same length as the second data dimension (179), file: create_events_mne.py, line no: 513

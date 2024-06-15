@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #SBATCH --nodes=1
-#SBATCH --mem=20GB
+#SBATCH --mem=25GB
 #SBATCH --array=0-610%4
 
 echo "Running task number $SLURM_ARRAY_TASK_ID"
