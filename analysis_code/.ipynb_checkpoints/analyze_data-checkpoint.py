@@ -179,6 +179,7 @@ def create_semantic_clustered_array(data_dict, encoding_mode):
             
     return clustered_all_list
 
+
 def combine_data(data_dict, **kwargs):
     
     for key, val in kwargs.items():

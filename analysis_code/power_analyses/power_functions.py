@@ -1,3 +1,10 @@
+import numpy as np
+import sys 
+base = '/home1/efeghhi/'
+sys.path.append(f'{base}ripple_memory/analysis_code/pac_analyses/')
+from load_data_numpy import load_data_np
+from comodulogram import remove_session_string, get_filtered_signal
+
 def z_score(power):
     
     '''
@@ -26,7 +33,8 @@ def process_power(power, zscore_by_idxs):
         
     return power_ds_zscored
 
-def load_z_scored_power(dd_trials, freq_range_str_arr):
+def load_z_scored_power(dd_trials, freq_range_str_arr, encoding_mode, high_fq_range=[[30,70], [80,120], [130, 170]], 
+                       low_fq_range=[[2,4],[7,9]]):
     
     print("Generating figures for run_mode: ", encoding_mode)
 
@@ -73,8 +81,6 @@ def load_z_scored_power(dd_trials, freq_range_str_arr):
         power_z = process_power(filtered_sig_power, subj_elec_sess_labels)
         
         power_z = power_z.squeeze()
-        
-        region_str = region_name[0]
         
         yield power_z, ylabel
         

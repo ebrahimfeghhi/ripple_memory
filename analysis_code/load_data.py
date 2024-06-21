@@ -237,8 +237,9 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         data_dict['clust'].append(np.reshape(loaded_data['semantic_clustering_key'], (-1, num_trials)).T)
         
         data_dict['list_num'].append(np.reshape(loaded_data['list_num_key'], (-1, num_trials)).T)
-        data_dict['category_array'].append(np.reshape(loaded_data['category_array'], (-1, num_trials)).T)
-                
+        if encoding_mode:
+            data_dict['category_array'].append(np.reshape(loaded_data['category_array'], (-1, num_trials)).T)
+
         # each of these entries is of shape num_electrodes, so need to repeat num_trials times
         data_dict['subj'].append(np.repeat(np.expand_dims(loaded_data['sub_names'], -1), num_trials, axis=-1).T)
         data_dict['sess'].append(np.repeat(np.expand_dims(loaded_data['sub_sess_names'], -1), num_trials, axis=-1).T)
