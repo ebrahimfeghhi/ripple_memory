@@ -1,0 +1,24 @@
+Running task number 528
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/timeseries.py:526: FutureWarning: xarray subclass TimeSeriesX should explicitly define __slots__
+  class TimeSeriesX(TimeSeries):
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package outdated is out of date. Your version is 0.2.0, the latest is 0.2.2.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/outdated/utils.py:18: OutdatedPackageWarning: The package pingouin is out of date. Your version is 0.3.4, the latest is 0.5.4.
+Set the environment variable OUTDATED_IGNORE=1 to disable these warnings.
+  **kwargs
+R1637T-0
+/home1/efeghhi/.conda/envs/env3/lib/python3.7/site-packages/ptsa/data/readers/tal.py:43: FutureWarning: Lab-specific readers may be moved to the cmlreaders package (https://github.com/pennmem/cmlreaders)
+  FutureWarning)
+144 matching events found
+No baseline correction applied
+Not setting metadata
+0 projection items activated
+0 bad epochs dropped
+Adding metadata with 27 columns
+2024-06-25_16-26-01: DF Exception: Sub: R1637T, Sess: 0, ValueError, No appropriate channels found for the given picks (array([], dtype=float64)), file: create_events_mne.py, line no: 566
+Program ran:  0
+Save values:  1
+finished ClusterRunSWRs for 528

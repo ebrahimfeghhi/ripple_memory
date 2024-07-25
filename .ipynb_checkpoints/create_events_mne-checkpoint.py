@@ -33,20 +33,34 @@ import pingouin as pg
 ################################################################
 df = get_data_index("r1") # all RAM subjects
 exp = 'catFR1' # 'catFR1' #'FR1'
-save_path = f'/scratch/efeghhi/{exp}/'
+save_path = f'/scratch/efeghhi/prelim/{exp}/'
 ### params that clusterRun used
 selected_period = 'encoding' # surrounding_recall # whole_retrieval # encoding 
 recall_type_switch = 10 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
-selected_region = HPC_labels
 remove_soz_ictal = 0
 recall_minimum = 2000
 filter_type = 'hamming'
 extra = '' #'- ZERO_IRI'
-run_all = True
+selected_patients = ["R1313J", "R1286J", "R1275D", "R1330D", "R1138T", "R1067P", "R1174T", "R1066P"]
+available_regions = [temporal_lobe_labels, MFG_labels, IFG_labels]
+brain_region_idxs = np.arange(len(available_regions))
 ################################################################
-
-
-def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jobs=4, testing_mode=False):
+def ClusterRunSWRs(temp_df_select, selected_period, selected_region, save_path, 
+                   exp, testing_mode=False):
+    
+    '''
+    :param [int, str] temp_df_select: 
+        if int, then temp_df_select is used to index a row of temp_df
+        if str, then must be name of a patient. function iterates through 
+        rows of temp_df until row.subject equals temp_df_select
+        
+    :param str selected_period: encoding, surrounding_recall, or whole_retrieval
+    :param str selected_region: which brain region to generate data for 
+    :param str save_path: folder to save data in
+    :param str exp: catFR or FR
+    :param bool testing_mode: if in testing mode, saves data to "test.p" 
+    so as to not overwrite existing data
+    '''
     
     ### params that clusterRun used
     recall_type_switch = 10 # 0 for original, 1 for only those with subsequent, 2 for second recalls only, 3 for isolated recalls
@@ -172,16 +186,31 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
         with open(f'/home1/efeghhi/cluster/temp_dfSWR_{region_name}_{selected_period}_{exp}.p', 'rb') as f: ### change here to avoid overwrite
             temp_df = dill.load(f)
             
-        row = temp_df[param]
+        row = None
+            
+        # if temp_df_select is a patient id, then loop through the available patients
+        # until the selected patient id is found and retrieve the row in temp_df
+        # corresponidng to the selected patient
+        if isinstance(temp_df_select, str):
+            for r in temp_df:
+                if temp_df_select == r.subject:
+                    row = r
+                    break
+                    
+        elif isinstance(temp_df_select, int):
+            row = temp_df[temp_df_select]
+            
+        if row is None:
+            print("temp df select failed to select a row")
+            sys.exit()
         
         sub = row.subject; session = row.session; exp = row.experiment
         
         
         # add sessions to job_started file so that other slurm processes
         # won't run the same session
-    
         print(f'{sub}-{session}')
-        
+       
         def add_session_to_exclude_list(message):
             
             # add session to csv so it's not included in rerun_df
@@ -832,12 +861,19 @@ def ClusterRunSWRs(param, selected_period, selected_region, save_path, exp, n_jo
     else:
         print("Program ran: ", program_ran)
         print("Save values: ", save_values)
+        
 
-if run_all == False:
-    ClusterRunSWRs(23, save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, testing_mode=False)
-else: 
-    ClusterRunSWRs(int(sys.argv[1]), save_path=save_path, selected_period=selected_period, 
-                   selected_region=selected_region, exp=exp, n_jobs=8)
+selected_patient = selected_patients[int(sys.argv[1])]
+                                     
+                                     
+# generate data for the selected brain regions                                     
+for i in brain_region_idxs:
+    
+    br = available_regions[i]
+    
+    print(f"Running script for patient {selected_patient}, region {br}, and exp {exp}")
+    
+    ClusterRunSWRs(temp_df_select=selected_patient, save_path=save_path, selected_period=selected_period, 
+                   selected_region=br, exp=exp)
     
     print(f'finished ClusterRunSWRs for {sys.argv[1]}')

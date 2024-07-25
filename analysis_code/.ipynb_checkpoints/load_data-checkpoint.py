@@ -101,7 +101,6 @@ def check_PID_train(file, train_path='/home1/efeghhi/ripple_memory/misc_code/tra
 def load_data(directory, region_name, encoding_mode, train_only=True, condition_on_ca1_ripples=False):
     
     '''
-    
     Inputs:
     
         :param str directory: directory where data is stored
@@ -167,7 +166,6 @@ def load_data(directory, region_name, encoding_mode, train_only=True, condition_
         # Open the pickle file for reading
         with open(f'{directory}/{f}', 'rb') as pickle_file:
             loaded_data = pickle.load(pickle_file)  
-            
         
         # we'll also load HPC data if conditioning on ca1 ripples
         # for non-HPC files 
@@ -358,7 +356,7 @@ def select_region(data_dict, selected_elecs, one_d_keys):
         for key, val in data_dict.items():
             if key not in one_d_keys:
                 data_dict_selected_elecs[key].append(val[sess][:, selected_ind])
-            
+             
                 
     return data_dict_selected_elecs
 
